@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Bảng niêm yết thủ tục hành chính - Mường Lay</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <div class="header-title">
+
+        <div class="logo">
+          TTHC
+        </div>
+
+        <div>
+          <h1>
+            BẢNG NIÊM YẾT THỦ TỤC HÀNH CHÍNH
+          </h1>
+
+          <p>
+            TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY
+          </p>
+        </div>
+
+      </div>
+
+      <div class="header-tools">
+
+        <div id="clock" class="clock">
+          00:00:00
+        </div>
+
+        <button
+          id="themeBtn"
+          class="theme-btn"
+          title="Đổi giao diện"
+        >
+          🌙
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= THANH ĐIỀU HƯỚNG ================= -->
+
+  <nav class="nav">
+
+    <div class="nav-inner">
+
+      <button
+        class="home-btn"
+        onclick="location.reload()"
+      >
+        TRANG CHỦ
+      </button>
+
+
+      <div class="search-box">
+
+        <span>🔎</span>
+
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Chạm vào đây để nhập mã hoặc tên thủ tục..."
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <button
+        class="pakn-btn"
+        onclick="window.open('https://dichvucong.gov.vn/', '_blank')"
+      >
+        HƯỚNG DẪN PAKN
+      </button>
+
+    </div>
+
+  </nav>
+
+
+  <!-- ================= THỐNG KÊ ================= -->
+
+  <section class="statistics">
+
+    <div class="stat-card">
+
+      <div
+        class="stat-number"
+        id="totalCount"
+      >
+        0
+      </div>
+
+      <div class="stat-label">
+        TỔNG SỐ TTHC
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div
+        class="stat-number"
+        id="fullCount"
+      >
+        0
+      </div>
+
+      <div class="stat-label">
+        DỊCH VỤ CÔNG TOÀN TRÌNH
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div
+        class="stat-number"
+        id="partialCount"
+      >
+        0
+      </div>
+
+      <div class="stat-label">
+        DỊCH VỤ CÔNG MỘT PHẦN
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= NỘI DUNG ================= -->
+
+  <main class="main">
+
+    <div class="section-title">
+
+      <h2 id="contentTitle">
+        DANH SÁCH LĨNH VỰC
+      </h2>
+
+    </div>
+
+
+    <div
+      id="fieldContainer"
+      class="field-grid"
+    >
+    </div>
+
+  </main>
+
+
+  <!-- ================= MODAL CHI TIẾT ================= -->
+
+  <div
+    id="detailModal"
+    class="modal"
+  >
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h2>
+          THÔNG TIN THỦ TỤC HÀNH CHÍNH
+        </h2>
+
+        <button
+          id="modalClose"
+          class="modal-close"
+          title="Đóng"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div
+        id="modalBody"
+        class="modal-body"
+      >
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer class="footer">
+
+    <div>
+      TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY
+    </div>
+
+    <div style="margin-top:6px;">
+      Bảng niêm yết thủ tục hành chính điện tử
+    </div>
+
+  </footer>
+
+
+  <script src="app.js"></script>
+
+</body>
+</html>
