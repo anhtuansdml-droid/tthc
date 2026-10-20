@@ -1,6 +1,6 @@
 const DATA_SOURCE_URL = "https://dieuphoi.netlify.app/niemyet";
 const DATA_SOURCE_NAME = "Trang Niêm yết TTHC - Điều phối";
-const DVCQG_BASE_URL = "https://ndc.dichvucong.gov.vn/p/home/dvc-tthc-thu-tuc-hanh-chinh-chi-tiet.html?ma_thu_tuc=";
+const NDC_BASE_URL = "https://ndc.dichvucong.gov.vn/";
 
 let procedures = [];
 let filteredProcedures = [];
@@ -65,7 +65,7 @@ async function loadData() {
       return {
         ...oldItem,
         ...item,
-        url: buildDvcUrl(code),
+        url: buildNdcUrl(code),
         nguon: DATA_SOURCE_NAME
       };
     });
@@ -85,9 +85,8 @@ async function loadData() {
   }
 }
 
-function buildDvcUrl(code) {
-  const ma = String(code || "").trim();
-  return ma ? DVCQG_BASE_URL + encodeURIComponent(ma) : "";
+function buildNdcUrl(code) {
+  return NDC_BASE_URL;
 }
 
 function updateStatistics() {
@@ -165,7 +164,7 @@ function procedureHtml(item, index) {
 
 function showDetail(item) {
   if (!modal || !modalBody || !item) return;
-  const onlineUrl = buildDvcUrl(item.ma);
+  const onlineUrl = buildNdcUrl(item.ma);
 
   modalBody.innerHTML = `
     <div class="detail-title">${escapeHtml(item.ten || "")}</div>
@@ -235,14 +234,6 @@ function setupTheme() {
     document.body.classList.toggle("dark");
     button.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
   });
-}
-
-function normalizeUrl(url) {
-  if (!url) return "";
-  url = String(url).trim();
-  if (!url) return "";
-  if (url.startsWith("http://") || url.startsWith("https://")) return url;
-  return "https://" + url;
 }
 
 function normalize(value) {
