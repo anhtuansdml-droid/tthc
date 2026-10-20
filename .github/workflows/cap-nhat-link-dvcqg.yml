@@ -1,0 +1,135 @@
+name: Cap nhat link DVCQG
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 20 * * 0"
+
+permissions:
+  contents: write
+
+jobs:
+  update-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Cap nhat UUID Cổng DVC Quốc gia
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python - <<'PY'
+          import json
+          import time
+          from pathlib import Path
+          import requests
+
+          DATA = Path("data/tthc_430_2026-10-20.json")
+          API = "https://dichvucong.gov.vn/api/v1/submitting/formality/list-all-public-formality-by-citizen"
+          BASE = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/"
+
+          headers = {
+              "Accept": "application/json, text/plain, */*",
+              "Content-Type": "application/json; charset=UTF-8",
+              "Origin": "https://dichvucong.gov.vn",
+              "Referer": "https://dichvucong.gov.vn/",
+              "User-Agent": "Mozilla/5.0"
+          }
+
+          data = json.loads(DATA.read_text(encoding="utf-8"))
+          found = []
+          missing = []
+          session = requests.Session()
+
+          def search(code):
+              payload = {
+                  "limit": 100,
+                  "lastId": "",
+                  "q": code,
+                  "categoryId": "",
+                  "departmentCode": ""
+              }
+              for attempt in range(4):
+                  try:
+                      r = session.post(API, json=payload, headers=headers, timeout=30)
+                      if r.status_code in (429, 500, 502, 503, 504):
+                          time.sleep(2 + attempt * 2)
+                          continue
+                      r.raise_for_status()
+                      body = r.json()
+                      if body.get("code") != "OK":
+                          return []
+                      return body.get("data", {}).get("items", []) or []
+                  except Exception:
+                      if attempt == 3:
+                          return []
+                      time.sleep(2 + attempt)
+              return []
+
+          for i, item in enumerate(data, 1):
+              code = str(item.get("ma", "")).strip()
+              if not code:
+                  missing.append({"ma": code, "reason": "missing_code"})
+                  continue
+
+              items = search(code)
+              exact = []
+              for x in items:
+                  xcode = str(x.get("code") or x.get("codeNotation") or "").strip()
+                  if xcode == code:
+                      exact.append(x)
+
+              if exact:
+                  # Ưu tiên bản ghi dành cho công dân nếu API trả nhiều bản ghi cùng mã.
+                  chosen = exact[0]
+                  uuid = str(chosen.get("id") or "").strip()
+                  if uuid:
+                      item["dvcqgId"] = uuid
+                      item["url"] = BASE + uuid
+                      found.append({"ma": code, "dvcqgId": uuid})
+                  else:
+                      item.pop("dvcqgId", None)
+                      item["url"] = ""
+                      missing.append({"ma": code, "reason": "no_id"})
+              else:
+                  item.pop("dvcqgId", None)
+                  item["url"] = ""
+                  missing.append({"ma": code, "reason": "not_found"})
+
+              if i % 10 == 0 or i == len(data):
+                  print(f"{i}/{len(data)} | found={len(found)} | missing={len(missing)}")
+              time.sleep(0.2)
+
+          DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          report = {
+              "total": len(data),
+              "found": len(found),
+              "missing": len(missing),
+              "foundItems": found,
+              "missingItems": missing
+          }
+          Path("data/dvcqg_link_report.json").write_text(
+              json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8"
+          )
+          print(f"DONE total={len(data)} found={len(found)} missing={len(missing)}")
+          PY
+
+      - name: Commit ket qua
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/tthc_430_2026-10-20.json data/dvcqg_link_report.json
+          if git diff --cached --quiet; then
+            echo "Khong co thay doi."
+          else
+            git commit -m "Cap nhat link TTHC DVCQG moi"
+            git push
+          fi
