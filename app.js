@@ -3,592 +3,233 @@ let filteredProcedures = [];
 
 const searchInput = document.getElementById("searchInput");
 const fieldContainer = document.getElementById("fieldContainer");
-
 const totalCount = document.getElementById("totalCount");
 const fullCount = document.getElementById("fullCount");
 const partialCount = document.getElementById("partialCount");
-
 const modal = document.getElementById("detailModal");
 const modalBody = document.getElementById("modalBody");
-
-
-// ===============================
-// KHỞI ĐỘNG
-// ===============================
 
 document.addEventListener("DOMContentLoaded", async () => {
   updateClock();
   setInterval(updateClock, 1000);
-
   setupTheme();
-
   await loadData();
-
   setupSearch();
   setupModal();
 });
 
-
-// ===============================
-// ĐỒNG HỒ
-// ===============================
-
 function updateClock() {
   const clock = document.getElementById("clock");
-
   if (!clock) return;
-
   const now = new Date();
-
-  const date = now.toLocaleDateString("vi-VN");
-  const time = now.toLocaleTimeString("vi-VN");
-
-  clock.textContent = `${date} ${time}`;
+  clock.textContent = `${now.toLocaleDateString("vi-VN")} ${now.toLocaleTimeString("vi-VN")}`;
 }
-
-
-// ===============================
-// ĐỌC DỮ LIỆU TTHC
-// ===============================
 
 async function loadData() {
   try {
-    const response = await fetch("data/tthc.json", {
-      cache: "no-store"
+    const [oldResponse, newResponse] = await Promise.all([
+      fetch("data/tthc.json", { cache: "no-store" }),
+      fetch("data/tthc_430_2026-10-20.json", { cache: "no-store" })
+    ]);
+
+    if (!oldResponse.ok) throw new Error(`Không tải được data/tthc.json: HTTP ${oldResponse.status}`);
+    if (!newResponse.ok) throw new Error(`Không tải được data/tthc_430_2026-10-20.json: HTTP ${newResponse.status}`);
+
+    const oldData = await oldResponse.json();
+    const newData = await newResponse.json();
+
+    if (!Array.isArray(oldData) || !Array.isArray(newData)) {
+      throw new Error("Dữ liệu TTHC không đúng định dạng mảng JSON");
+    }
+
+    const oldByCode = new Map();
+    oldData.forEach(item => {
+      if (item && item.ma) oldByCode.set(String(item.ma).trim(), item);
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    procedures = await response.json();
-
-    if (!Array.isArray(procedures)) {
-      throw new Error("data/tthc.json không phải mảng dữ liệu");
-    }
+    // Lấy đúng bộ 430 TTHC mới. Với mã đã có trong bộ cũ,
+    // giữ lại URL DVC cũ nếu bộ mới chưa có URL.
+    procedures = newData.map(item => {
+      const code = String(item.ma || "").trim();
+      const oldItem = oldByCode.get(code) || {};
+      return {
+        ...oldItem,
+        ...item,
+        url: item.url || oldItem.url || ""
+      };
+    });
 
     filteredProcedures = [...procedures];
-
     updateStatistics();
-
     renderFields();
-
   } catch (error) {
     console.error("Lỗi tải dữ liệu:", error);
-
     if (fieldContainer) {
       fieldContainer.innerHTML = `
-        <div style="
-          background:#fff;
-          padding:25px;
-          border-radius:10px;
-          color:#c40000;
-          font-weight:bold;
-        ">
-          Không tải được dữ liệu TTHC.
-          <br><br>
-          Kiểm tra file:
-          <b>data/tthc.json</b>
-        </div>
-      `;
+        <div style="background:#fff;padding:25px;border-radius:10px;color:#c40000;font-weight:bold">
+          Không tải được dữ liệu TTHC.<br><br>
+          ${escapeHtml(error.message)}
+        </div>`;
     }
   }
 }
-
-
-// ===============================
-// THỐNG KÊ
-// ===============================
 
 function updateStatistics() {
   const total = procedures.length;
-
-  const full = procedures.filter(
-    item => normalize(item.mucDichVu) === "toan trinh"
-  ).length;
-
-  const partial = procedures.filter(
-    item => normalize(item.mucDichVu) === "mot phan"
-  ).length;
-
-  if (totalCount) {
-    totalCount.textContent = total;
-  }
-
-  if (fullCount) {
-    fullCount.textContent = full;
-  }
-
-  if (partialCount) {
-    partialCount.textContent = partial;
-  }
+  const full = procedures.filter(item => normalize(item.mucDichVu) === "toan trinh").length;
+  const partial = procedures.filter(item => normalize(item.mucDichVu) === "mot phan").length;
+  if (totalCount) totalCount.textContent = total;
+  if (fullCount) fullCount.textContent = full;
+  if (partialCount) partialCount.textContent = partial;
 }
-
-
-// ===============================
-// HIỂN THỊ LĨNH VỰC
-// ===============================
 
 function renderFields(list = filteredProcedures) {
   if (!fieldContainer) return;
-
   const groups = {};
-
   list.forEach(item => {
     const field = item.linhVuc || "Chưa xác định";
-
-    if (!groups[field]) {
-      groups[field] = [];
-    }
-
+    if (!groups[field]) groups[field] = [];
     groups[field].push(item);
   });
 
-  const fields = Object.entries(groups).sort((a, b) =>
-    a[0].localeCompare(b[0], "vi")
-  );
-
-  if (fields.length === 0) {
-    fieldContainer.innerHTML = `
-      <div style="
-        background:white;
-        padding:30px;
-        border-radius:10px;
-        text-align:center;
-        font-weight:bold;
-      ">
-        Không tìm thấy thủ tục hành chính.
-      </div>
-    `;
-
+  const fields = Object.entries(groups).sort((a, b) => a[0].localeCompare(b[0], "vi"));
+  if (!fields.length) {
+    fieldContainer.innerHTML = `<div style="background:white;padding:30px;border-radius:10px;text-align:center;font-weight:bold">Không tìm thấy thủ tục hành chính.</div>`;
     return;
   }
 
-  fieldContainer.innerHTML = fields.map(([field, items]) => {
-
-    const agency = getMainAgency(items);
-
-    return `
-      <div
-        class="field-card"
-        data-field="${escapeHtml(field)}"
-      >
-        <div class="field-name">
-          ${escapeHtml(field)}
-        </div>
-
-        <div class="field-count">
-          ${items.length}
-        </div>
-
-        <div class="field-agency">
-          ${escapeHtml(agency)}
-        </div>
-      </div>
-    `;
-
-  }).join("");
+  fieldContainer.innerHTML = fields.map(([field, items]) => `
+    <div class="field-card" data-field="${escapeHtml(field)}">
+      <div class="field-name">${escapeHtml(field)}</div>
+      <div class="field-count">${items.length}</div>
+      <div class="field-agency">${escapeHtml(getMainAgency(items))}</div>
+    </div>
+  `).join("");
 
   document.querySelectorAll(".field-card").forEach(card => {
-
-    card.addEventListener("click", () => {
-
-      const field = card.dataset.field;
-
-      showFieldProcedures(field);
-
-    });
-
+    card.addEventListener("click", () => showFieldProcedures(card.dataset.field));
   });
 }
-
-
-// ===============================
-// CƠ QUAN CHỦ TRÌ
-// ===============================
 
 function getMainAgency(items) {
-
   const counter = {};
-
   items.forEach(item => {
-
-    const agency =
-      item.coQuanChuTri ||
-      "Chưa cập nhật";
-
-    counter[agency] =
-      (counter[agency] || 0) + 1;
-
+    const agency = item.coQuanChuTri || "Chưa cập nhật";
+    counter[agency] = (counter[agency] || 0) + 1;
   });
-
-  const sorted = Object.entries(counter)
-    .sort((a, b) => b[1] - a[1]);
-
-  return sorted.length
-    ? sorted[0][0]
-    : "Chưa cập nhật";
+  const sorted = Object.entries(counter).sort((a, b) => b[1] - a[1]);
+  return sorted.length ? sorted[0][0] : "Chưa cập nhật";
 }
-
-
-// ===============================
-// HIỂN THỊ TTHC THEO LĨNH VỰC
-// ===============================
 
 function showFieldProcedures(field) {
-
-  const items = filteredProcedures.filter(
-    item => (item.linhVuc || "Chưa xác định") === field
-  );
-
+  const items = filteredProcedures.filter(item => (item.linhVuc || "Chưa xác định") === field);
   const title = document.getElementById("contentTitle");
+  if (title) title.textContent = `${field} — ${items.length} thủ tục`;
 
-  if (title) {
-    title.textContent =
-      `${field} — ${items.length} thủ tục`;
-  }
+  fieldContainer.innerHTML = `<div class="procedure-list">${items.map((item, index) => procedureHtml(item, index)).join("")}</div>`;
 
-  fieldContainer.innerHTML = `
-    <div class="procedure-list">
-      ${items.map(item => procedureHtml(item)).join("")}
-    </div>
-  `;
-
-  document.querySelectorAll(".procedure-item").forEach(item => {
-
-    item.addEventListener("click", () => {
-
-      const index = Number(item.dataset.index);
-
-      showDetail(items[index]);
-
-    });
-
+  document.querySelectorAll(".procedure-item").forEach(element => {
+    element.addEventListener("click", () => showDetail(items[Number(element.dataset.index)]));
   });
 }
 
-
-// ===============================
-// HTML TỪNG TTHC
-// ===============================
-
-function procedureHtml(item) {
-
-  const index = filteredProcedures.indexOf(item);
-
-  const type =
-    normalize(item.mucDichVu) === "toan trinh"
-      ? "full"
-      : "partial";
-
+function procedureHtml(item, index) {
+  const normalizedService = normalize(item.mucDichVu);
+  const type = normalizedService === "toan trinh" ? "full" : "partial";
   return `
-    <div
-      class="procedure-item"
-      data-index="${index}"
-    >
-
-      <div class="procedure-code">
-        ${escapeHtml(item.ma || "")}
-      </div>
-
-      <div class="procedure-name">
-        ${escapeHtml(item.ten || "")}
-      </div>
-
+    <div class="procedure-item" data-index="${index}">
+      <div class="procedure-code">${escapeHtml(item.ma || "")}</div>
+      <div class="procedure-name">${escapeHtml(item.ten || "")}</div>
       <div class="procedure-meta">
-
-        <span class="badge ${type}">
-          ${escapeHtml(item.mucDichVu || "Chưa cập nhật")}
-        </span>
-
-        <span class="badge">
-          ${escapeHtml(item.coQuanChuTri || "Chưa cập nhật")}
-        </span>
-
+        <span class="badge ${type}">${escapeHtml(item.mucDichVu || "Chưa cập nhật")}</span>
+        <span class="badge">${escapeHtml(item.coQuanChuTri || "Chưa cập nhật")}</span>
       </div>
-
-    </div>
-  `;
+    </div>`;
 }
 
-
-// ===============================
-// CHI TIẾT TTHC
-// ===============================
-
 function showDetail(item) {
-
-  if (!modal || !modalBody) return;
-
+  if (!modal || !modalBody || !item) return;
   const onlineUrl = normalizeUrl(item.url);
 
   modalBody.innerHTML = `
-
-    <div class="detail-title">
-      ${escapeHtml(item.ten || "")}
-    </div>
-
+    <div class="detail-title">${escapeHtml(item.ten || "")}</div>
     <div class="detail-grid">
-
       ${detailRow("Mã TTHC", item.ma)}
-
-      ${detailRow(
-        "Lĩnh vực",
-        item.linhVuc
-      )}
-
-      ${detailRow(
-        "Cơ quan chủ trì",
-        item.coQuanChuTri
-      )}
-
-      ${detailRow(
-        "Cơ quan thực hiện",
-        item.coQuanThucHien
-      )}
-
-      ${detailRow(
-        "Mã cơ quan",
-        item.maCoQuan
-      )}
-
-      ${detailRow(
-        "Mức dịch vụ",
-        item.mucDichVu
-      )}
-
-      ${detailRow(
-        "Cấp thực hiện",
-        item.cap
-      )}
-
-      ${detailRow(
-        "Loại TTHC",
-        item.loai
-      )}
-
-      ${detailRow(
-        "Mức độ",
-        item.mucDo
-      )}
-
-      ${detailRow(
-        "Trạng thái",
-        item.trangThai
-      )}
-
-      ${detailRow(
-        "Nguồn",
-        item.nguon
-      )}
-
-      ${detailRow(
-        "Mã thực hiện",
-        item.maThucHien
-      )}
-
+      ${detailRow("Lĩnh vực", item.linhVuc)}
+      ${detailRow("Cơ quan chủ trì", item.coQuanChuTri)}
+      ${detailRow("Cơ quan thực hiện", item.coQuanThucHien)}
+      ${detailRow("Mã cơ quan", item.maCoQuan)}
+      ${detailRow("Mức dịch vụ", item.mucDichVu)}
+      ${detailRow("Cấp thực hiện", item.cap)}
+      ${detailRow("Loại TTHC", item.loai)}
+      ${detailRow("Mức độ", item.mucDo)}
+      ${detailRow("Trạng thái", item.trangThai)}
+      ${detailRow("Nguồn", item.nguon)}
+      ${detailRow("Mã thực hiện", item.maThucHien)}
     </div>
-
-    ${
-      onlineUrl
-        ? `
-          <a
-            class="online-btn"
-            href="${escapeAttribute(onlineUrl)}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN
-          </a>
-        `
-        : ""
-    }
-
-  `;
+    ${onlineUrl ? `<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>` : ""}`;
 
   modal.classList.add("show");
 }
 
-
 function detailRow(label, value) {
-
-  return `
-    <div class="detail-label">
-      ${escapeHtml(label)}
-    </div>
-
-    <div class="detail-value">
-      ${escapeHtml(value || "Chưa cập nhật")}
-    </div>
-  `;
+  return `<div class="detail-label">${escapeHtml(label)}</div><div class="detail-value">${escapeHtml(value || "Chưa cập nhật")}</div>`;
 }
 
-
-// ===============================
-// TÌM KIẾM
-// ===============================
-
 function setupSearch() {
-
   if (!searchInput) return;
-
   searchInput.addEventListener("input", () => {
-
-    const keyword =
-      normalize(searchInput.value);
-
+    const keyword = normalize(searchInput.value);
     if (!keyword) {
-
-      filteredProcedures =
-        [...procedures];
-
+      filteredProcedures = [...procedures];
       updateStatistics();
-
       renderFields();
-
-      const title =
-        document.getElementById("contentTitle");
-
-      if (title) {
-        title.textContent =
-          "DANH SÁCH LĨNH VỰC";
-      }
-
+      const title = document.getElementById("contentTitle");
+      if (title) title.textContent = "DANH SÁCH LĨNH VỰC";
       return;
     }
 
-    filteredProcedures =
-      procedures.filter(item => {
-
-        const text = [
-          item.ma,
-          item.ten,
-          item.linhVuc,
-          item.coQuanChuTri,
-          item.coQuanThucHien,
-          item.maThucHien
-        ]
-          .filter(Boolean)
-          .join(" ");
-
-        return normalize(text)
-          .includes(keyword);
-
-      });
-
-    renderFields(filteredProcedures);
-
-    const title =
-      document.getElementById("contentTitle");
-
-    if (title) {
-
-      title.textContent =
-        `KẾT QUẢ TÌM KIẾM — ${filteredProcedures.length} TTHC`;
-
-    }
-
-  });
-}
-
-
-// ===============================
-// MODAL
-// ===============================
-
-function setupModal() {
-
-  if (!modal) return;
-
-  const close =
-    document.getElementById("modalClose");
-
-  if (close) {
-
-    close.addEventListener("click", () => {
-
-      modal.classList.remove("show");
-
+    filteredProcedures = procedures.filter(item => {
+      const text = [item.ma, item.ten, item.linhVuc, item.coQuanChuTri, item.coQuanThucHien, item.maThucHien].filter(Boolean).join(" ");
+      return normalize(text).includes(keyword);
     });
 
-  }
-
-  modal.addEventListener("click", event => {
-
-    if (event.target === modal) {
-
-      modal.classList.remove("show");
-
-    }
-
-  });
-
-  document.addEventListener("keydown", event => {
-
-    if (event.key === "Escape") {
-
-      modal.classList.remove("show");
-
-    }
-
+    renderFields(filteredProcedures);
+    const title = document.getElementById("contentTitle");
+    if (title) title.textContent = `KẾT QUẢ TÌM KIẾM — ${filteredProcedures.length} TTHC`;
   });
 }
 
-
-// ===============================
-// GIAO DIỆN SÁNG / TỐI
-// ===============================
+function setupModal() {
+  if (!modal) return;
+  const close = document.getElementById("modalClose");
+  if (close) close.addEventListener("click", () => modal.classList.remove("show"));
+  modal.addEventListener("click", event => {
+    if (event.target === modal) modal.classList.remove("show");
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") modal.classList.remove("show");
+  });
+}
 
 function setupTheme() {
-
-  const button =
-    document.getElementById("themeBtn");
-
+  const button = document.getElementById("themeBtn");
   if (!button) return;
-
   button.addEventListener("click", () => {
-
     document.body.classList.toggle("dark");
-
-    button.textContent =
-      document.body.classList.contains("dark")
-        ? "☀️"
-        : "🌙";
-
+    button.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
   });
-
 }
 
-
-// ===============================
-// CHUẨN HÓA URL
-// ===============================
-
 function normalizeUrl(url) {
-
   if (!url) return "";
-
   url = String(url).trim();
-
   if (!url) return "";
-
-  if (
-    url.startsWith("http://") ||
-    url.startsWith("https://")
-  ) {
-    return url;
-  }
-
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
   return "https://" + url;
 }
 
-
-// ===============================
-// BỎ DẤU TIẾNG VIỆT
-// ===============================
-
 function normalize(value) {
-
   return String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -598,13 +239,7 @@ function normalize(value) {
     .trim();
 }
 
-
-// ===============================
-// HTML AN TOÀN
-// ===============================
-
 function escapeHtml(value) {
-
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -613,8 +248,6 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
-
 function escapeAttribute(value) {
-
   return escapeHtml(value);
 }
