@@ -1,5 +1,6 @@
 const DATA_SOURCE_URL = "https://dieuphoi.netlify.app/niemyet";
 const DATA_SOURCE_NAME = "Trang Niêm yết TTHC - Điều phối";
+const DVCQG_BASE_URL = "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-hanh-chinh.html?ma_thu_tuc=";
 
 let procedures = [];
 let filteredProcedures = [];
@@ -58,15 +59,14 @@ async function loadData() {
       if (item && item.ma) oldByCode.set(String(item.ma).trim(), item);
     });
 
-    // Bộ dữ liệu hiện hành lấy theo danh sách mới.
-    // Nếu mã đã có trong dữ liệu cũ thì giữ URL DVC trực tuyến cũ khi dữ liệu mới chưa có URL.
     procedures = newData.map(item => {
       const code = String(item.ma || "").trim();
       const oldItem = oldByCode.get(code) || {};
+      const dvcUrl = item.url || oldItem.url || buildDvcUrl(code);
       return {
         ...oldItem,
         ...item,
-        url: item.url || oldItem.url || "",
+        url: dvcUrl,
         nguon: DATA_SOURCE_NAME
       };
     });
@@ -84,6 +84,11 @@ async function loadData() {
         </div>`;
     }
   }
+}
+
+function buildDvcUrl(code) {
+  const ma = String(code || "").trim();
+  return ma ? DVCQG_BASE_URL + encodeURIComponent(ma) : "";
 }
 
 function updateStatistics() {
@@ -161,7 +166,7 @@ function procedureHtml(item, index) {
 
 function showDetail(item) {
   if (!modal || !modalBody || !item) return;
-  const onlineUrl = normalizeUrl(item.url);
+  const onlineUrl = normalizeUrl(item.url) || buildDvcUrl(item.ma);
 
   modalBody.innerHTML = `
     <div class="detail-title">${escapeHtml(item.ten || "")}</div>
