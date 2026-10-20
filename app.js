@@ -1,3 +1,6 @@
+const DATA_SOURCE_URL = "https://dieuphoi.netlify.app/niemyet";
+const DATA_SOURCE_NAME = "Trang Niêm yết TTHC - Điều phối";
+
 let procedures = [];
 let filteredProcedures = [];
 
@@ -13,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateClock();
   setInterval(updateClock, 1000);
   setupTheme();
+  setupSourceLink();
   await loadData();
   setupSearch();
   setupModal();
@@ -23,6 +27,13 @@ function updateClock() {
   if (!clock) return;
   const now = new Date();
   clock.textContent = `${now.toLocaleDateString("vi-VN")} ${now.toLocaleTimeString("vi-VN")}`;
+}
+
+function setupSourceLink() {
+  const sourceLink = document.getElementById("sourceLink");
+  if (!sourceLink) return;
+  sourceLink.href = DATA_SOURCE_URL;
+  sourceLink.textContent = DATA_SOURCE_NAME;
 }
 
 async function loadData() {
@@ -47,15 +58,16 @@ async function loadData() {
       if (item && item.ma) oldByCode.set(String(item.ma).trim(), item);
     });
 
-    // Lấy đúng bộ 430 TTHC mới. Với mã đã có trong bộ cũ,
-    // giữ lại URL DVC cũ nếu bộ mới chưa có URL.
+    // Bộ dữ liệu hiện hành lấy theo danh sách mới.
+    // Nếu mã đã có trong dữ liệu cũ thì giữ URL DVC trực tuyến cũ khi dữ liệu mới chưa có URL.
     procedures = newData.map(item => {
       const code = String(item.ma || "").trim();
       const oldItem = oldByCode.get(code) || {};
       return {
         ...oldItem,
         ...item,
-        url: item.url || oldItem.url || ""
+        url: item.url || oldItem.url || "",
+        nguon: DATA_SOURCE_NAME
       };
     });
 
@@ -164,7 +176,7 @@ function showDetail(item) {
       ${detailRow("Loại TTHC", item.loai)}
       ${detailRow("Mức độ", item.mucDo)}
       ${detailRow("Trạng thái", item.trangThai)}
-      ${detailRow("Nguồn", item.nguon)}
+      ${detailRow("Nguồn", DATA_SOURCE_NAME)}
       ${detailRow("Mã thực hiện", item.maThucHien)}
     </div>
     ${onlineUrl ? `<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>` : ""}`;
