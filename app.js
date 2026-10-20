@@ -1,6 +1,6 @@
 const DATA_SOURCE_URL = "https://dieuphoi.netlify.app/niemyet";
 const DATA_SOURCE_NAME = "Trang Niêm yết TTHC - Điều phối";
-const NDC_BASE_URL = "https://ndc.dichvucong.gov.vn/";
+const DVCQG_BASE_URL = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/";
 
 let procedures = [];
 let filteredProcedures = [];
@@ -62,10 +62,12 @@ async function loadData() {
     procedures = newData.map(item => {
       const code = String(item.ma || "").trim();
       const oldItem = oldByCode.get(code) || {};
+      const dvcqgId = String(item.dvcqgId || item.dvcqg_id || oldItem.dvcqgId || "").trim();
       return {
         ...oldItem,
         ...item,
-        url: buildNdcUrl(code),
+        dvcqgId,
+        url: buildDvcqgUrl(dvcqgId),
         nguon: DATA_SOURCE_NAME
       };
     });
@@ -85,8 +87,9 @@ async function loadData() {
   }
 }
 
-function buildNdcUrl(code) {
-  return NDC_BASE_URL;
+function buildDvcqgUrl(dvcqgId) {
+  const id = String(dvcqgId || "").trim();
+  return id ? DVCQG_BASE_URL + encodeURIComponent(id) : "";
 }
 
 function updateStatistics() {
@@ -164,7 +167,7 @@ function procedureHtml(item, index) {
 
 function showDetail(item) {
   if (!modal || !modalBody || !item) return;
-  const onlineUrl = buildNdcUrl(item.ma);
+  const onlineUrl = buildDvcqgUrl(item.dvcqgId);
 
   modalBody.innerHTML = `
     <div class="detail-title">${escapeHtml(item.ten || "")}</div>
@@ -182,7 +185,7 @@ function showDetail(item) {
       ${detailRow("Nguồn", DATA_SOURCE_NAME)}
       ${detailRow("Mã thực hiện", item.maThucHien)}
     </div>
-    ${onlineUrl ? `<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>` : ""}`;
+    ${onlineUrl ? `<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>` : `<div style="margin-top:20px;color:#b00000;font-weight:600">TTHC này chưa có mã liên kết trên Cổng Dịch vụ công Quốc gia.</div>`}`;
 
   modal.classList.add("show");
 }
