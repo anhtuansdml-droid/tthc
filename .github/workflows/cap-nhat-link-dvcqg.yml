@@ -1,6 +1,10 @@
 name: Cap nhat link DVCQG
 
 on:
+  push:
+    paths-ignore:
+      - "data/tthc_430_2026-10-20.json"
+      - "data/dvcqg_link_report.json"
   workflow_dispatch:
   schedule:
     - cron: "17 20 * * 0"
@@ -86,7 +90,6 @@ jobs:
                       exact.append(x)
 
               if exact:
-                  # Ưu tiên bản ghi dành cho công dân nếu API trả nhiều bản ghi cùng mã.
                   chosen = exact[0]
                   uuid = str(chosen.get("id") or "").strip()
                   if uuid:
