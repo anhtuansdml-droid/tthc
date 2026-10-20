@@ -1,6 +1,6 @@
 const DATA_SOURCE_URL = "https://dieuphoi.netlify.app/niemyet";
 const DATA_SOURCE_NAME = "Trang Niêm yết TTHC - Điều phối";
-const DVCQG_BASE_URL = "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-hanh-chinh.html?ma_thu_tuc=";
+const DVCQG_BASE_URL = "https://ndc.dichvucong.gov.vn/p/home/dvc-tthc-thu-tuc-hanh-chinh-chi-tiet.html?ma_thu_tuc=";
 
 let procedures = [];
 let filteredProcedures = [];
@@ -62,11 +62,10 @@ async function loadData() {
     procedures = newData.map(item => {
       const code = String(item.ma || "").trim();
       const oldItem = oldByCode.get(code) || {};
-      const dvcUrl = item.url || oldItem.url || buildDvcUrl(code);
       return {
         ...oldItem,
         ...item,
-        url: dvcUrl,
+        url: buildDvcUrl(code),
         nguon: DATA_SOURCE_NAME
       };
     });
@@ -166,7 +165,7 @@ function procedureHtml(item, index) {
 
 function showDetail(item) {
   if (!modal || !modalBody || !item) return;
-  const onlineUrl = normalizeUrl(item.url) || buildDvcUrl(item.ma);
+  const onlineUrl = buildDvcUrl(item.ma);
 
   modalBody.innerHTML = `
     <div class="detail-title">${escapeHtml(item.ten || "")}</div>
