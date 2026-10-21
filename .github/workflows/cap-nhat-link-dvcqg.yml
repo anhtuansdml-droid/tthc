@@ -25,135 +25,149 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.x"
+          node-version: "20"
 
-      - name: Install Python dependency
-        run: python -m pip install requests
+      - name: Cai Playwright
+        run: |
+          npm init -y
+          npm install playwright
+          npx playwright install --with-deps chromium
 
-      - name: Cap nhat UUID Cổng DVC Quốc gia
+      - name: Cap nhat UUID Cổng DVC Quốc gia qua trinh duyet
         env:
-          PYTHONUNBUFFERED: "1"
           START: ${{ inputs.start || '1' }}
           COUNT: ${{ inputs.count || '10' }}
         run: |
-          python - <<'PY'
-          import json
-          import os
-          import time
-          from pathlib import Path
-          import requests
+          cat > update-links.cjs <<'NODE'
+          const fs = require('fs');
+          const { chromium } = require('playwright');
 
-          DATA = Path("data/tthc_430_2026-10-20.json")
-          REPORT = Path("data/dvcqg_link_report.json")
-          API = "https://dichvucong.gov.vn/api/v1/submitting/formality/list-all-public-formality-by-citizen"
-          BASE = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/"
+          const DATA = 'data/tthc_430_2026-10-20.json';
+          const REPORT = 'data/dvcqg_link_report.json';
+          const API = 'https://dichvucong.gov.vn/api/v1/submitting/formality/list-all-public-formality-by-citizen';
+          const BASE = 'https://dichvucong.gov.vn/thu-tuc-hanh-chinh/';
+          const start = Math.max(1, Number(process.env.START || 1));
+          const count = Math.max(1, Number(process.env.COUNT || 10));
 
-          start = max(1, int(os.environ.get("START", "1")))
-          count = max(1, int(os.environ.get("COUNT", "10")))
+          const data = JSON.parse(fs.readFileSync(DATA, 'utf8'));
+          const end = Math.min(data.length, start + count - 1);
+          const selected = data.slice(start - 1, end);
 
-          data = json.loads(DATA.read_text(encoding="utf-8"))
-          end = min(len(data), start + count - 1)
-          selected = data[start - 1:end]
+          async function main() {
+            const browser = await chromium.launch({ headless: true });
+            const context = await browser.newContext({
+              userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
+              locale: 'vi-VN'
+            });
+            const page = await context.newPage();
 
-          headers = {
-              "Accept": "application/json, text/plain, */*",
-              "Content-Type": "application/json; charset=UTF-8",
-              "Origin": "https://dichvucong.gov.vn",
-              "Referer": "https://dichvucong.gov.vn/",
-              "User-Agent": "Mozilla/5.0"
-          }
-          session = requests.Session()
+            console.log('Mo Cổng DVCQG...');
+            await page.goto('https://dichvucong.gov.vn/thu-tuc-hanh-chinh', {
+              waitUntil: 'domcontentloaded', timeout: 60000
+            });
+            console.log('Trang da mo.');
 
-          def search(code):
-              payload = {
-                  "limit": 100,
-                  "lastId": "",
-                  "q": code,
-                  "categoryId": "",
-                  "departmentCode": ""
+            async function search(code) {
+              return await page.evaluate(async ({ API, code }) => {
+                const body = {
+                  limit: 100,
+                  lastId: '',
+                  q: code,
+                  serviceGroupId: '',
+                  categoryId: '',
+                  departmentCode: ''
+                };
+                for (let i = 0; i < 3; i++) {
+                  try {
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), 30000);
+                    const r = await fetch(API, {
+                      method: 'POST',
+                      headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json; charset=UTF-8'
+                      },
+                      body: JSON.stringify(body),
+                      signal: controller.signal
+                    });
+                    clearTimeout(timer);
+                    const text = await r.text();
+                    if (!r.ok) throw new Error('HTTP ' + r.status + ': ' + text.slice(0, 300));
+                    const json = JSON.parse(text);
+                    if (json.code !== 'OK') return { items: [], apiCode: json.code, message: json.message || '' };
+                    return { items: (json.data && json.data.items) || [], apiCode: 'OK' };
+                  } catch (e) {
+                    if (i === 2) return { items: [], error: String(e) };
+                    await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+                  }
+                }
+              }, { API, code });
+            }
+
+            let batchFound = 0;
+            let batchMissing = 0;
+
+            for (let i = 0; i < selected.length; i++) {
+              const absolute = start + i;
+              const item = selected[i];
+              const code = String(item.ma || '').trim();
+              console.log(`[${absolute}/${data.length}] Tra ${code}`);
+
+              if (!code) {
+                batchMissing++;
+                continue;
               }
-              for attempt in range(3):
-                  try:
-                      r = session.post(API, json=payload, headers=headers, timeout=15)
-                      if r.status_code in (429, 500, 502, 503, 504):
-                          print(f"API {r.status_code}, thu lai {attempt + 1}/3")
-                          time.sleep(2 + attempt * 2)
-                          continue
-                      r.raise_for_status()
-                      body = r.json()
-                      if body.get("code") != "OK":
-                          return []
-                      return body.get("data", {}).get("items", []) or []
-                  except Exception as exc:
-                      print(f"Loi API: {exc}")
-                      if attempt < 2:
-                          time.sleep(2 + attempt * 2)
-              return []
 
-          found = []
-          missing = []
+              const result = await search(code);
+              const exact = (result.items || []).filter(x =>
+                String(x.code || x.codeNotation || '').trim() === code
+              );
 
-          for offset, item in enumerate(selected):
-              absolute = start + offset
-              code = str(item.get("ma", "")).strip()
-              print(f"[{absolute}/{len(data)}] Dang tra: {code}")
+              if (exact.length) {
+                const uuid = String(exact[0].id || '').trim();
+                const returnedCode = String(exact[0].code || exact[0].codeNotation || '').trim();
+                if (uuid && returnedCode === code) {
+                  item.dvcqgId = uuid;
+                  item.url = BASE + encodeURIComponent(uuid);
+                  batchFound++;
+                  console.log(`  OK ${code} -> ${uuid}`);
+                } else {
+                  delete item.dvcqgId;
+                  item.url = '';
+                  batchMissing++;
+                  console.log('  KHONG HOP UUID');
+                }
+              } else {
+                delete item.dvcqgId;
+                item.url = '';
+                batchMissing++;
+                console.log(`  KHONG TIM THAY | ${result.error || result.apiCode || ''}`);
+              }
 
-              if not code:
-                  missing.append({"ma": code, "reason": "missing_code"})
-                  continue
+              fs.writeFileSync(DATA, JSON.stringify(data, null, 2) + '\n', 'utf8');
+            }
 
-              items = search(code)
-              exact = []
-              for x in items:
-                  xcode = str(x.get("code") or x.get("codeNotation") or "").strip()
-                  if xcode == code:
-                      exact.append(x)
+            const foundItems = data.filter(x => x.ma && x.dvcqgId).map(x => ({ ma: x.ma, dvcqgId: x.dvcqgId }));
+            const missingItems = data.filter(x => x.ma && !x.dvcqgId).map(x => ({ ma: x.ma }));
+            fs.writeFileSync(REPORT, JSON.stringify({
+              total: data.length,
+              found: foundItems.length,
+              missing: missingItems.length,
+              lastBatch: { start, count: selected.length, end },
+              foundItems,
+              missingItems
+            }, null, 2) + '\n', 'utf8');
 
-              if exact:
-                  uuid = str(exact[0].get("id") or "").strip()
-                  if uuid:
-                      item["dvcqgId"] = uuid
-                      item["url"] = BASE + uuid
-                      found.append({"ma": code, "dvcqgId": uuid})
-                      print(f"  OK: {uuid}")
-                  else:
-                      item.pop("dvcqgId", None)
-                      item["url"] = ""
-                      missing.append({"ma": code, "reason": "no_id"})
-                      print("  KHONG CO UUID")
-              else:
-                  item.pop("dvcqgId", None)
-                  item["url"] = ""
-                  missing.append({"ma": code, "reason": "not_found"})
-                  print("  KHONG TIM THAY KET QUA KHOP CHINH XAC")
-
-              DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-              time.sleep(0.2)
-
-          all_found = []
-          all_missing = []
-          for item in data:
-              code = str(item.get("ma", "")).strip()
-              uuid = str(item.get("dvcqgId", "")).strip()
-              if code and uuid:
-                  all_found.append({"ma": code, "dvcqgId": uuid})
-              elif code:
-                  all_missing.append({"ma": code})
-
-          report = {
-              "total": len(data),
-              "found": len(all_found),
-              "missing": len(all_missing),
-              "lastBatch": {"start": start, "count": len(selected), "end": end},
-              "foundItems": all_found,
-              "missingItems": all_missing
+            console.log(`DONE ${start}-${end} | batch_found=${batchFound} | batch_missing=${batchMissing} | total_found=${foundItems.length}/${data.length}`);
+            await browser.close();
           }
-          REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-          print(f"DONE batch={start}-{end} | batch_found={len(found)} | batch_missing={len(missing)} | total_found={len(all_found)}")
-          PY
+
+          main().catch(err => { console.error(err); process.exit(1); });
+          NODE
+          node update-links.cjs
 
       - name: Commit ket qua
         run: |
