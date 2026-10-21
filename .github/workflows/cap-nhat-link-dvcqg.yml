@@ -1,11 +1,16 @@
 name: Cap nhat link DVCQG
 
 on:
-  push:
-    paths-ignore:
-      - "data/tthc_430_2026-10-20.json"
-      - "data/dvcqg_link_report.json"
   workflow_dispatch:
+    inputs:
+      start:
+        description: "Vi tri bat dau (1-based)"
+        required: true
+        default: "1"
+      count:
+        description: "So TTHC can xu ly"
+        required: true
+        default: "10"
   schedule:
     - cron: "17 20 * * 0"
 
@@ -15,6 +20,7 @@ permissions:
 jobs:
   update-links:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,13 +39,22 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          import os
           import time
           from pathlib import Path
           import requests
 
           DATA = Path("data/tthc_430_2026-10-20.json")
+          REPORT = Path("data/dvcqg_link_report.json")
           API = "https://dichvucong.gov.vn/api/v1/submitting/formality/list-all-public-formality-by-citizen"
           BASE = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/"
+
+          start = max(1, int(os.environ.get("START", "1")))
+          count = max(1, int(os.environ.get("COUNT", "10")))
+
+          data = json.loads(DATA.read_text(encoding="utf-8"))
+          end = min(len(data), start + count - 1)
+          selected = data[start - 1:end]
 
           headers = {
               "Accept": "application/json, text/plain, */*",
@@ -48,10 +63,6 @@ jobs:
               "Referer": "https://dichvucong.gov.vn/",
               "User-Agent": "Mozilla/5.0"
           }
-
-          data = json.loads(DATA.read_text(encoding="utf-8"))
-          found = []
-          missing = []
           session = requests.Session()
 
           def search(code):
@@ -62,10 +73,11 @@ jobs:
                   "categoryId": "",
                   "departmentCode": ""
               }
-              for attempt in range(4):
+              for attempt in range(3):
                   try:
-                      r = session.post(API, json=payload, headers=headers, timeout=30)
+                      r = session.post(API, json=payload, headers=headers, timeout=15)
                       if r.status_code in (429, 500, 502, 503, 504):
+                          print(f"API {r.status_code}, thu lai {attempt + 1}/3")
                           time.sleep(2 + attempt * 2)
                           continue
                       r.raise_for_status()
@@ -73,14 +85,21 @@ jobs:
                       if body.get("code") != "OK":
                           return []
                       return body.get("data", {}).get("items", []) or []
-                  except Exception:
-                      if attempt == 3:
-                          return []
-                      time.sleep(2 + attempt)
+                  except Exception as exc:
+                      print(f"Loi API: {exc}")
+                      if attempt < 2:
+                          time.sleep(2 + attempt * 2)
               return []
 
-          for i, item in enumerate(data, 1):
+          # Chi xu ly batch duoc yeu cau. Ket qua duoc ghi ngay sau tung ma.
+          found = []
+          missing = []
+
+          for offset, item in enumerate(selected):
+              absolute = start + offset
               code = str(item.get("ma", "")).strip()
+              print(f"[{absolute}/{len(data)}] Dang tra: {code}")
+
               if not code:
                   missing.append({"ma": code, "reason": "missing_code"})
                   continue
@@ -93,40 +112,52 @@ jobs:
                       exact.append(x)
 
               if exact:
-                  chosen = exact[0]
-                  uuid = str(chosen.get("id") or "").strip()
+                  uuid = str(exact[0].get("id") or "").strip()
                   if uuid:
                       item["dvcqgId"] = uuid
                       item["url"] = BASE + uuid
                       found.append({"ma": code, "dvcqgId": uuid})
+                      print(f"  OK: {uuid}")
                   else:
                       item.pop("dvcqgId", None)
                       item["url"] = ""
                       missing.append({"ma": code, "reason": "no_id"})
+                      print("  KHONG CO UUID")
               else:
                   item.pop("dvcqgId", None)
                   item["url"] = ""
                   missing.append({"ma": code, "reason": "not_found"})
+                  print("  KHONG TIM THAY KET QUA KHOP CHINH XAC")
 
-              if i % 10 == 0 or i == len(data):
-                  print(f"{i}/{len(data)} | found={len(found)} | missing={len(missing)}")
+              # Ghi file ngay sau moi ma de khong mat tien do neu job bi dung.
+              DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
               time.sleep(0.2)
 
-          DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          # Bao cao tong hop hien tai, bao gom ca cac ma da co UUID tu cac dot truoc.
+          all_found = []
+          all_missing = []
+          for item in data:
+              code = str(item.get("ma", "")).strip()
+              uuid = str(item.get("dvcqgId", "")).strip()
+              if code and uuid:
+                  all_found.append({"ma": code, "dvcqgId": uuid})
+              elif code:
+                  all_missing.append({"ma": code})
 
           report = {
               "total": len(data),
-              "found": len(found),
-              "missing": len(missing),
-              "foundItems": found,
-              "missingItems": missing
+              "found": len(all_found),
+              "missing": len(all_missing),
+              "lastBatch": {"start": start, "count": len(selected), "end": end},
+              "foundItems": all_found,
+              "missingItems": all_missing
           }
-          Path("data/dvcqg_link_report.json").write_text(
-              json.dumps(report, ensure_ascii=False, indent=2) + "\n",
-              encoding="utf-8"
-          )
-          print(f"DONE total={len(data)} found={len(found)} missing={len(missing)}")
+          REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(f"DONE batch={start}-{end} | batch_found={len(found)} | batch_missing={len(missing)} | total_found={len(all_found)}")
           PY
+        env:
+          START: ${{ inputs.start || '1' }}
+          COUNT: ${{ inputs.count || '10' }}
 
       - name: Commit ket qua
         run: |
@@ -136,6 +167,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Khong co thay doi."
           else
-            git commit -m "Cap nhat link TTHC DVCQG moi"
+            git commit -m "Cap nhat link TTHC DVCQG theo dot"
             git push
           fi
