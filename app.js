@@ -1,7 +1,7 @@
-const DATA_SOURCE_URL = "https://dichvucong.gov.vn/";
+const DATA_SOURCE_URL = "https://ndc.dichvucong.gov.vn/";
 const DATA_SOURCE_NAME = "Cổng Dịch vụ công Quốc gia";
-const DVCQG_BASE_URL = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/";
-const DVCQG_SEARCH_URL = "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
+const DVCQG_BASE_URL = "https://ndc.dichvucong.gov.vn/thu-tuc-hanh-chinh/";
+const DVCQG_SEARCH_URL = "https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
 const CONFIG_STORAGE_KEY = "tthc_muong_lay_visible_fields_v1";
 
 let procedures = [];
