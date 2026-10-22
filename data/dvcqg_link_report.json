@@ -1,13 +1,1501 @@
 {
   "total": 430,
-  "found": 0,
-  "missing": 430,
+  "found": 297,
+  "missing": 133,
   "lastBatch": {
     "start": 1,
-    "count": 10,
-    "end": 10
+    "count": 430,
+    "end": 430,
+    "foundBatch": 297
   },
-  "foundItems": [],
+  "source": "tmquan/dichvucong-gov-vn procedures parquet",
+  "foundItems": [
+    {
+      "ma": "1.115148",
+      "dvcqgId": "019e8732-a3da-753b-85f5-0590fe1e27c7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019e8732-a3da-753b-85f5-0590fe1e27c7&formalityCaseId=019e87bd-b212-765f-8284-ec8bfca1f356"
+    },
+    {
+      "ma": "1.115116",
+      "dvcqgId": "019e1505-ffcd-7231-beb8-71ef73387cd9",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019e1505-ffcd-7231-beb8-71ef73387cd9&formalityCaseId=019e1a21-be04-73d4-8d19-67d9a9717072"
+    },
+    {
+      "ma": "1.014947",
+      "dvcqgId": "019d90dd-f017-732b-a670-c6d743b193fd",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d90dd-f017-732b-a670-c6d743b193fd&formalityCaseId=019dafa0-28a9-77c8-aa26-111e1298bfc2"
+    },
+    {
+      "ma": "1.014946",
+      "dvcqgId": "019d90b6-cf18-72c9-bb65-12e2e42a691a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d90b6-cf18-72c9-bb65-12e2e42a691a&formalityCaseId=019db079-0763-74ff-945f-71f98ef86944"
+    },
+    {
+      "ma": "1.014111",
+      "dvcqgId": "019d90b5-0f50-773c-88d5-07d6ef77b613",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d90b5-0f50-773c-88d5-07d6ef77b613&formalityCaseId=019dc4c3-b5e6-7758-a8c8-927b3f37239e"
+    },
+    {
+      "ma": "1.014943",
+      "dvcqgId": "019d9098-17f7-74b8-a942-7892a634e0b5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d9098-17f7-74b8-a942-7892a634e0b5&formalityCaseId=019db06e-9437-745f-b4b4-e885e90a1600"
+    },
+    {
+      "ma": "1.010774",
+      "dvcqgId": "019d9091-a9a9-7358-9145-134565030af5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d9091-a9a9-7358-9145-134565030af5&formalityCaseId=019dbac6-8fad-761d-aec8-65cc74cbfc66"
+    },
+    {
+      "ma": "1.014944",
+      "dvcqgId": "019d9048-c72e-740c-8571-c3551cd436a2",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d9048-c72e-740c-8571-c3551cd436a2&formalityCaseId=019db061-a5bc-72bd-b17a-eaf7aa0560c5"
+    },
+    {
+      "ma": "1.014945",
+      "dvcqgId": "019d902a-3057-71a8-b6fb-f4ad467b5ab7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d902a-3057-71a8-b6fb-f4ad467b5ab7&formalityCaseId=019db05a-06fc-73af-8035-0852ddcef677"
+    },
+    {
+      "ma": "1.014942",
+      "dvcqgId": "019d9011-449a-721b-a7b9-8d28d0929df2",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d9011-449a-721b-a7b9-8d28d0929df2&formalityCaseId=019db04e-a68c-728b-be12-4b4ef5bc4555"
+    },
+    {
+      "ma": "2.001947",
+      "dvcqgId": "019d2bff-5467-73ae-a00c-a406a8adee22",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-5467-73ae-a00c-a406a8adee22&formalityCaseId=019d2d38-9f6a-7492-b8b1-0eef7c172479"
+    },
+    {
+      "ma": "2.001942",
+      "dvcqgId": "019d2bff-545f-7218-a5f6-b4660489bb5e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-545f-7218-a5f6-b4660489bb5e&formalityCaseId=019dab8c-e785-752d-8387-20cfb3bbb049"
+    },
+    {
+      "ma": "2.001944",
+      "dvcqgId": "019d2bff-5457-7246-b12e-d42023faa8a7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-5457-7246-b12e-d42023faa8a7&formalityCaseId=019dab8f-665c-7640-9cd1-09d7dbe10247"
+    },
+    {
+      "ma": "2.001661",
+      "dvcqgId": "019d2bff-5454-72fb-ab3d-7430bfdda821",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-5454-72fb-ab3d-7430bfdda821&formalityCaseId=019d2d43-8332-7498-891f-0c985b106227"
+    },
+    {
+      "ma": "1.014028",
+      "dvcqgId": "019d2bff-3508-7268-b54b-6ce79a8cbf0e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-3508-7268-b54b-6ce79a8cbf0e&formalityCaseId=019d2d3d-a458-700e-9efe-c665d1a9aaf1"
+    },
+    {
+      "ma": "1.014027",
+      "dvcqgId": "019d2bff-2d80-74d8-8515-90f6f61822f0",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-2d80-74d8-8515-90f6f61822f0&formalityCaseId=019dab99-a0c2-733c-9231-05a5faf8bcfc"
+    },
+    {
+      "ma": "1.013855",
+      "dvcqgId": "019d2bff-2d33-76fe-bd90-4f37b18e4401",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-2d33-76fe-bd90-4f37b18e4401&formalityCaseId=019d2d4f-45ce-726f-8454-ab525a69aff9"
+    },
+    {
+      "ma": "1.012422",
+      "dvcqgId": "019d2bff-2561-77c8-a1f6-028851fa4069",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-2561-77c8-a1f6-028851fa4069&formalityCaseId=019d2d4e-5d61-70ac-a55d-732fa8191894"
+    },
+    {
+      "ma": "1.004946",
+      "dvcqgId": "019d2bff-06f3-72b8-8ee4-370feddbb374",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-06f3-72b8-8ee4-370feddbb374&formalityCaseId=019dabbf-15a9-77ad-a9a8-93272bda6f01"
+    },
+    {
+      "ma": "1.004941",
+      "dvcqgId": "019d2bff-061f-74ea-9f1a-7afff1ba691a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-061f-74ea-9f1a-7afff1ba691a&formalityCaseId=019dab91-78d0-762a-af48-cca6ff16cd39"
+    },
+    {
+      "ma": "1.004944",
+      "dvcqgId": "019d2bff-061e-754b-9a9b-2d642bcabeb4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-061e-754b-9a9b-2d642bcabeb4&formalityCaseId=019d2d38-460d-759b-ab0c-35946000a814"
+    },
+    {
+      "ma": "1.001699",
+      "dvcqgId": "019d2bfe-b7cd-76e9-b909-bcf437629cb8",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-b7cd-76e9-b909-bcf437629cb8&formalityCaseId=019d2cde-e46f-707e-a1af-360ace53ee55"
+    },
+    {
+      "ma": "1.001653",
+      "dvcqgId": "019d2bfe-b7ab-731d-844a-5e232b77afef",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-b7ab-731d-844a-5e232b77afef&formalityCaseId=019d3e27-80c9-74dd-adfc-b59b8dc40483"
+    },
+    {
+      "ma": "2.001659",
+      "dvcqgId": "019d2bfe-a039-75a8-85e4-a19d8132bb5d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-a039-75a8-85e4-a19d8132bb5d&formalityCaseId=019db07d-25ce-758e-a773-503c2a3cf20c"
+    },
+    {
+      "ma": "2.001921",
+      "dvcqgId": "019d2bfe-a02c-754e-9e9e-afd5f23aa699",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-a02c-754e-9e9e-afd5f23aa699&formalityCaseId=019d2d15-5c37-74a2-a607-6df5eb22ae50"
+    },
+    {
+      "ma": "2.001711",
+      "dvcqgId": "019d2bfe-a02c-71ef-8ad3-2800da3a613b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-a02c-71ef-8ad3-2800da3a613b&formalityCaseId=019d2d38-d82f-750c-9a82-2f43be0f7fff"
+    },
+    {
+      "ma": "2.001214",
+      "dvcqgId": "019d2bfe-98b3-7466-a42e-6b1743258d04",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-98b3-7466-a42e-6b1743258d04&formalityCaseId=019db864-c7cf-719a-a328-6c5bd4f27074"
+    },
+    {
+      "ma": "2.001215",
+      "dvcqgId": "019d2bfe-98ac-77de-bb23-6dbc853ac7d4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-98ac-77de-bb23-6dbc853ac7d4&formalityCaseId=019db851-876f-764b-8b7a-e6c76655d475"
+    },
+    {
+      "ma": "2.001211",
+      "dvcqgId": "019d2bfe-98a8-76af-b485-17daf28c8fc9",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-98a8-76af-b485-17daf28c8fc9&formalityCaseId=019db8aa-eb72-7548-8459-4599833ecc7c"
+    },
+    {
+      "ma": "2.001218",
+      "dvcqgId": "019d2bfe-98a8-7009-ad19-2dc97a6d77af",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-98a8-7009-ad19-2dc97a6d77af&formalityCaseId=019db850-c774-74c3-85f3-9b57b747c938"
+    },
+    {
+      "ma": "2.001212",
+      "dvcqgId": "019d2bfe-9899-7115-a1a7-0bfbcb1f0e5d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-9899-7115-a1a7-0bfbcb1f0e5d&formalityCaseId=019db8aa-1c80-7004-b8d5-1791fc360b96"
+    },
+    {
+      "ma": "2.001217",
+      "dvcqgId": "019d2bfe-9896-710f-8d0c-a4f8314241bf",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-9896-710f-8d0c-a4f8314241bf&formalityCaseId=019d2d07-0966-74f9-9e4d-ca8fa164512d"
+    },
+    {
+      "ma": "1.014632",
+      "dvcqgId": "019d2bfe-985c-732b-822b-460f2199467e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-985c-732b-822b-460f2199467e&formalityCaseId=019d2d7d-8d3a-77bd-b2a2-4aff03a2493b"
+    },
+    {
+      "ma": "1.014155",
+      "dvcqgId": "019d2bfe-985b-7039-916e-3d9fd71710d8",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-985b-7039-916e-3d9fd71710d8&formalityCaseId=019d2d5b-f5a0-74ab-b5bb-dbb8c7b81a0c"
+    },
+    {
+      "ma": "1.014157",
+      "dvcqgId": "019d2bfe-985a-706e-a845-8542c8f7c62b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-985a-706e-a845-8542c8f7c62b&formalityCaseId=019db093-5262-7359-8287-f7683672b9cf"
+    },
+    {
+      "ma": "1.014156",
+      "dvcqgId": "019d2bfe-9859-729a-b092-1bf8860317c1",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-9859-729a-b092-1bf8860317c1&formalityCaseId=019d2d5b-9093-739a-824f-8dd24b5886dc"
+    },
+    {
+      "ma": "1.014158",
+      "dvcqgId": "019d2bfe-9857-74ec-8c26-f832b4fce86b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-9857-74ec-8c26-f832b4fce86b&formalityCaseId=019d2d5b-27e6-7763-8dc9-1f2e953b3574"
+    },
+    {
+      "ma": "1.014159",
+      "dvcqgId": "019d2bfe-9852-71ed-96f2-8110da8fd4f0",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-9852-71ed-96f2-8110da8fd4f0&formalityCaseId=019dafeb-ec21-7066-a941-64b00e3f62f2"
+    },
+    {
+      "ma": "1.013239",
+      "dvcqgId": "019d2bfe-90c2-742a-9dfb-c6d2bdd9aac8",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-90c2-742a-9dfb-c6d2bdd9aac8&formalityCaseId=019d2d12-0a7a-71f1-b364-fa3c54dd13bf"
+    },
+    {
+      "ma": "1.013274",
+      "dvcqgId": "019d2bfe-90a2-7673-a2f5-9ba3da842499",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-90a2-7673-a2f5-9ba3da842499&formalityCaseId=019d2d15-05a8-7226-9311-b800c00da6d3"
+    },
+    {
+      "ma": "1.013229",
+      "dvcqgId": "019d2bfe-909c-759d-9dc9-416500074f0f",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-909c-759d-9dc9-416500074f0f&formalityCaseId=019db013-d1de-749c-b709-6e8d4aa5a197"
+    },
+    {
+      "ma": "1.013226",
+      "dvcqgId": "019d2bfe-9097-7135-94e7-f539d8b0cc19",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-9097-7135-94e7-f539d8b0cc19&formalityCaseId=019db00b-7716-727a-b741-c39b319cb4a2"
+    },
+    {
+      "ma": "1.013227",
+      "dvcqgId": "019d2bfe-9097-700f-899f-6dfc532f0e6b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-9097-700f-899f-6dfc532f0e6b&formalityCaseId=019db08f-a92d-7080-ba7c-b7b28aa8ab9e"
+    },
+    {
+      "ma": "1.013232",
+      "dvcqgId": "019d2bfe-908d-726f-a05f-7026ac241c2d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-908d-726f-a05f-7026ac241c2d&formalityCaseId=019db8a7-59ca-7484-9a0e-9bceb12b1739"
+    },
+    {
+      "ma": "1.013228",
+      "dvcqgId": "019d2bfe-908a-775a-833e-26b204dfda4f",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-908a-775a-833e-26b204dfda4f&formalityCaseId=019db115-18f7-730e-ad9b-0da4f681f8ae"
+    },
+    {
+      "ma": "1.013225",
+      "dvcqgId": "019d2bfe-9088-744d-aa0a-e846b6dce3d5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-9088-744d-aa0a-e846b6dce3d5&formalityCaseId=019d2da0-ad4b-749b-bab8-39f4580f0714"
+    },
+    {
+      "ma": "1.013061",
+      "dvcqgId": "019d2bfe-88c8-7734-ad0e-b5e2bc20de96",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-88c8-7734-ad0e-b5e2bc20de96&formalityCaseId=019d2d30-73b7-7295-a761-ef70f2a7115e"
+    },
+    {
+      "ma": "1.012897",
+      "dvcqgId": "019d2bfe-88af-70c8-be7f-071d2f4aa843",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-88af-70c8-be7f-071d2f4aa843&formalityCaseId=019db0ec-0764-73fa-a991-91cfdfcdc1d8"
+    },
+    {
+      "ma": "1.012898",
+      "dvcqgId": "019d2bfe-88ad-7129-8d77-3dd573272733",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-88ad-7129-8d77-3dd573272733&formalityCaseId=019d2cac-901b-70ac-b7a3-56f88ecab2e7"
+    },
+    {
+      "ma": "1.012892",
+      "dvcqgId": "019d2bfe-88a8-7575-8d67-81d64c2d22cb",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-88a8-7575-8d67-81d64c2d22cb&formalityCaseId=019db0f9-02ff-71ae-badb-8e18764645bf"
+    },
+    {
+      "ma": "1.012893",
+      "dvcqgId": "019d2bfe-88a7-76e6-99fc-afde5e36a27d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-88a7-76e6-99fc-afde5e36a27d&formalityCaseId=019db0eb-73f5-767b-87fd-5cd674913dd7"
+    },
+    {
+      "ma": "1.012888",
+      "dvcqgId": "019d2bfe-8124-711f-ad0c-71830d00b0b1",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-8124-711f-ad0c-71830d00b0b1&formalityCaseId=019d2d3c-fdb8-724e-aae0-9a670ceba4d6"
+    },
+    {
+      "ma": "1.009791",
+      "dvcqgId": "019d2bfe-7126-72a4-a6e4-aa41bd71dcf9",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-7126-72a4-a6e4-aa41bd71dcf9&formalityCaseId=019d2daf-b1f0-735c-8eb2-3f7fda795b4b"
+    },
+    {
+      "ma": "1.009465",
+      "dvcqgId": "019d2bfe-6995-7036-9a0e-ed4c39b2f136",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-6995-7036-9a0e-ed4c39b2f136&formalityCaseId=019db156-02a1-77ee-8638-1a322824aaf8"
+    },
+    {
+      "ma": "1.009452",
+      "dvcqgId": "019d2bfe-6981-7718-a29d-ed53f11adf84",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-6981-7718-a29d-ed53f11adf84&formalityCaseId=019db11a-892b-76a9-85cd-50d6e956c218"
+    },
+    {
+      "ma": "1.009453",
+      "dvcqgId": "019d2bfe-6969-7309-beb8-559700c3087e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-6969-7309-beb8-559700c3087e&formalityCaseId=019db8a9-7350-7778-a747-cd44113e828c"
+    },
+    {
+      "ma": "1.006391",
+      "dvcqgId": "019d2bfe-5208-7747-a4b2-cba5449b28fa",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-5208-7747-a4b2-cba5449b28fa&formalityCaseId=019d2d39-bdc0-73e6-b518-0d1547d0302c"
+    },
+    {
+      "ma": "1.004088",
+      "dvcqgId": "019d2bfe-3b31-723b-920f-539e8ad6cf95",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-3b31-723b-920f-539e8ad6cf95&formalityCaseId=019d2d39-4eac-74dc-bba8-79d6488b65c4"
+    },
+    {
+      "ma": "1.004036",
+      "dvcqgId": "019d2bfe-3a96-7539-a429-b3b40b607710",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-3a96-7539-a429-b3b40b607710&formalityCaseId=019d2d3b-3a20-76fe-af90-69b85b42bf3d"
+    },
+    {
+      "ma": "1.004047",
+      "dvcqgId": "019d2bfe-3a86-717c-992c-1393a2f50382",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-3a86-717c-992c-1393a2f50382&formalityCaseId=019d2d3a-14cb-713f-b12a-c14cddfac918"
+    },
+    {
+      "ma": "1.004002",
+      "dvcqgId": "019d2bfe-3a7b-7789-9f25-1ec7a3f64d81",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-3a7b-7789-9f25-1ec7a3f64d81&formalityCaseId=019d2d38-7dc6-73e8-9f12-dbba715c8e60"
+    },
+    {
+      "ma": "1.002693",
+      "dvcqgId": "019d2bfe-230c-75d8-8979-11b8bdc68e6c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-230c-75d8-8979-11b8bdc68e6c&formalityCaseId=019d2d69-56d7-72ec-b042-342437abc226"
+    },
+    {
+      "ma": "1.002372",
+      "dvcqgId": "019d2bfe-1afd-749b-9051-5d4c422509e0",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-1afd-749b-9051-5d4c422509e0&formalityCaseId=019d2cf7-f1f0-7538-a7be-83bfbc51eae0"
+    },
+    {
+      "ma": "1.000314",
+      "dvcqgId": "019d2bfe-0b6a-755c-859a-4ec09fbd16c7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-0b6a-755c-859a-4ec09fbd16c7&formalityCaseId=019d2d14-2177-743b-b642-f4513059e2b7"
+    },
+    {
+      "ma": "2.000794",
+      "dvcqgId": "019d2bfd-fba4-7418-b25f-d4e06bd25809",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-fba4-7418-b25f-d4e06bd25809&formalityCaseId=019d966f-9258-76e8-a415-233afe4e878d"
+    },
+    {
+      "ma": "1.014312",
+      "dvcqgId": "019d2bfd-f3cc-7396-a6b0-2ec5b245e727",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-f3cc-7396-a6b0-2ec5b245e727&formalityCaseId=019d2d60-6d48-75ba-892c-5a13c249ba9a"
+    },
+    {
+      "ma": "1.013792",
+      "dvcqgId": "019d2bfd-ec30-74cf-b2d7-89358371679b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-ec30-74cf-b2d7-89358371679b&formalityCaseId=019d2d76-a393-7308-9e30-df0388bc6f63"
+    },
+    {
+      "ma": "1.013794",
+      "dvcqgId": "019d2bfd-ec2d-7265-a40a-ad05039b075e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-ec2d-7265-a40a-ad05039b075e&formalityCaseId=019daf32-1cde-717d-8ec9-72e47ea98186"
+    },
+    {
+      "ma": "1.013793",
+      "dvcqgId": "019d2bfd-ec2c-7409-b1a9-5c4dc70b847a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-ec2c-7409-b1a9-5c4dc70b847a&formalityCaseId=019d95b0-9b1f-70fc-8f14-5176310a2da9"
+    },
+    {
+      "ma": "1.013791",
+      "dvcqgId": "019d2bfd-ec2b-7125-824c-c4bea27bd2c8",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-ec2b-7125-824c-c4bea27bd2c8&formalityCaseId=019db12c-c019-7189-bd01-e114aad29567"
+    },
+    {
+      "ma": "1.012085",
+      "dvcqgId": "019d2bfd-ebf9-75cc-b9d0-a639b35a5f14",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-ebf9-75cc-b9d0-a639b35a5f14&formalityCaseId=019d787b-bcb6-751f-b021-5d7d73dff11b"
+    },
+    {
+      "ma": "1.012084",
+      "dvcqgId": "019d2bfd-ebf7-71af-90e5-9e9ffe94bcaa",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-ebf7-71af-90e5-9e9ffe94bcaa&formalityCaseId=019daf38-53ee-72da-8237-798e3a8b96f2"
+    },
+    {
+      "ma": "1.003622",
+      "dvcqgId": "019d2bfd-c4cb-734d-bb80-29723a707c08",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-c4cb-734d-bb80-29723a707c08&formalityCaseId=019d2c8d-d4bc-77ed-ad6f-424e1fa998c0"
+    },
+    {
+      "ma": "3.000323",
+      "dvcqgId": "019d2bfd-a5b3-74a8-b670-0ffe3cefb7e3",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-a5b3-74a8-b670-0ffe3cefb7e3&formalityCaseId=019d8606-1c67-743f-829a-af6b1518a12e"
+    },
+    {
+      "ma": "2.002363",
+      "dvcqgId": "019d2bfd-a5b0-7288-8713-cb507168dfa7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-a5b0-7288-8713-cb507168dfa7&formalityCaseId=019db082-b3d1-740c-8304-84ada798a325"
+    },
+    {
+      "ma": "3.000322",
+      "dvcqgId": "019d2bfd-a586-71fe-8c10-8bfa070f5066",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-a586-71fe-8c10-8bfa070f5066&formalityCaseId=019daf6d-6efc-7139-8fe1-e14859082358"
+    },
+    {
+      "ma": "2.002349",
+      "dvcqgId": "019d2bfd-a586-71fe-8c10-8691b48be9b9",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-a586-71fe-8c10-8691b48be9b9&formalityCaseId=019db080-d078-70d5-a956-f3b66e85347a"
+    },
+    {
+      "ma": "2.002516",
+      "dvcqgId": "019d2bfd-a586-71fe-8c10-836e09f0a879",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-a586-71fe-8c10-836e09f0a879&formalityCaseId=019db0af-5a1b-706d-9ea7-61d3add37acf"
+    },
+    {
+      "ma": "2.002165",
+      "dvcqgId": "019d2bfd-9e02-77dc-b8bb-e19988c9428f",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-9e02-77dc-b8bb-e19988c9428f&formalityCaseId=019d2d8f-b034-72be-a155-02b4cda6b98f"
+    },
+    {
+      "ma": "2.002189",
+      "dvcqgId": "019d2bfd-9dec-73f6-b213-be4bfb4f911b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-9dec-73f6-b213-be4bfb4f911b&formalityCaseId=019db0b1-8fe5-702b-9803-ec56b51367e1"
+    },
+    {
+      "ma": "2.001406",
+      "dvcqgId": "019d2bfd-9daf-70da-8f48-223498332346",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-9daf-70da-8f48-223498332346&formalityCaseId=019e8cd2-ea69-723e-826c-ce7b795e5dda"
+    },
+    {
+      "ma": "2.001263",
+      "dvcqgId": "019d2bfd-9dae-705f-a893-0c4e1f0c32a7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-9dae-705f-a893-0c4e1f0c32a7&formalityCaseId=019d2db4-8c7d-7149-894b-885783f25095"
+    },
+    {
+      "ma": "2.001255",
+      "dvcqgId": "019d2bfd-9614-7528-9c06-e53f6dee7a58",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-9614-7528-9c06-e53f6dee7a58&formalityCaseId=019d2d35-4584-741c-b1b5-e5e3f6f66dcb"
+    },
+    {
+      "ma": "2.001035",
+      "dvcqgId": "019d2bfd-95fa-70ca-93fd-4cab11b87897",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-95fa-70ca-93fd-4cab11b87897&formalityCaseId=019db06b-1e13-773f-bd01-af4904294075"
+    },
+    {
+      "ma": "2.001019",
+      "dvcqgId": "019d2bfd-95f0-7610-845f-c097f144bd55",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-95f0-7610-845f-c097f144bd55&formalityCaseId=019e8cd8-4d13-721a-9192-00af89a96b08"
+    },
+    {
+      "ma": "2.001016",
+      "dvcqgId": "019d2bfd-95e6-7578-ba2d-d1b4373cd174",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-95e6-7578-ba2d-d1b4373cd174&formalityCaseId=019db06d-9cb0-71c9-a933-c91345883110"
+    },
+    {
+      "ma": "2.000942",
+      "dvcqgId": "019d2bfd-95d6-778f-889b-e3045003fa5e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-95d6-778f-889b-e3045003fa5e&formalityCaseId=019e8ce3-493c-7511-bed4-29c1fe39c2df"
+    },
+    {
+      "ma": "2.001008",
+      "dvcqgId": "019d2bfd-95d4-72d6-be00-ed0e9e5dd66a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-95d4-72d6-be00-ed0e9e5dd66a&formalityCaseId=019d2d6a-0ad7-74fd-b4e9-4550b5b5b73c"
+    },
+    {
+      "ma": "2.000992",
+      "dvcqgId": "019d2bfd-95d3-7258-b613-a71dbf432f07",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-95d3-7258-b613-a71dbf432f07&formalityCaseId=019e797f-df8d-75a0-95be-f22daee66c2d"
+    },
+    {
+      "ma": "2.000908",
+      "dvcqgId": "019d2bfd-8e5d-72f9-8cf2-c71780251483",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8e5d-72f9-8cf2-c71780251483&formalityCaseId=019dd21b-e687-7208-88c9-c3b5dab4ef41"
+    },
+    {
+      "ma": "2.000913",
+      "dvcqgId": "019d2bfd-8e59-72ab-ae1a-a2985865d253",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8e59-72ab-ae1a-a2985865d253&formalityCaseId=019db071-5310-75d8-a000-cb908a01be02"
+    },
+    {
+      "ma": "2.000927",
+      "dvcqgId": "019d2bfd-8e51-721b-8e62-45f804b4bba3",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8e51-721b-8e62-45f804b4bba3&formalityCaseId=019db070-83ac-756a-9d32-312181f7ccec"
+    },
+    {
+      "ma": "2.000884",
+      "dvcqgId": "019d2bfd-8e2e-7359-b42f-d5dc8d74741b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8e2e-7359-b42f-d5dc8d74741b&formalityCaseId=019e765b-3568-746a-baed-ccf7b0ed2ceb"
+    },
+    {
+      "ma": "2.000815",
+      "dvcqgId": "019d2bfd-8e22-77ef-819f-e49460350904",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8e22-77ef-819f-e49460350904&formalityCaseId=019d2e45-9f74-7708-b183-4a33c75cddf8"
+    },
+    {
+      "ma": "2.000806",
+      "dvcqgId": "019d2bfd-8e13-728a-a0cd-635811d8432e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8e13-728a-a0cd-635811d8432e&formalityCaseId=019db0ab-eb69-72ad-90e9-b06582975b20"
+    },
+    {
+      "ma": "2.000756",
+      "dvcqgId": "019d2bfd-8e04-756b-bf4f-2a70964e4c40",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8e04-756b-bf4f-2a70964e4c40&formalityCaseId=019db0a4-9046-70dc-ae41-17a17e2a2522"
+    },
+    {
+      "ma": "2.000748",
+      "dvcqgId": "019d2bfd-8e02-7590-b74b-fb572a57eda2",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8e02-7590-b74b-fb572a57eda2&formalityCaseId=019db0a3-8877-7101-b02c-f11c5ea0b1e6"
+    },
+    {
+      "ma": "2.000779",
+      "dvcqgId": "019d2bfd-8dff-7296-94d7-25b5966319d5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8dff-7296-94d7-25b5966319d5&formalityCaseId=019db0a9-a848-7168-8574-707d0cdf22e1"
+    },
+    {
+      "ma": "2.000635",
+      "dvcqgId": "019d2bfd-867c-72db-b6a7-dcbd8c763807",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-867c-72db-b6a7-dcbd8c763807&formalityCaseId=019d62ec-f5f3-7429-afd0-1d8765b43722"
+    },
+    {
+      "ma": "2.000522",
+      "dvcqgId": "019d2bfd-867a-70eb-bc54-effd523ebc99",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-867a-70eb-bc54-effd523ebc99&formalityCaseId=019db09b-5ca7-7432-9fe4-fec60698eed6"
+    },
+    {
+      "ma": "2.000554",
+      "dvcqgId": "019d2bfd-867a-70eb-bc54-e836b23a4649",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-867a-70eb-bc54-e836b23a4649&formalityCaseId=019db0a2-8068-77e6-81f0-82790fe6bbea"
+    },
+    {
+      "ma": "2.000513",
+      "dvcqgId": "019d2bfd-866c-706d-945a-a09ce8c74047",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-866c-706d-945a-a09ce8c74047&formalityCaseId=019db09a-ddf2-739f-b5e3-8119e1725fda"
+    },
+    {
+      "ma": "2.000528",
+      "dvcqgId": "019d2bfd-8662-763f-927f-dc039ede198c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8662-763f-927f-dc039ede198c&formalityCaseId=019db09c-0769-752e-8d96-1f2bf1dfc1b2"
+    },
+    {
+      "ma": "2.000547",
+      "dvcqgId": "019d2bfd-8661-77ca-9811-6106ea8c43db",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8661-77ca-9811-6106ea8c43db&formalityCaseId=019db09c-96c3-749f-9f9c-1da725480c57"
+    },
+    {
+      "ma": "2.000497",
+      "dvcqgId": "019d2bfd-8651-7749-bf4c-8444ae336e6c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-8651-7749-bf4c-8444ae336e6c&formalityCaseId=019db099-e6c9-72f5-8239-e55a149969f4"
+    },
+    {
+      "ma": "2.000424",
+      "dvcqgId": "019d2bfd-862f-7378-807f-97f4f7531da7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-862f-7378-807f-97f4f7531da7&formalityCaseId=019d2d85-50fc-720c-a103-f881791c1cf6"
+    },
+    {
+      "ma": "1.011441",
+      "dvcqgId": "019d2bfd-7e5d-7318-a451-84198f210213",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-7e5d-7318-a451-84198f210213&formalityCaseId=019e7743-3b4f-76ee-95b5-5e8850c98148"
+    },
+    {
+      "ma": "1.005461",
+      "dvcqgId": "019d2bfd-6ebc-709e-8678-a9f8b66738f2",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-6ebc-709e-8678-a9f8b66738f2&formalityCaseId=019d7149-79d2-77ac-8688-5036c6f605a5"
+    },
+    {
+      "ma": "1.004873",
+      "dvcqgId": "019d2bfd-6eb3-7019-bf3f-fc58c9ee44b9",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-6eb3-7019-bf3f-fc58c9ee44b9&formalityCaseId=019db0ca-2db5-749f-8967-9cd8d16b1b80"
+    },
+    {
+      "ma": "1.004884",
+      "dvcqgId": "019d2bfd-6eac-7598-b88b-15f8a61b366a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-6eac-7598-b88b-15f8a61b366a&formalityCaseId=019db0c8-fec4-736c-bc7f-8c1c8200dd9b"
+    },
+    {
+      "ma": "1.004845",
+      "dvcqgId": "019d2bfd-6724-715f-822c-28e986912730",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-6724-715f-822c-28e986912730&formalityCaseId=019db0ca-0bbf-739f-ae3a-f1ebf03ec565"
+    },
+    {
+      "ma": "1.004859",
+      "dvcqgId": "019d2bfd-671e-714b-8fd6-8230c82f7867",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-671e-714b-8fd6-8230c82f7867&formalityCaseId=019d46b2-6869-701e-bdec-de093fe3ed41"
+    },
+    {
+      "ma": "1.004837",
+      "dvcqgId": "019d2bfd-671b-75fa-82fb-8ad05a37f638",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-671b-75fa-82fb-8ad05a37f638&formalityCaseId=019d6376-c873-768f-aec1-9f92e8a63753"
+    },
+    {
+      "ma": "1.004772",
+      "dvcqgId": "019d2bfd-6711-733d-b674-fc3d805e70c8",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-6711-733d-b674-fc3d805e70c8&formalityCaseId=019db0c7-2f4d-729c-bcd8-dca1b9040513"
+    },
+    {
+      "ma": "1.004746",
+      "dvcqgId": "019d2bfd-6711-733d-b674-f82cb6606242",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-6711-733d-b674-f82cb6606242&formalityCaseId=019db0b0-bfb7-708a-bb44-bba0f0ae7b4c"
+    },
+    {
+      "ma": "1.004827",
+      "dvcqgId": "019d2bfd-670b-779a-a843-4c518c4ec075",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-670b-779a-a843-4c518c4ec075&formalityCaseId=019db0c8-3a53-779c-9d58-9fa7a6c6c7cc"
+    },
+    {
+      "ma": "1.003583",
+      "dvcqgId": "019d2bfd-66dc-714a-90a8-11942739ea86",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-66dc-714a-90a8-11942739ea86&formalityCaseId=019db0af-9f2e-766a-b73a-e23d9e29c6b6"
+    },
+    {
+      "ma": "1.002211",
+      "dvcqgId": "019d2bfd-572d-77fe-b70b-93b6512c3170",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-572d-77fe-b70b-93b6512c3170&formalityCaseId=019db0a3-8579-7738-8da5-1770bcf9a94e"
+    },
+    {
+      "ma": "1.001766",
+      "dvcqgId": "019d2bfd-47da-7259-b8fe-0d5327727234",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-47da-7259-b8fe-0d5327727234&formalityCaseId=019db0aa-c312-77f8-8a6a-7e2cfbcd3b5f"
+    },
+    {
+      "ma": "1.001695",
+      "dvcqgId": "019d2bfd-47b0-7285-b035-456104e16436",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-47b0-7285-b035-456104e16436&formalityCaseId=019db0a7-643b-75bd-a8b4-b27d4833e870"
+    },
+    {
+      "ma": "1.001669",
+      "dvcqgId": "019d2bfd-47a7-74cf-a1de-4c9e077743e9",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-47a7-74cf-a1de-4c9e077743e9&formalityCaseId=019db0a6-5dd8-74bd-b234-0962dcaa4dbc"
+    },
+    {
+      "ma": "1.001193",
+      "dvcqgId": "019d2bfd-3fe0-70ac-b9d6-5e9e20d6eef7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-3fe0-70ac-b9d6-5e9e20d6eef7&formalityCaseId=019dd20f-6f0d-72cd-9eca-fbc9d34053a6"
+    },
+    {
+      "ma": "1.000893",
+      "dvcqgId": "019d2bfd-3faf-768a-9224-a27e812b1907",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-3faf-768a-9224-a27e812b1907&formalityCaseId=019db098-f13a-775d-a082-06f82f769851"
+    },
+    {
+      "ma": "1.000689",
+      "dvcqgId": "019d2bfd-3faf-768a-9224-9cb889436133",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-3faf-768a-9224-9cb889436133&formalityCaseId=019db097-fe2c-732b-bf39-079754e8f05a"
+    },
+    {
+      "ma": "1.000894",
+      "dvcqgId": "019d2bfd-3fac-7489-b53b-a15eb239a6fe",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-3fac-7489-b53b-a15eb239a6fe&formalityCaseId=019d4346-42c5-71a1-9328-f59faac00421"
+    },
+    {
+      "ma": "1.000656",
+      "dvcqgId": "019d2bfd-3fac-7489-b53b-9c6c958f2da4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-3fac-7489-b53b-9c6c958f2da4&formalityCaseId=019d6642-b82d-75cb-b429-16055891d02c"
+    },
+    {
+      "ma": "1.001022",
+      "dvcqgId": "019d2bfd-3fa6-722f-ac1a-e949c8ce3418",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-3fa6-722f-ac1a-e949c8ce3418&formalityCaseId=019d2d8a-a18f-7558-a65d-7d3f1c82ad24"
+    },
+    {
+      "ma": "1.000593",
+      "dvcqgId": "019d2bfd-382c-774c-bca0-e30c261d7be4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-382c-774c-bca0-e30c261d7be4&formalityCaseId=019db097-62a8-736b-b0ca-deccc7cdb9a8"
+    },
+    {
+      "ma": "1.000419",
+      "dvcqgId": "019d2bfd-380b-73c4-9566-9e8b26bbfec6",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-380b-73c4-9566-9e8b26bbfec6&formalityCaseId=019db094-5b43-750d-8425-303e4b103daa"
+    },
+    {
+      "ma": "1.000094",
+      "dvcqgId": "019d2bfd-3801-752b-a01a-93596242f811",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-3801-752b-a01a-93596242f811&formalityCaseId=019db092-ca34-7099-a420-766c93faad25"
+    },
+    {
+      "ma": "2.002648",
+      "dvcqgId": "019d2bfc-f199-75ef-bfcc-b0508a0c8b9b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f199-75ef-bfcc-b0508a0c8b9b&formalityCaseId=019d2d76-03b6-74f6-9cc0-a9c327df9977"
+    },
+    {
+      "ma": "2.002641",
+      "dvcqgId": "019d2bfc-f186-70fe-b3fc-98274fa94661",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f186-70fe-b3fc-98274fa94661&formalityCaseId=019d2d75-614a-73a9-befa-570642a8685b"
+    },
+    {
+      "ma": "2.002649",
+      "dvcqgId": "019d2bfc-f184-7758-a081-05a3f955f465",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f184-7758-a081-05a3f955f465&formalityCaseId=019dbaf2-1fbe-74ac-9e54-20d06f1812b1"
+    },
+    {
+      "ma": "2.002642",
+      "dvcqgId": "019d2bfc-f17f-7667-9e7f-3bbee4ca0bf4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f17f-7667-9e7f-3bbee4ca0bf4&formalityCaseId=019dbaea-e64a-76fd-8b1f-41807664e81e"
+    },
+    {
+      "ma": "2.002638",
+      "dvcqgId": "019d2bfc-f17c-7186-bdb9-8f95159cd11d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f17c-7186-bdb9-8f95159cd11d&formalityCaseId=019d2d76-a330-763c-a3d1-98cdba2c7ee0"
+    },
+    {
+      "ma": "2.002635",
+      "dvcqgId": "019d2bfc-f17b-76ae-ae8e-b510f12aab69",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f17b-76ae-ae8e-b510f12aab69&formalityCaseId=019dbae6-cd38-7386-af71-a462da007a6e"
+    },
+    {
+      "ma": "2.002643",
+      "dvcqgId": "019d2bfc-f17b-739d-a085-c6d92d95c6df",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f17b-739d-a085-c6d92d95c6df&formalityCaseId=019d2d75-b33c-71ab-961f-911529a67f2b"
+    },
+    {
+      "ma": "2.002639",
+      "dvcqgId": "019d2bfc-f179-73dc-bda1-29f5857fcd56",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f179-73dc-bda1-29f5857fcd56&formalityCaseId=019dbae9-686d-7219-aff1-20218fd7301e"
+    },
+    {
+      "ma": "2.002636",
+      "dvcqgId": "019d2bfc-f166-730b-bb10-a36623d64349",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f166-730b-bb10-a36623d64349&formalityCaseId=019dbae7-ad6b-744c-9faa-66a0b715ddf7"
+    },
+    {
+      "ma": "2.002637",
+      "dvcqgId": "019d2bfc-f163-756e-aafc-5dbf83ea2b09",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-f163-756e-aafc-5dbf83ea2b09&formalityCaseId=019dbae8-72ca-73ca-aae9-fc3fb1173740"
+    },
+    {
+      "ma": "2.002123",
+      "dvcqgId": "019d2bfc-e1f5-7431-995a-f6d33945b83a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-e1f5-7431-995a-f6d33945b83a&formalityCaseId=019d2d76-4fb1-73db-88b3-e7f2eaea5a30"
+    },
+    {
+      "ma": "2.001958",
+      "dvcqgId": "019d2bfc-d9f1-779d-ad28-da10af3e13e6",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-d9f1-779d-ad28-da10af3e13e6&formalityCaseId=019dbaf6-c07c-7127-a5d1-11f5c94f4437"
+    },
+    {
+      "ma": "2.000575",
+      "dvcqgId": "019d2bfc-d9d1-7475-8e58-1aa4479901eb",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-d9d1-7475-8e58-1aa4479901eb&formalityCaseId=019d2d41-739e-7088-99e9-2aba2504bb3b"
+    },
+    {
+      "ma": "1.014035",
+      "dvcqgId": "019d2bfc-ca6b-7492-af2b-d3147fc084c4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-ca6b-7492-af2b-d3147fc084c4&formalityCaseId=019d2d40-2f92-7340-a588-135b375b4348"
+    },
+    {
+      "ma": "1.014034",
+      "dvcqgId": "019d2bfc-ca52-74fe-8cf2-1c2ab7fbce3d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-ca52-74fe-8cf2-1c2ab7fbce3d&formalityCaseId=019d2d3f-d82a-724a-a7c6-f65e8580bcfa"
+    },
+    {
+      "ma": "1.005378",
+      "dvcqgId": "019d2bfb-df3a-71d0-af09-cf4e1a45e6a4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-df3a-71d0-af09-cf4e1a45e6a4&formalityCaseId=019dbafe-fa79-743e-957d-3e5ed5ae1c74"
+    },
+    {
+      "ma": "1.004901",
+      "dvcqgId": "019d2bfb-df2c-74f3-8af6-e48a719ef3d9",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-df2c-74f3-8af6-e48a719ef3d9&formalityCaseId=019dbaf5-66a7-74d2-b05e-6519aa491057"
+    },
+    {
+      "ma": "1.004979",
+      "dvcqgId": "019d2bfb-df29-704d-8fe8-deafd721c54b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-df29-704d-8fe8-deafd721c54b&formalityCaseId=019d2d17-1c4f-7139-8d5b-841ca8b2d48b"
+    },
+    {
+      "ma": "1.004982",
+      "dvcqgId": "019d2bfb-df21-71b8-a4b2-634a2adec623",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-df21-71b8-a4b2-634a2adec623&formalityCaseId=019dbaff-a713-744f-a5b7-d98bbb517d80"
+    },
+    {
+      "ma": "1.005277",
+      "dvcqgId": "019d2bfb-df1f-73fa-97e4-f60546098f7f",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-df1f-73fa-97e4-f60546098f7f&formalityCaseId=019dbaf4-b358-761c-a7d7-45d9c4df8aaf"
+    },
+    {
+      "ma": "1.001612",
+      "dvcqgId": "019d2bfb-d76d-737f-81b9-69258b07240b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-d76d-737f-81b9-69258b07240b&formalityCaseId=019d2d41-c455-77e6-b794-851978dd6f26"
+    },
+    {
+      "ma": "1.001266",
+      "dvcqgId": "019d2bfb-d748-72d1-848f-3607bc86e647",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-d748-72d1-848f-3607bc86e647&formalityCaseId=019d2d40-813b-75e0-b8e7-68c3707257c0"
+    },
+    {
+      "ma": "1.013128",
+      "dvcqgId": "019d2bfb-8916-7028-b981-22667f88b45e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-8916-7028-b981-22667f88b45e&formalityCaseId=019d2dc0-f44f-734a-9b5c-567142b23e59"
+    },
+    {
+      "ma": "2.002821",
+      "dvcqgId": "019d2bfb-4a52-722d-90e3-52eae73487a0",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-4a52-722d-90e3-52eae73487a0&formalityCaseId=019dc53b-b968-731e-9034-9c39ebaea21e"
+    },
+    {
+      "ma": "2.002308",
+      "dvcqgId": "019d2bfb-4a52-722d-90e3-4cafef5d497c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-4a52-722d-90e3-4cafef5d497c&formalityCaseId=019dbe06-9511-77da-8c18-8455966557e7"
+    },
+    {
+      "ma": "2.002307",
+      "dvcqgId": "019d2bfb-4a4e-7368-a306-f665291850ca",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-4a4e-7368-a306-f665291850ca&formalityCaseId=019dbe74-757f-741c-80b7-bcb36571076c"
+    },
+    {
+      "ma": "2.002303",
+      "dvcqgId": "019d2bfb-4a4b-71e9-9b0a-4080a71453ca",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-4a4b-71e9-9b0a-4080a71453ca&formalityCaseId=019dc8cd-a77c-763b-b7b6-b95d86f097af"
+    },
+    {
+      "ma": "2.001955",
+      "dvcqgId": "019d2bfb-42a2-76ce-9565-812f8b562c71",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-42a2-76ce-9565-812f8b562c71&formalityCaseId=019d2d28-9d9b-71f9-9f9b-8dc61acbc77e"
+    },
+    {
+      "ma": "2.001157",
+      "dvcqgId": "019d2bfb-3ae2-716e-b982-946f474d952b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-3ae2-716e-b982-946f474d952b&formalityCaseId=019dbe09-7089-736e-9dde-1cef5ee1a2e4"
+    },
+    {
+      "ma": "2.001396",
+      "dvcqgId": "019d2bfb-3adc-7360-b1ba-d5e19e282909",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-3adc-7360-b1ba-d5e19e282909&formalityCaseId=019dbe76-2352-72fc-8080-6bccb6be9d72"
+    },
+    {
+      "ma": "1.014359",
+      "dvcqgId": "019d2bfb-2b25-777d-a825-2823012ce7ec",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2b25-777d-a825-2823012ce7ec&formalityCaseId=019d2d6b-3b3f-711d-9002-97a6127daf43"
+    },
+    {
+      "ma": "1.014352",
+      "dvcqgId": "019d2bfb-2b1c-77cf-a8b2-ffd3765a24c3",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2b1c-77cf-a8b2-ffd3765a24c3&formalityCaseId=019d2d67-a38b-768d-879b-b18502624315"
+    },
+    {
+      "ma": "1.014201",
+      "dvcqgId": "019d2bfb-2afe-7204-b5da-cf375013bccc",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2afe-7204-b5da-cf375013bccc&formalityCaseId=019dbeaa-0a05-76bc-af7d-761da08a0f8c"
+    },
+    {
+      "ma": "1.014319",
+      "dvcqgId": "019d2bfb-2afd-733a-9b8c-98e5f0e0b673",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2afd-733a-9b8c-98e5f0e0b673&formalityCaseId=019d2d5f-092b-751e-9e43-d3c1f62ea09b"
+    },
+    {
+      "ma": "1.014318",
+      "dvcqgId": "019d2bfb-2afb-760c-ad34-6012e854bce3",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2afb-760c-ad34-6012e854bce3&formalityCaseId=019dc86b-e798-71d9-a730-331833fba9c6"
+    },
+    {
+      "ma": "1.014198",
+      "dvcqgId": "019d2bfb-2afb-717e-9c21-1ac815687763",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2afb-717e-9c21-1ac815687763&formalityCaseId=019dbe93-eef0-7689-8bec-471d77446e6d"
+    },
+    {
+      "ma": "1.014199",
+      "dvcqgId": "019d2bfb-2af9-774b-995e-ea7085c65ef6",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2af9-774b-995e-ea7085c65ef6&formalityCaseId=019dbe99-1026-7428-a891-3befe5ad838d"
+    },
+    {
+      "ma": "1.014197",
+      "dvcqgId": "019d2bfb-2af9-73cb-9dbc-1af8c5ddec7b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2af9-73cb-9dbc-1af8c5ddec7b&formalityCaseId=019dbe8d-d9ff-75c0-a622-88a89a48a073"
+    },
+    {
+      "ma": "1.014196",
+      "dvcqgId": "019d2bfb-2af3-7107-8c4a-405eddc435d2",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2af3-7107-8c4a-405eddc435d2&formalityCaseId=019dbe75-5326-7548-bfba-8408255d80a0"
+    },
+    {
+      "ma": "1.014113",
+      "dvcqgId": "019d2bfb-2326-7367-83e6-f242eef7cbc5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2326-7367-83e6-f242eef7cbc5&formalityCaseId=019d2d47-849f-728f-be51-355adc3c6917"
+    },
+    {
+      "ma": "1.013749",
+      "dvcqgId": "019d2bfb-2326-715c-98b6-d796aea0a14d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-2326-715c-98b6-d796aea0a14d&formalityCaseId=019dbe20-bf57-7261-98b7-f287048402ff"
+    },
+    {
+      "ma": "1.013744",
+      "dvcqgId": "019d2bfb-1bb7-748a-b5ba-e5aebd37adb2",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1bb7-748a-b5ba-e5aebd37adb2&formalityCaseId=019dbe27-e98c-71dc-832a-50d3ea190c43"
+    },
+    {
+      "ma": "1.013734",
+      "dvcqgId": "019d2bfb-1b93-7684-9fd3-a088c69450aa",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1b93-7684-9fd3-a088c69450aa&formalityCaseId=019db45c-5baa-732c-a443-8cde6ffc47e1"
+    },
+    {
+      "ma": "1.013703",
+      "dvcqgId": "019d2bfb-1b5e-74c5-be8d-c902d128672d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1b5e-74c5-be8d-c902d128672d&formalityCaseId=019db0f5-4b6a-736e-b31d-1b7071ad95e5"
+    },
+    {
+      "ma": "1.013706",
+      "dvcqgId": "019d2bfb-1b5d-74d9-8418-3390d177fc5c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1b5d-74d9-8418-3390d177fc5c&formalityCaseId=019db0fc-0520-717c-8fd4-7a08bf8f9638"
+    },
+    {
+      "ma": "1.013708",
+      "dvcqgId": "019d2bfb-1b5d-738e-974f-9b1720c9150e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1b5d-738e-974f-9b1720c9150e&formalityCaseId=019db103-d028-703c-808c-cf565481153e"
+    },
+    {
+      "ma": "1.013704",
+      "dvcqgId": "019d2bfb-1b5d-738e-974f-94b0474a1be5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1b5d-738e-974f-94b0474a1be5&formalityCaseId=019db0f8-f0e0-70c0-95f4-8ae500a95e6c"
+    },
+    {
+      "ma": "1.013707",
+      "dvcqgId": "019d2bfb-1b5d-701d-a936-e90dd356c586",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1b5d-701d-a936-e90dd356c586&formalityCaseId=019db100-2a3a-7629-8c8c-5b9599b02662"
+    },
+    {
+      "ma": "1.013702",
+      "dvcqgId": "019d2bfb-1b5c-7417-b2be-9deaf8580018",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1b5c-7417-b2be-9deaf8580018&formalityCaseId=019db0ef-6211-714b-8867-4ac5bb576747"
+    },
+    {
+      "ma": "1.013709",
+      "dvcqgId": "019d2bfb-1b5c-7417-b2be-99660746eb49",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-1b5c-7417-b2be-99660746eb49&formalityCaseId=019db108-41d7-722e-b354-5a8f3388069d"
+    },
+    {
+      "ma": "1.010833",
+      "dvcqgId": "019d2bfb-03d5-700b-9bb5-d92070224137",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-03d5-700b-9bb5-d92070224137&formalityCaseId=019dbd46-505a-7648-84e4-fd20b19e4112"
+    },
+    {
+      "ma": "1.010829",
+      "dvcqgId": "019d2bfb-03d3-70af-992d-5d6a838fc263",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-03d3-70af-992d-5d6a838fc263&formalityCaseId=019dbd48-f4f1-77de-8b83-8dadac192437"
+    },
+    {
+      "ma": "1.010824",
+      "dvcqgId": "019d2bfa-fc36-7611-9219-adb6dee5774f",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc36-7611-9219-adb6dee5774f&formalityCaseId=019dbd55-4465-75d7-9ad7-a893c3fbe0be"
+    },
+    {
+      "ma": "1.010825",
+      "dvcqgId": "019d2bfa-fc36-74e9-9909-551c04aa6c27",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc36-74e9-9909-551c04aa6c27&formalityCaseId=019dbd4d-6c7d-766a-bac0-eee3bdef6222"
+    },
+    {
+      "ma": "1.010821",
+      "dvcqgId": "019d2bfa-fc33-761f-9cd2-7bd8df9cf897",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc33-761f-9cd2-7bd8df9cf897&formalityCaseId=019dbd8a-cbda-719f-8e55-ce07190dbfd6"
+    },
+    {
+      "ma": "1.010819",
+      "dvcqgId": "019d2bfa-fc33-7068-b98d-1b1eba21519f",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc33-7068-b98d-1b1eba21519f&formalityCaseId=019dbdf9-6056-770c-811b-593c52e584ee"
+    },
+    {
+      "ma": "1.010817",
+      "dvcqgId": "019d2bfa-fc2d-76fc-813b-8b20ba3e1e8f",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc2d-76fc-813b-8b20ba3e1e8f&formalityCaseId=019dbd9e-24ad-72d2-852a-02fe293f142d"
+    },
+    {
+      "ma": "1.010818",
+      "dvcqgId": "019d2bfa-fc2b-724d-8f15-ec8dbd06a4ed",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc2b-724d-8f15-ec8dbd06a4ed&formalityCaseId=019dbdfb-68ff-7680-85ce-67ab9b484f37"
+    },
+    {
+      "ma": "1.010815",
+      "dvcqgId": "019d2bfa-fc2a-765c-9503-edf3481ba1c4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc2a-765c-9503-edf3481ba1c4&formalityCaseId=019dbe30-eec9-753f-aca0-909b1ac90ec7"
+    },
+    {
+      "ma": "1.010816",
+      "dvcqgId": "019d2bfa-fc29-7229-b30a-9311da45f3ca",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc29-7229-b30a-9311da45f3ca&formalityCaseId=019dbda4-d5df-747c-b4fd-ba6866453cdf"
+    },
+    {
+      "ma": "1.010811",
+      "dvcqgId": "019d2bfa-fc21-710a-9e17-5f9a67e9c7e1",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc21-710a-9e17-5f9a67e9c7e1&formalityCaseId=019dbdfd-80a7-7398-ad56-7e01c89b8d22"
+    },
+    {
+      "ma": "1.010814",
+      "dvcqgId": "019d2bfa-fc21-710a-9e17-59cdb35c723b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc21-710a-9e17-59cdb35c723b&formalityCaseId=019dbda8-166c-729c-9896-bc51de72bab6"
+    },
+    {
+      "ma": "1.010812",
+      "dvcqgId": "019d2bfa-fc1c-75e4-83a4-2df12d6eadb0",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc1c-75e4-83a4-2df12d6eadb0&formalityCaseId=019d2d60-3f76-7728-849f-aa4b580a6eff"
+    },
+    {
+      "ma": "1.010804",
+      "dvcqgId": "019d2bfa-fc19-758c-beff-fe2354493cca",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc19-758c-beff-fe2354493cca&formalityCaseId=019dbe01-50ae-77ce-8ce1-96de0d411398"
+    },
+    {
+      "ma": "1.010805",
+      "dvcqgId": "019d2bfa-fc18-7204-93c4-14844eb6c354",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc18-7204-93c4-14844eb6c354&formalityCaseId=019dbe46-e731-75da-a836-1bdcd7ada8f4"
+    },
+    {
+      "ma": "1.010802",
+      "dvcqgId": "019d2bfa-fc12-718c-9862-b5eddeb01176",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc12-718c-9862-b5eddeb01176&formalityCaseId=019dbe03-556f-727c-aae3-be951dbe83eb"
+    },
+    {
+      "ma": "1.010803",
+      "dvcqgId": "019d2bfa-fc0c-7046-b5dc-04303a18608d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc0c-7046-b5dc-04303a18608d&formalityCaseId=019dbdaf-c89f-765a-be24-e6c1953d485c"
+    },
+    {
+      "ma": "1.010801",
+      "dvcqgId": "019d2bfa-fc0a-75c8-bd91-60aeab6fb018",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc0a-75c8-bd91-60aeab6fb018&formalityCaseId=019dbdf4-6fed-75f9-abe2-233e420421b9"
+    },
+    {
+      "ma": "1.010783",
+      "dvcqgId": "019d2bfa-fbfd-738f-a655-4f5fceb2ccaa",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fbfd-738f-a655-4f5fceb2ccaa&formalityCaseId=019dbe6a-d794-770f-9429-98eaf69f51b2"
+    },
+    {
+      "ma": "1.010781",
+      "dvcqgId": "019d2bfa-fbfa-77c8-a91c-924c856d4048",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fbfa-77c8-a91c-924c856d4048&formalityCaseId=019dbe51-db43-76a3-9a70-14f1042c9029"
+    },
+    {
+      "ma": "1.010777",
+      "dvcqgId": "019d2bfa-fbfa-77c8-a91c-8b9006f9903c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fbfa-77c8-a91c-8b9006f9903c&formalityCaseId=019dbe6d-ec52-761d-bee3-220f767ab119"
+    },
+    {
+      "ma": "1.010788",
+      "dvcqgId": "019d2bfa-fbf9-725e-a704-339f3146cf98",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fbf9-725e-a704-339f3146cf98&formalityCaseId=019dbe67-2b29-73dc-b402-422be1175d90"
+    },
+    {
+      "ma": "1.010778",
+      "dvcqgId": "019d2bfa-fbf8-727d-a4be-847d1f9944ce",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fbf8-727d-a4be-847d1f9944ce&formalityCaseId=019dbe52-fb4f-705a-b49c-f97691af5d12"
+    },
+    {
+      "ma": "1.010775",
+      "dvcqgId": "019d2bfa-fbf7-70d3-9bf0-ea139ebdac2b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fbf7-70d3-9bf0-ea139ebdac2b&formalityCaseId=019d2ce8-d3c1-73e9-8d06-9bddbc14a5e4"
+    },
+    {
+      "ma": "1.010772",
+      "dvcqgId": "019d2bfa-f478-708b-8987-c219c8eed130",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-f478-708b-8987-c219c8eed130&formalityCaseId=019dbe65-bcf1-73cc-bf4f-eb0e2bd448ad"
+    },
+    {
+      "ma": "1.004964",
+      "dvcqgId": "019d2bfa-e4a2-75d8-86ea-b4887b227b25",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-e4a2-75d8-86ea-b4887b227b25&formalityCaseId=019d2d60-91dc-7426-aead-6ce4631eeb34"
+    },
+    {
+      "ma": "1.001257",
+      "dvcqgId": "019d2bfa-d4cf-73fe-a7ff-10a3f58e3a78",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-d4cf-73fe-a7ff-10a3f58e3a78&formalityCaseId=019dbe0b-c7b8-7528-a0be-81c724c03915"
+    },
+    {
+      "ma": "3.000502",
+      "dvcqgId": "019d2bfa-c527-751c-aa64-7eb5024ccb0a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-c527-751c-aa64-7eb5024ccb0a&formalityCaseId=019d2d48-8424-747c-bdba-0ef66133d1f3"
+    },
+    {
+      "ma": "3.000443",
+      "dvcqgId": "019d2bfa-bd96-75a9-91db-003725f26425",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-bd96-75a9-91db-003725f26425&formalityCaseId=019db44f-1905-71d8-9d66-2055cb3faf99"
+    },
+    {
+      "ma": "3.000412",
+      "dvcqgId": "019d2bfa-bd95-7440-ae96-8e7ff95214ea",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-bd95-7440-ae96-8e7ff95214ea&formalityCaseId=019d2cf2-6aea-73e9-88da-d9afb239162f"
+    },
+    {
+      "ma": "3.000442",
+      "dvcqgId": "019d2bfa-bd92-746a-b3b3-5322ab0c31ad",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-bd92-746a-b3b3-5322ab0c31ad&formalityCaseId=019d2daf-43f9-76e7-ac9a-e99afd7c5fcf"
+    },
+    {
+      "ma": "3.000441",
+      "dvcqgId": "019d2bfa-bd8b-7658-b7bf-767edde446c7",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-bd8b-7658-b7bf-767edde446c7&formalityCaseId=019db44d-f2c2-761d-8a19-5bac60855a7d"
+    },
+    {
+      "ma": "3.000439",
+      "dvcqgId": "019d2bfa-bd86-738d-9d9c-b220bbcb8bd3",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-bd86-738d-9d9c-b220bbcb8bd3&formalityCaseId=019db455-64e6-735c-807e-1748c294f518"
+    },
+    {
+      "ma": "2.001827",
+      "dvcqgId": "019d2bfa-b57f-73cc-856f-0255333fcb48",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-b57f-73cc-856f-0255333fcb48&formalityCaseId=019d2d14-c354-70fc-a513-f2a77a375647"
+    },
+    {
+      "ma": "2.001627",
+      "dvcqgId": "019d2bfa-adcb-7629-a497-8674dcffeb8c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-adcb-7629-a497-8674dcffeb8c&formalityCaseId=019db427-c37a-76cd-8496-089b2c48da19"
+    },
+    {
+      "ma": "2.001621",
+      "dvcqgId": "019d2bfa-adcb-7279-9877-636094f08fbc",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-adcb-7279-9877-636094f08fbc&formalityCaseId=019db426-3c17-71ae-9444-9588a200f269"
+    },
+    {
+      "ma": "1.014862",
+      "dvcqgId": "019d2bfa-9e43-71a8-9a48-4c417ce471b6",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e43-71a8-9a48-4c417ce471b6&formalityCaseId=019d2ddf-9875-72da-a1fb-4b32023ab8c0"
+    },
+    {
+      "ma": "1.014864",
+      "dvcqgId": "019d2bfa-9e3c-7678-9bf5-28519e9ad440",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e3c-7678-9bf5-28519e9ad440&formalityCaseId=019db5e9-805a-7310-a764-f260304e3206"
+    },
+    {
+      "ma": "1.014863",
+      "dvcqgId": "019d2bfa-9e2d-7174-96b1-53a4fe84c876",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e2d-7174-96b1-53a4fe84c876&formalityCaseId=019db5e7-e05a-7644-942c-205129149356"
+    },
+    {
+      "ma": "1.014859",
+      "dvcqgId": "019d2bfa-9e29-7379-a015-80698a0e0ec6",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e29-7379-a015-80698a0e0ec6&formalityCaseId=019db5e6-ee34-762f-a386-9d6dc8d0067b"
+    },
+    {
+      "ma": "1.014851",
+      "dvcqgId": "019d2bfa-9e29-7049-92d6-5dfd31a59b14",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e29-7049-92d6-5dfd31a59b14&formalityCaseId=019db5e1-2fbf-7578-97e0-cc65a3768d0d"
+    },
+    {
+      "ma": "1.014853",
+      "dvcqgId": "019d2bfa-9e25-7618-bcc6-6710782fe31f",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e25-7618-bcc6-6710782fe31f&formalityCaseId=019db5e2-0e17-71fe-ad36-429bf818adf3"
+    },
+    {
+      "ma": "1.014852",
+      "dvcqgId": "019d2bfa-9e22-7643-bef7-f13dcd5b838e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e22-7643-bef7-f13dcd5b838e&formalityCaseId=019db5e3-c49f-7752-bd93-869fe23f1907"
+    },
+    {
+      "ma": "1.014849",
+      "dvcqgId": "019d2bfa-9e1f-759a-a302-7388633cac66",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e1f-759a-a302-7388633cac66&formalityCaseId=019dcab1-0595-742c-b188-49f3c2d2d997"
+    },
+    {
+      "ma": "1.014848",
+      "dvcqgId": "019d2bfa-9e1f-71dc-9209-4e9a2b8425ce",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9e1f-71dc-9209-4e9a2b8425ce&formalityCaseId=019db5df-006f-754e-9fe1-102f09ffcd49"
+    },
+    {
+      "ma": "1.014801",
+      "dvcqgId": "019d2bfa-9dfb-735b-9cfd-5c6f7a67eadb",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9dfb-735b-9cfd-5c6f7a67eadb&formalityCaseId=019d2db9-d4a1-75ca-baac-33567a7b6994"
+    },
+    {
+      "ma": "1.014832",
+      "dvcqgId": "019d2bfa-9df2-77b1-92ff-2953067c0ef8",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9df2-77b1-92ff-2953067c0ef8&formalityCaseId=019d2da4-3bbb-72e5-a758-cd318ae0fb1e"
+    },
+    {
+      "ma": "1.014776",
+      "dvcqgId": "019d2bfa-9675-75dd-9810-3a861ae77af9",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9675-75dd-9810-3a861ae77af9&formalityCaseId=019d2d95-4562-753b-bcb4-c4834c8e9771"
+    },
+    {
+      "ma": "1.014284",
+      "dvcqgId": "019d2bfa-9621-740d-984e-e0a036f298d5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-9621-740d-984e-e0a036f298d5&formalityCaseId=019d2d5a-ba76-712a-a6e5-802453cd0e06"
+    },
+    {
+      "ma": "1.014275",
+      "dvcqgId": "019d2bfa-8e9b-7016-8e52-bcc0f5d0bc05",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8e9b-7016-8e52-bcc0f5d0bc05&formalityCaseId=019db5de-15dc-746e-badd-2971907a7ffa"
+    },
+    {
+      "ma": "1.014259",
+      "dvcqgId": "019d2bfa-8e5e-714e-b4e2-87150f285b80",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8e5e-714e-b4e2-87150f285b80&formalityCaseId=019d2dcb-f48e-7606-99d1-bb5bfaeb093a"
+    },
+    {
+      "ma": "1.014258",
+      "dvcqgId": "019d2bfa-8e5a-7180-9b55-92c56132c8e6",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8e5a-7180-9b55-92c56132c8e6&formalityCaseId=019db5dd-1060-774b-872a-aea0b398d278"
+    },
+    {
+      "ma": "1.013997",
+      "dvcqgId": "019d2bfa-8686-732b-b2d5-e6a422f1b242",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8686-732b-b2d5-e6a422f1b242&formalityCaseId=019d2d32-8ba5-769f-b33e-c0ca60bd0629"
+    },
+    {
+      "ma": "1.013949",
+      "dvcqgId": "019d2bfa-867b-703e-a311-18fc1df76fc8",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-867b-703e-a311-18fc1df76fc8&formalityCaseId=019db5cc-268b-74fa-b56d-659369f3f901"
+    },
+    {
+      "ma": "1.013978",
+      "dvcqgId": "019d2bfa-8678-770b-8917-1872078767cd",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8678-770b-8917-1872078767cd&formalityCaseId=019db5d6-20e7-734e-931f-cef4ff956f81"
+    },
+    {
+      "ma": "1.013953",
+      "dvcqgId": "019d2bfa-8676-77f3-ba25-0d0f1b588227",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8676-77f3-ba25-0d0f1b588227&formalityCaseId=019db5cb-1f61-713a-b858-d9012e6c7dad"
+    },
+    {
+      "ma": "1.013962",
+      "dvcqgId": "019d2bfa-8675-7789-bf5f-782e3f81d418",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8675-7789-bf5f-782e3f81d418&formalityCaseId=019db5cd-ee4f-7428-9720-0340b56045c6"
+    },
+    {
+      "ma": "1.013979",
+      "dvcqgId": "019d2bfa-8673-706e-96e4-fd2b840004ba",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8673-706e-96e4-fd2b840004ba&formalityCaseId=019d2d30-ed0d-7249-b514-f66f82bdeab4"
+    },
+    {
+      "ma": "1.013952",
+      "dvcqgId": "019d2bfa-8672-74d6-a162-9d0368d68fb5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8672-74d6-a162-9d0368d68fb5&formalityCaseId=019db5c9-925a-731b-823f-4a2ccbecb0b4"
+    },
+    {
+      "ma": "1.013967",
+      "dvcqgId": "019d2bfa-8671-7318-8ef7-15304f36d400",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8671-7318-8ef7-15304f36d400&formalityCaseId=019db5cf-1c4c-7641-b2d7-b19eb7597611"
+    },
+    {
+      "ma": "1.013965",
+      "dvcqgId": "019d2bfa-866f-73bf-bcda-6e34ff8bda48",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-866f-73bf-bcda-6e34ff8bda48&formalityCaseId=019db5d3-c1fc-77ee-9638-369dcf8977c2"
+    },
+    {
+      "ma": "1.012922",
+      "dvcqgId": "019d2bfa-7e99-7158-a0c2-9c3fc614a785",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-7e99-7158-a0c2-9c3fc614a785&formalityCaseId=019db44b-7179-75e7-badf-24d531d1f903"
+    },
+    {
+      "ma": "1.012836",
+      "dvcqgId": "019d2bfa-7716-72bf-b4c8-2b4d1cbf6074",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-7716-72bf-b4c8-2b4d1cbf6074&formalityCaseId=019d2d28-8ba2-70a8-aedf-2ab6e03e839f"
+    },
+    {
+      "ma": "1.012837",
+      "dvcqgId": "019d2bfa-7709-762d-a041-dfefe2e1e92d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-7709-762d-a041-dfefe2e1e92d&formalityCaseId=019d2f40-75fc-75a8-a220-362f0c01768d"
+    },
+    {
+      "ma": "1.012817",
+      "dvcqgId": "019d2bfa-76ef-752f-a5e5-ff4ce5737bb1",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76ef-752f-a5e5-ff4ce5737bb1&formalityCaseId=019db446-a8ea-7301-a595-a0eef55929ef"
+    },
+    {
+      "ma": "1.012818",
+      "dvcqgId": "019d2bfa-76e6-7468-b6f2-417e588578f5",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76e6-7468-b6f2-417e588578f5&formalityCaseId=019db44a-16ab-7568-80a1-a5d1b793b860"
+    },
+    {
+      "ma": "1.012812",
+      "dvcqgId": "019d2bfa-76e6-7468-b6f2-3d412e902b88",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76e6-7468-b6f2-3d412e902b88&formalityCaseId=019db443-f63d-73f2-8193-81f9801de37e"
+    },
+    {
+      "ma": "1.012796",
+      "dvcqgId": "019d2bfa-76cb-741b-996e-33d1ef50be50",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76cb-741b-996e-33d1ef50be50&formalityCaseId=019db442-12f1-725c-8fc2-925499bf4817"
+    },
+    {
+      "ma": "1.012766",
+      "dvcqgId": "019d2bfa-6f11-772a-8dda-5bf1a8d83029",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6f11-772a-8dda-5bf1a8d83029&formalityCaseId=019dba68-d53d-7261-848a-8ab25e9a9d4f"
+    },
+    {
+      "ma": "1.012694",
+      "dvcqgId": "019d2bfa-6ef5-7737-a1e5-62fbb059a72b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6ef5-7737-a1e5-62fbb059a72b&formalityCaseId=019db438-cb74-7130-af87-bb10b196ad78"
+    },
+    {
+      "ma": "1.012753",
+      "dvcqgId": "019d2bfa-6eeb-7460-9097-1804edf38aec",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6eeb-7460-9097-1804edf38aec&formalityCaseId=019db43e-c892-71fe-884a-fef954724508"
+    },
+    {
+      "ma": "1.012531",
+      "dvcqgId": "019d2bfa-675f-7649-b8b2-b92e5c359abf",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-675f-7649-b8b2-b92e5c359abf&formalityCaseId=019db437-d20f-705d-9ac9-3bb1eac1cf41"
+    },
+    {
+      "ma": "1.011607",
+      "dvcqgId": "019d2bfa-6008-72cb-9e63-83483f3a6e49",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6008-72cb-9e63-83483f3a6e49&formalityCaseId=019db435-ecf2-7462-9a81-fb898f89e404"
+    },
+    {
+      "ma": "1.011608",
+      "dvcqgId": "019d2bfa-5fea-7127-aad7-661d12947846",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-5fea-7127-aad7-661d12947846&formalityCaseId=019db434-f485-700d-9a7b-a67e6afe0c08"
+    },
+    {
+      "ma": "1.011518",
+      "dvcqgId": "019d2bfa-5fe1-723a-b9e3-53da4b92e987",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-5fe1-723a-b9e3-53da4b92e987&formalityCaseId=019db9db-838a-740e-a17b-031be9f1c3ee"
+    },
+    {
+      "ma": "1.011609",
+      "dvcqgId": "019d2bfa-5f79-70bf-bc74-661346debe8c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-5f79-70bf-bc74-661346debe8c&formalityCaseId=019db436-e27d-73ae-8c93-c005ad587120"
+    },
+    {
+      "ma": "1.011606",
+      "dvcqgId": "019d2bfa-5f68-74c6-89e9-78c8819cef86",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-5f68-74c6-89e9-78c8819cef86&formalityCaseId=019d2d2b-d57d-749d-b0d2-2fc5125336b9"
+    },
+    {
+      "ma": "1.011471",
+      "dvcqgId": "019d2bfa-5f58-757b-a75e-76488561cdd0",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-5f58-757b-a75e-76488561cdd0&formalityCaseId=019d2d42-10fa-777c-899a-0b2b4655b1ee"
+    },
+    {
+      "ma": "1.010736",
+      "dvcqgId": "019d2bfa-5f3e-764e-96a8-f159b09b08cf",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-5f3e-764e-96a8-f159b09b08cf&formalityCaseId=019d2cf4-98a1-709e-8b36-a2c14deed59f"
+    },
+    {
+      "ma": "1.010092",
+      "dvcqgId": "019d2bfa-5787-70e4-a42f-b3e1e9ca9435",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-5787-70e4-a42f-b3e1e9ca9435&formalityCaseId=019d2dc5-c262-7300-8c26-a75fa77d04f3"
+    },
+    {
+      "ma": "1.010091",
+      "dvcqgId": "019d2bfa-5781-744b-a4a6-7d52c45ad026",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-5781-744b-a4a6-7d52c45ad026&formalityCaseId=019db433-8e73-74aa-a449-7d1f768cda6d"
+    },
+    {
+      "ma": "1.008004",
+      "dvcqgId": "019d2bfa-4f9f-7354-9e92-57219bbd01e0",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-4f9f-7354-9e92-57219bbd01e0&formalityCaseId=019d2d19-a7af-7108-a3c5-7d29b414f96e"
+    },
+    {
+      "ma": "1.007919",
+      "dvcqgId": "019d2bfa-47f7-718f-8b27-0d6e6a357e0a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-47f7-718f-8b27-0d6e6a357e0a&formalityCaseId=019db42f-2deb-749c-8805-611c341522f4"
+    },
+    {
+      "ma": "1.004656",
+      "dvcqgId": "019d2bfa-3885-75ec-ad63-ccfd4b902839",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-3885-75ec-ad63-ccfd4b902839&formalityCaseId=019db42b-1dfd-76d4-bc4d-bf0201bdb2e3"
+    },
+    {
+      "ma": "1.004498",
+      "dvcqgId": "019d2bfa-384d-7237-aed7-1af004e30b58",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-384d-7237-aed7-1af004e30b58&formalityCaseId=019db429-9f87-74db-8e2b-4bd22f9f20a1"
+    },
+    {
+      "ma": "1.004478",
+      "dvcqgId": "019d2bfa-3845-71a4-8d69-97f50d631417",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-3845-71a4-8d69-97f50d631417&formalityCaseId=019d2d9d-7456-7354-abdd-a8528ccd4fc3"
+    },
+    {
+      "ma": "1.003956",
+      "dvcqgId": "019d2bfa-3043-765f-bc87-ca61828f4c4e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-3043-765f-bc87-ca61828f4c4e&formalityCaseId=019d2d86-4e06-70af-8898-ab1f8752cd92"
+    },
+    {
+      "ma": "1.003471",
+      "dvcqgId": "019d2bfa-2094-75aa-a75e-92fa750dd0f4",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-2094-75aa-a75e-92fa750dd0f4&formalityCaseId=019db421-6ff2-7308-89d9-d2e3f60efa44"
+    },
+    {
+      "ma": "1.003446",
+      "dvcqgId": "019d2bfa-18f1-777d-95ef-b4b7dca1255c",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-18f1-777d-95ef-b4b7dca1255c&formalityCaseId=019db41f-dbd7-754b-b354-73b3849029e0"
+    },
+    {
+      "ma": "1.003434",
+      "dvcqgId": "019d2bfa-18e5-71bf-9849-3fc86ee34b8a",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-18e5-71bf-9849-3fc86ee34b8a&formalityCaseId=019d2d26-e212-74cc-b06f-de3ffe2592dc"
+    },
+    {
+      "ma": "1.003347",
+      "dvcqgId": "019d2bfa-18b5-72ba-b2d3-9f318566bf80",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-18b5-72ba-b2d3-9f318566bf80&formalityCaseId=019db41a-265c-7588-a269-b677af480266"
+    },
+    {
+      "ma": "1.001662",
+      "dvcqgId": "019d2bfa-0929-7304-8c4e-e9aea3f674ff",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-0929-7304-8c4e-e9aea3f674ff&formalityCaseId=019db40e-02a8-75ae-b999-9000bc6c0a7e"
+    },
+    {
+      "ma": "1.014451",
+      "dvcqgId": "019d2bf9-7474-73a4-a9bd-7f912937af1e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf9-7474-73a4-a9bd-7f912937af1e&formalityCaseId=019dc3d4-6841-7161-9213-9835f9f7de98"
+    },
+    {
+      "ma": "3.000182",
+      "dvcqgId": "019d2bf8-d78d-7335-bc84-dc4d5274946e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-d78d-7335-bc84-dc4d5274946e&formalityCaseId=019db08d-a7e5-71be-b033-53c89b8e26f3"
+    },
+    {
+      "ma": "2.002771",
+      "dvcqgId": "019d2bf8-d78b-73b9-b34f-a6626fc15f92",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-d78b-73b9-b34f-a6626fc15f92&formalityCaseId=019d2cf1-9fb3-77fc-850a-04101d1b9cfe"
+    },
+    {
+      "ma": "2.002284",
+      "dvcqgId": "019d2bf8-cffc-73cb-824d-4d5fad6ec30e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-cffc-73cb-824d-4d5fad6ec30e&formalityCaseId=019db088-8b83-73ce-807a-d09451f48632"
+    },
+    {
+      "ma": "1.014337",
+      "dvcqgId": "019d2bf8-c7e7-71f7-81cf-28778a076923",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-c7e7-71f7-81cf-28778a076923&formalityCaseId=019db875-d504-7236-8efe-b5a31edc3391"
+    },
+    {
+      "ma": "1.014335",
+      "dvcqgId": "019d2bf8-c7e3-746e-8437-305980ee5536",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-c7e3-746e-8437-305980ee5536&formalityCaseId=019db876-2dc7-71b3-bb61-f168d05f051c"
+    },
+    {
+      "ma": "1.014336",
+      "dvcqgId": "019d2bf8-c7e3-744b-8bd9-0747eeabb2db",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-c7e3-744b-8bd9-0747eeabb2db&formalityCaseId=019d2d62-2adc-77e5-9d03-0d3fbf4f38a4"
+    },
+    {
+      "ma": "1.008951",
+      "dvcqgId": "019d2bf8-b0b2-7055-8dda-a3270391d92e",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-b0b2-7055-8dda-a3270391d92e&formalityCaseId=019d2d3a-c50e-7402-9ad7-2e993c691457"
+    },
+    {
+      "ma": "1.008725",
+      "dvcqgId": "019d2bf8-b0a7-718d-8f7b-94d61cfa622b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-b0a7-718d-8f7b-94d61cfa622b&formalityCaseId=019db08c-3de3-702d-99ca-3949c93bbb97"
+    },
+    {
+      "ma": "1.003702",
+      "dvcqgId": "019d2bf8-a0b7-73bc-a140-d0bbe50f7991",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-a0b7-73bc-a140-d0bbe50f7991&formalityCaseId=019d2c8e-0500-73a7-b904-9b2edbc23204"
+    },
+    {
+      "ma": "1.001622",
+      "dvcqgId": "019d2bf8-98e7-70fc-a7e2-3c4617d4c507",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-98e7-70fc-a7e2-3c4617d4c507&formalityCaseId=019d2d3b-19ed-71c9-bfbe-86edeebacea8"
+    },
+    {
+      "ma": "1.001714",
+      "dvcqgId": "019d2bf8-98e1-7328-a826-74115e520507",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-98e1-7328-a826-74115e520507&formalityCaseId=019daef0-9ed0-7755-9cfc-b5ff3c172911"
+    },
+    {
+      "ma": "1.013797",
+      "dvcqgId": "019d2bf8-6244-7287-9a22-2ea431452b97",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-6244-7287-9a22-2ea431452b97&formalityCaseId=019daf5e-7a45-720e-8e4c-b4fbd607b52d"
+    },
+    {
+      "ma": "1.013798",
+      "dvcqgId": "019d2bf8-622d-76c9-8fd7-a6346328fdad",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-622d-76c9-8fd7-a6346328fdad&formalityCaseId=019dafbb-aadf-75ca-a876-61884b54f089"
+    },
+    {
+      "ma": "1.013796",
+      "dvcqgId": "019d2bf8-621f-712b-8aff-761c53252df0",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-621f-712b-8aff-761c53252df0&formalityCaseId=019d2d1d-7f4c-7271-aecc-00de36d45624"
+    },
+    {
+      "ma": "1.012584",
+      "dvcqgId": "019d2bf8-530e-70ea-aa95-0ff1cea87193",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-530e-70ea-aa95-0ff1cea87193&formalityCaseId=019db094-1fdc-74d7-9d3b-0681f61a730a"
+    },
+    {
+      "ma": "1.012591",
+      "dvcqgId": "019d2bf8-5292-7259-bdc8-9c9e32f3c5f1",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-5292-7259-bdc8-9c9e32f3c5f1&formalityCaseId=019d3c91-9522-7005-bb23-6ff830cda2db"
+    },
+    {
+      "ma": "1.012585",
+      "dvcqgId": "019d2bf8-5281-74ff-b142-aca6e8ec0d6d",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-5281-74ff-b142-aca6e8ec0d6d&formalityCaseId=019db085-1d57-7389-b73b-b0d59335d118"
+    },
+    {
+      "ma": "1.012582",
+      "dvcqgId": "019d2bf8-527d-71d2-9b0f-140dbedfc8c3",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-527d-71d2-9b0f-140dbedfc8c3&formalityCaseId=019d2d0e-5c89-728f-9263-597d770fe405"
+    },
+    {
+      "ma": "1.012592",
+      "dvcqgId": "019d2bf8-526e-75a6-bafe-148cf029f697",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-526e-75a6-bafe-148cf029f697&formalityCaseId=019db07b-5cf8-7449-bee9-b7cf2db75ce0"
+    },
+    {
+      "ma": "1.012222",
+      "dvcqgId": "019d2bf8-5247-7178-bf1f-a9e07e099434",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-5247-7178-bf1f-a9e07e099434&formalityCaseId=019d3c91-47ad-76b7-bced-ddec3cdf1964"
+    },
+    {
+      "ma": "1.012223",
+      "dvcqgId": "019d2bf8-523b-764d-976a-7739bdce7672",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-523b-764d-976a-7739bdce7672&formalityCaseId=019d3c8e-a859-751d-8825-1ccf066aae5d"
+    },
+    {
+      "ma": "2.000206",
+      "dvcqgId": "019d2bf8-235d-7442-9ce7-64d33f904546",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-235d-7442-9ce7-64d33f904546&formalityCaseId=019daa85-da64-7369-9d63-7c9d5d5ea0eb"
+    },
+    {
+      "ma": "1.012569",
+      "dvcqgId": "019d2bf7-fc53-748c-8af0-461a97b5f80b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf7-fc53-748c-8af0-461a97b5f80b&formalityCaseId=019daaf2-13ed-71ff-a7d5-c28f3016fc8f"
+    },
+    {
+      "ma": "1.012568",
+      "dvcqgId": "019d2bf7-fc47-724d-98ee-1785e5599e34",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf7-fc47-724d-98ee-1785e5599e34&formalityCaseId=019daaf4-a28a-7230-b208-ff75a9fbefb6"
+    }
+  ],
   "missingItems": [
     {
       "ma": "1.117102"
@@ -229,9 +1717,6 @@
       "ma": "1.115377"
     },
     {
-      "ma": "1.115148"
-    },
-    {
       "ma": "3.000576"
     },
     {
@@ -239,9 +1724,6 @@
     },
     {
       "ma": "3.000569"
-    },
-    {
-      "ma": "1.115116"
     },
     {
       "ma": "1.012535"
@@ -259,184 +1741,7 @@
       "ma": "1.014997"
     },
     {
-      "ma": "1.014947"
-    },
-    {
-      "ma": "1.014946"
-    },
-    {
-      "ma": "1.014111"
-    },
-    {
-      "ma": "1.014943"
-    },
-    {
-      "ma": "1.010774"
-    },
-    {
-      "ma": "1.014944"
-    },
-    {
-      "ma": "1.014945"
-    },
-    {
-      "ma": "1.014942"
-    },
-    {
-      "ma": "2.001947"
-    },
-    {
-      "ma": "2.001942"
-    },
-    {
-      "ma": "2.001944"
-    },
-    {
-      "ma": "2.001661"
-    },
-    {
-      "ma": "1.014028"
-    },
-    {
-      "ma": "1.014027"
-    },
-    {
-      "ma": "1.013855"
-    },
-    {
-      "ma": "1.012422"
-    },
-    {
-      "ma": "1.004946"
-    },
-    {
-      "ma": "1.004941"
-    },
-    {
-      "ma": "1.004944"
-    },
-    {
-      "ma": "1.001699"
-    },
-    {
-      "ma": "1.001653"
-    },
-    {
-      "ma": "2.001659"
-    },
-    {
-      "ma": "2.001921"
-    },
-    {
-      "ma": "2.001711"
-    },
-    {
-      "ma": "2.001214"
-    },
-    {
-      "ma": "2.001215"
-    },
-    {
-      "ma": "2.001211"
-    },
-    {
-      "ma": "2.001218"
-    },
-    {
-      "ma": "2.001212"
-    },
-    {
-      "ma": "2.001217"
-    },
-    {
-      "ma": "1.014632"
-    },
-    {
-      "ma": "1.014155"
-    },
-    {
-      "ma": "1.014157"
-    },
-    {
-      "ma": "1.014156"
-    },
-    {
-      "ma": "1.014158"
-    },
-    {
-      "ma": "1.014159"
-    },
-    {
-      "ma": "1.013239"
-    },
-    {
-      "ma": "1.013274"
-    },
-    {
-      "ma": "1.013229"
-    },
-    {
-      "ma": "1.013226"
-    },
-    {
-      "ma": "1.013227"
-    },
-    {
-      "ma": "1.013232"
-    },
-    {
-      "ma": "1.013228"
-    },
-    {
-      "ma": "1.013225"
-    },
-    {
-      "ma": "1.013061"
-    },
-    {
-      "ma": "1.012897"
-    },
-    {
-      "ma": "1.012898"
-    },
-    {
-      "ma": "1.012892"
-    },
-    {
-      "ma": "1.012893"
-    },
-    {
-      "ma": "1.012888"
-    },
-    {
-      "ma": "1.009791"
-    },
-    {
-      "ma": "1.009465"
-    },
-    {
-      "ma": "1.009452"
-    },
-    {
-      "ma": "1.009453"
-    },
-    {
-      "ma": "1.006391"
-    },
-    {
       "ma": "1.00504"
-    },
-    {
-      "ma": "1.004088"
-    },
-    {
-      "ma": "1.004036"
-    },
-    {
-      "ma": "1.004047"
-    },
-    {
-      "ma": "1.004002"
     },
     {
       "ma": "1.00397"
@@ -445,283 +1750,37 @@
       "ma": "1.00393"
     },
     {
-      "ma": "1.002693"
-    },
-    {
-      "ma": "1.002372"
-    },
-    {
-      "ma": "1.000314"
-    },
-    {
-      "ma": "2.000794"
-    },
-    {
       "ma": "1.01431"
-    },
-    {
-      "ma": "1.014312"
-    },
-    {
-      "ma": "1.013792"
-    },
-    {
-      "ma": "1.013794"
-    },
-    {
-      "ma": "1.013793"
-    },
-    {
-      "ma": "1.013791"
-    },
-    {
-      "ma": "1.012085"
-    },
-    {
-      "ma": "1.012084"
-    },
-    {
-      "ma": "1.003622"
-    },
-    {
-      "ma": "3.000323"
-    },
-    {
-      "ma": "2.002363"
-    },
-    {
-      "ma": "3.000322"
-    },
-    {
-      "ma": "2.002349"
-    },
-    {
-      "ma": "2.002516"
-    },
-    {
-      "ma": "2.002165"
-    },
-    {
-      "ma": "2.002189"
     },
     {
       "ma": "2.00208"
     },
     {
-      "ma": "2.001406"
-    },
-    {
-      "ma": "2.001263"
-    },
-    {
-      "ma": "2.001255"
-    },
-    {
-      "ma": "2.001035"
-    },
-    {
-      "ma": "2.001019"
-    },
-    {
-      "ma": "2.001016"
-    },
-    {
-      "ma": "2.000942"
-    },
-    {
-      "ma": "2.001008"
-    },
-    {
-      "ma": "2.000992"
-    },
-    {
       "ma": "2.00095"
-    },
-    {
-      "ma": "2.000908"
-    },
-    {
-      "ma": "2.000913"
-    },
-    {
-      "ma": "2.000927"
     },
     {
       "ma": "2.00093"
     },
     {
-      "ma": "2.000884"
-    },
-    {
-      "ma": "2.000815"
-    },
-    {
-      "ma": "2.000806"
-    },
-    {
-      "ma": "2.000756"
-    },
-    {
-      "ma": "2.000748"
-    },
-    {
-      "ma": "2.000779"
-    },
-    {
-      "ma": "2.000635"
-    },
-    {
-      "ma": "2.000522"
-    },
-    {
-      "ma": "2.000554"
-    },
-    {
-      "ma": "2.000513"
-    },
-    {
-      "ma": "2.000528"
-    },
-    {
-      "ma": "2.000547"
-    },
-    {
-      "ma": "2.000497"
-    },
-    {
-      "ma": "2.000424"
-    },
-    {
-      "ma": "1.011441"
-    },
-    {
-      "ma": "1.005461"
-    },
-    {
-      "ma": "1.004873"
-    },
-    {
-      "ma": "1.004884"
-    },
-    {
-      "ma": "1.004845"
-    },
-    {
-      "ma": "1.004859"
-    },
-    {
-      "ma": "1.004837"
-    },
-    {
-      "ma": "1.004772"
-    },
-    {
-      "ma": "1.004746"
-    },
-    {
-      "ma": "1.004827"
-    },
-    {
-      "ma": "1.003583"
-    },
-    {
       "ma": "1.003005"
-    },
-    {
-      "ma": "1.002211"
-    },
-    {
-      "ma": "1.001766"
-    },
-    {
-      "ma": "1.001695"
-    },
-    {
-      "ma": "1.001669"
-    },
-    {
-      "ma": "1.001193"
-    },
-    {
-      "ma": "1.000893"
-    },
-    {
-      "ma": "1.000689"
-    },
-    {
-      "ma": "1.000894"
-    },
-    {
-      "ma": "1.000656"
-    },
-    {
-      "ma": "1.001022"
-    },
-    {
-      "ma": "1.000593"
     },
     {
       "ma": "1.00008"
     },
     {
-      "ma": "1.000419"
-    },
-    {
       "ma": "1.00011"
-    },
-    {
-      "ma": "1.000094"
     },
     {
       "ma": "3.00041"
     },
     {
-      "ma": "2.002648"
-    },
-    {
       "ma": "2.002668"
-    },
-    {
-      "ma": "2.002641"
-    },
-    {
-      "ma": "2.002649"
-    },
-    {
-      "ma": "2.002642"
-    },
-    {
-      "ma": "2.002638"
-    },
-    {
-      "ma": "2.002635"
-    },
-    {
-      "ma": "2.002643"
-    },
-    {
-      "ma": "2.002639"
-    },
-    {
-      "ma": "2.002636"
-    },
-    {
-      "ma": "2.002637"
     },
     {
       "ma": "2.002226"
     },
     {
       "ma": "2.002228"
-    },
-    {
-      "ma": "2.002123"
-    },
-    {
-      "ma": "2.001958"
-    },
-    {
-      "ma": "2.000575"
     },
     {
       "ma": "2.00072"
@@ -734,12 +1793,6 @@
     },
     {
       "ma": "1.014371"
-    },
-    {
-      "ma": "1.014035"
-    },
-    {
-      "ma": "1.014034"
     },
     {
       "ma": "1.01304"
@@ -757,91 +1810,19 @@
       "ma": "1.005412"
     },
     {
-      "ma": "1.005378"
-    },
-    {
       "ma": "1.00528"
-    },
-    {
-      "ma": "1.004901"
-    },
-    {
-      "ma": "1.004979"
     },
     {
       "ma": "1.00501"
     },
     {
-      "ma": "1.004982"
-    },
-    {
-      "ma": "1.005277"
-    },
-    {
-      "ma": "1.001612"
-    },
-    {
       "ma": "1.00157"
-    },
-    {
-      "ma": "1.001266"
-    },
-    {
-      "ma": "1.013128"
-    },
-    {
-      "ma": "2.002821"
-    },
-    {
-      "ma": "2.002308"
-    },
-    {
-      "ma": "2.002307"
     },
     {
       "ma": "2.00282"
     },
     {
-      "ma": "2.002303"
-    },
-    {
-      "ma": "2.001955"
-    },
-    {
-      "ma": "2.001157"
-    },
-    {
-      "ma": "2.001396"
-    },
-    {
-      "ma": "1.014359"
-    },
-    {
-      "ma": "1.014352"
-    },
-    {
-      "ma": "1.014201"
-    },
-    {
-      "ma": "1.014319"
-    },
-    {
-      "ma": "1.014318"
-    },
-    {
-      "ma": "1.014198"
-    },
-    {
       "ma": "1.0142"
-    },
-    {
-      "ma": "1.014199"
-    },
-    {
-      "ma": "1.014197"
-    },
-    {
-      "ma": "1.014196"
     },
     {
       "ma": "1.01415"
@@ -850,22 +1831,10 @@
       "ma": "1.014149"
     },
     {
-      "ma": "1.014113"
-    },
-    {
-      "ma": "1.013749"
-    },
-    {
       "ma": "1.013745"
     },
     {
       "ma": "1.01375"
-    },
-    {
-      "ma": "1.013744"
-    },
-    {
-      "ma": "1.013734"
     },
     {
       "ma": "1.013743"
@@ -874,361 +1843,37 @@
       "ma": "1.01371"
     },
     {
-      "ma": "1.013703"
-    },
-    {
-      "ma": "1.013706"
-    },
-    {
-      "ma": "1.013708"
-    },
-    {
-      "ma": "1.013704"
-    },
-    {
-      "ma": "1.013707"
-    },
-    {
-      "ma": "1.013702"
-    },
-    {
-      "ma": "1.013709"
-    },
-    {
-      "ma": "1.010833"
-    },
-    {
-      "ma": "1.010829"
-    },
-    {
       "ma": "1.01083"
-    },
-    {
-      "ma": "1.010824"
-    },
-    {
-      "ma": "1.010825"
-    },
-    {
-      "ma": "1.010821"
-    },
-    {
-      "ma": "1.010819"
     },
     {
       "ma": "1.01082"
     },
     {
-      "ma": "1.010817"
-    },
-    {
-      "ma": "1.010818"
-    },
-    {
-      "ma": "1.010815"
-    },
-    {
-      "ma": "1.010816"
-    },
-    {
       "ma": "1.01081"
-    },
-    {
-      "ma": "1.010811"
-    },
-    {
-      "ma": "1.010814"
-    },
-    {
-      "ma": "1.010812"
-    },
-    {
-      "ma": "1.010804"
-    },
-    {
-      "ma": "1.010805"
-    },
-    {
-      "ma": "1.010802"
-    },
-    {
-      "ma": "1.010803"
-    },
-    {
-      "ma": "1.010801"
-    },
-    {
-      "ma": "1.010783"
-    },
-    {
-      "ma": "1.010781"
-    },
-    {
-      "ma": "1.010777"
-    },
-    {
-      "ma": "1.010788"
-    },
-    {
-      "ma": "1.010778"
-    },
-    {
-      "ma": "1.010775"
-    },
-    {
-      "ma": "1.010772"
-    },
-    {
-      "ma": "1.004964"
-    },
-    {
-      "ma": "1.001257"
-    },
-    {
-      "ma": "3.000502"
-    },
-    {
-      "ma": "3.000443"
-    },
-    {
-      "ma": "3.000412"
-    },
-    {
-      "ma": "3.000442"
-    },
-    {
-      "ma": "3.000441"
-    },
-    {
-      "ma": "3.000439"
     },
     {
       "ma": "3.00025"
     },
     {
-      "ma": "2.001827"
-    },
-    {
-      "ma": "2.001627"
-    },
-    {
-      "ma": "2.001621"
-    },
-    {
-      "ma": "1.014862"
-    },
-    {
-      "ma": "1.014864"
-    },
-    {
-      "ma": "1.014863"
-    },
-    {
       "ma": "1.01486"
-    },
-    {
-      "ma": "1.014859"
-    },
-    {
-      "ma": "1.014851"
-    },
-    {
-      "ma": "1.014853"
     },
     {
       "ma": "1.01485"
     },
     {
-      "ma": "1.014852"
-    },
-    {
-      "ma": "1.014849"
-    },
-    {
-      "ma": "1.014848"
-    },
-    {
-      "ma": "1.014801"
-    },
-    {
-      "ma": "1.014832"
-    },
-    {
-      "ma": "1.014776"
-    },
-    {
-      "ma": "1.014284"
-    },
-    {
-      "ma": "1.014275"
-    },
-    {
-      "ma": "1.014259"
-    },
-    {
-      "ma": "1.014258"
-    },
-    {
-      "ma": "1.013997"
-    },
-    {
-      "ma": "1.013949"
-    },
-    {
-      "ma": "1.013978"
-    },
-    {
       "ma": "1.01395"
-    },
-    {
-      "ma": "1.013953"
-    },
-    {
-      "ma": "1.013962"
-    },
-    {
-      "ma": "1.013979"
-    },
-    {
-      "ma": "1.013952"
-    },
-    {
-      "ma": "1.013967"
-    },
-    {
-      "ma": "1.013965"
-    },
-    {
-      "ma": "1.012922"
-    },
-    {
-      "ma": "1.012836"
-    },
-    {
-      "ma": "1.012837"
-    },
-    {
-      "ma": "1.012817"
-    },
-    {
-      "ma": "1.012818"
-    },
-    {
-      "ma": "1.012812"
-    },
-    {
-      "ma": "1.012796"
-    },
-    {
-      "ma": "1.012766"
-    },
-    {
-      "ma": "1.012694"
-    },
-    {
-      "ma": "1.012753"
-    },
-    {
-      "ma": "1.012531"
-    },
-    {
-      "ma": "1.011607"
-    },
-    {
-      "ma": "1.011608"
-    },
-    {
-      "ma": "1.011518"
-    },
-    {
-      "ma": "1.011609"
-    },
-    {
-      "ma": "1.011606"
-    },
-    {
-      "ma": "1.011471"
-    },
-    {
-      "ma": "1.010736"
-    },
-    {
-      "ma": "1.010092"
-    },
-    {
-      "ma": "1.010091"
-    },
-    {
-      "ma": "1.008004"
-    },
-    {
-      "ma": "1.007919"
     },
     {
       "ma": "1.00468"
     },
     {
-      "ma": "1.004656"
-    },
-    {
-      "ma": "1.004498"
-    },
-    {
-      "ma": "1.004478"
-    },
-    {
-      "ma": "1.003956"
-    },
-    {
-      "ma": "1.003471"
-    },
-    {
-      "ma": "1.003446"
-    },
-    {
       "ma": "1.00344"
-    },
-    {
-      "ma": "1.003434"
-    },
-    {
-      "ma": "1.003347"
-    },
-    {
-      "ma": "1.001662"
-    },
-    {
-      "ma": "1.014451"
     },
     {
       "ma": "2.00277"
     },
     {
-      "ma": "3.000182"
-    },
-    {
-      "ma": "2.002771"
-    },
-    {
-      "ma": "2.002284"
-    },
-    {
       "ma": "2.00196"
-    },
-    {
-      "ma": "1.014337"
-    },
-    {
-      "ma": "1.014335"
-    },
-    {
-      "ma": "1.014336"
-    },
-    {
-      "ma": "1.008951"
-    },
-    {
-      "ma": "1.008725"
     },
     {
       "ma": "1.00895"
@@ -1237,58 +1882,10 @@
       "ma": "1.00509"
     },
     {
-      "ma": "1.003702"
-    },
-    {
-      "ma": "1.001622"
-    },
-    {
-      "ma": "1.001714"
-    },
-    {
-      "ma": "1.013797"
-    },
-    {
-      "ma": "1.013798"
-    },
-    {
-      "ma": "1.013796"
-    },
-    {
       "ma": "1.01259"
     },
     {
-      "ma": "1.012584"
-    },
-    {
-      "ma": "1.012591"
-    },
-    {
-      "ma": "1.012585"
-    },
-    {
-      "ma": "1.012582"
-    },
-    {
-      "ma": "1.012592"
-    },
-    {
-      "ma": "1.012222"
-    },
-    {
-      "ma": "1.012223"
-    },
-    {
       "ma": "2.00262"
-    },
-    {
-      "ma": "2.000206"
-    },
-    {
-      "ma": "1.012569"
-    },
-    {
-      "ma": "1.012568"
     },
     {
       "ma": "3.000527"
