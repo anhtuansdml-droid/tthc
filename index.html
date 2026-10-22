@@ -36,6 +36,7 @@
         <span>🔎</span>
         <input id="searchInput" type="text" placeholder="Nhập mã, tên, lĩnh vực hoặc cơ quan thực hiện..." autocomplete="off">
       </div>
+      <button id="configBtn" class="config-btn" title="Cấu hình lĩnh vực hiển thị">⚙ CẤU HÌNH</button>
       <button class="pakn-btn" onclick="window.open('https://dichvucong.gov.vn/', '_blank')">CỔNG DVC QUỐC GIA</button>
     </div>
   </nav>
@@ -69,6 +70,39 @@
         <button id="modalClose" class="modal-close" title="Đóng">×</button>
       </div>
       <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="configModal" class="modal config-modal">
+    <div class="config-content">
+      <div class="config-header">
+        <h2>⚙ CẤU HÌNH HIỂN THỊ LĨNH VỰC</h2>
+        <button id="configClose" class="config-close" title="Đóng">×</button>
+      </div>
+
+      <div class="config-body">
+        <div class="config-top-row">
+          <select id="configAgency" class="config-select" aria-label="Cơ quan chủ trì">
+            <option value="">-- Tất cả Cơ quan chủ trì --</option>
+          </select>
+          <div class="config-search">
+            <span>🔎</span>
+            <input id="configSearch" type="text" placeholder="Tìm nhanh tên lĩnh vực (VD: Đất đai, Lý lịch...)" autocomplete="off">
+          </div>
+        </div>
+
+        <label class="config-select-all">
+          <input id="configSelectAll" type="checkbox">
+          <span>Chọn / Bỏ chọn tất cả Lĩnh vực đang hiển thị bên dưới</span>
+        </label>
+
+        <div id="configFieldList" class="config-field-list"></div>
+      </div>
+
+      <div class="config-footer">
+        <button id="configCancel" class="config-cancel">Hủy bỏ</button>
+        <button id="configSave" class="config-save">▣ Lưu cấu hình Lĩnh vực</button>
+      </div>
     </div>
   </div>
 
