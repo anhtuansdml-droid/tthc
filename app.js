@@ -117,9 +117,19 @@ function renderFields(list=filteredProcedures) {
 function getMainAgency(items){const counter={};items.forEach(item=>{const a=item.coQuanChuTri||"Chưa cập nhật";counter[a]=(counter[a]||0)+1;});const sorted=Object.entries(counter).sort((a,b)=>b[1]-a[1]);return sorted[0]?.[0]||"Chưa cập nhật";}
 function showFieldProcedures(field){
   const items=getFieldsForDisplay(filteredProcedures).filter(item=>(item.linhVuc||"Chưa xác định")===field);
-  const title=document.getElementById("contentTitle");if(title)title.textContent=`${field} — ${items.length} thủ tục`;
+  const title=document.getElementById("contentTitle");
+  if(title) title.innerHTML=`<span>${escapeHtml(field)} — ${items.length} thủ tục</span> <button type="button" class="stat-back-btn field-back-btn" id="fieldBackBtn">← QUAY LẠI</button>`;
   fieldContainer.innerHTML=`<div class="procedure-list">${items.map((item,index)=>procedureHtml(item,index)).join("")}</div>`;
   document.querySelectorAll(".procedure-item").forEach(el=>el.addEventListener("click",()=>showDetail(items[Number(el.dataset.index)])));
+
+  const back=document.getElementById("fieldBackBtn");
+  if(back) back.addEventListener("click",()=>{
+    filteredProcedures=[...procedures];
+    if(searchInput) searchInput.value="";
+    if(title) title.textContent="DANH SÁCH LĨNH VỰC";
+    renderFields();
+    window.scrollTo({top:document.querySelector(".main")?.offsetTop||0,behavior:"smooth"});
+  });
 }
 function procedureHtml(item,index){const noOnlineService=isNoOnlineService(item);const s=normalize(item.mucDichVu);const type=s==="toan trinh"?"full":s==="mot phan"?"partial":"none";const label=noOnlineService?"CHƯA CUNG CẤP DỊCH VỤ CÔNG":(item.mucDichVu||"Chưa cập nhật");return `<div class="procedure-item" data-index="${index}"><div class="procedure-code">${escapeHtml(item.ma||"")}</div><div class="procedure-name">${escapeHtml(item.ten||"")}</div><div class="procedure-meta"><span class="badge ${type}">${escapeHtml(label)}</span><span class="badge">${escapeHtml(item.coQuanChuTri||"Chưa cập nhật")}</span></div></div>`;}
 
