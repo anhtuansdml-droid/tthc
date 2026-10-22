@@ -1,4 +1,4 @@
-const API='https://tthc-coral.vercel.app/api/admin';
+const API='https://tthc-anhtuansdml-9137.vercel.app/api/admin';
 let config=null, token=sessionStorage.getItem('tthc_admin_token')||'';
 const $=id=>document.getElementById(id);
 const set=(id,v)=>{if($(id))$(id).value=v??''};
