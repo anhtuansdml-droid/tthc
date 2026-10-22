@@ -1,9 +1,10 @@
 /* GIAO DIỆN CHI TIẾT TTHC */
-.dvc-detail-shell{background:#fff;min-height:100%;font-family:"Times New Roman",Times,serif;color:#243b5a}
+.modal-content:has(.dvc-detail-shell){width:min(1200px,96vw);max-width:1200px;height:min(94vh,900px);max-height:94vh;padding:0;overflow:hidden;border-radius:10px}.modal-content:has(.dvc-detail-shell)>.modal-header{display:none}.modal-content:has(.dvc-detail-shell)>.modal-body{padding:0;overflow:hidden;height:100%}
+.dvc-detail-shell{background:#fff;min-height:100%;font-family:"Times New Roman",Times,serif;color:#243b5a;height:100%}
 .dvc-detail-head{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:16px 22px;background:#d71920;color:#fff;box-shadow:0 2px 7px rgba(0,0,0,.18)}
 .dvc-head-title{font-size:20px;font-weight:800;letter-spacing:.2px}.dvc-head-title span{font-size:13px;margin-right:10px}
 .dvc-submit-btn{background:#fff;color:#d71920;text-decoration:none;font-weight:800;padding:10px 18px;border-radius:7px;white-space:nowrap}
-.dvc-detail-scroll{padding:0 28px 35px;overflow:auto;max-height:calc(100vh - 105px)}
+.dvc-detail-scroll{padding:0 28px 35px;overflow:auto;height:calc(100% - 59px)}
 .dvc-summary{display:flex;gap:22px;justify-content:space-between;padding:24px 2px 18px;border-bottom:1px solid #e4e8ed}
 .dvc-summary-main{flex:1}.dvc-summary h1{margin:0 0 13px;color:#d71920;font-size:25px;line-height:1.35;font-weight:800}.dvc-field-line{font-size:16px}.dvc-field-line b{margin-right:10px;color:#60758e}.dvc-field-line span{background:#eef3f8;padding:7px 12px;border-radius:6px;font-weight:700;color:#253c58}
 .dvc-qr{width:130px;flex:0 0 130px;border:1px solid #dce3ea;border-radius:8px;padding:9px;text-align:center;box-shadow:0 2px 7px rgba(0,0,0,.08);background:#fff}.dvc-qr img{display:block;width:110px;height:110px;margin:auto}.dvc-qr strong{display:block;color:#d71920;font-size:13px;line-height:1.2;margin-top:6px}
