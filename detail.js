@@ -1,6 +1,7 @@
-/* GIAO DIỆN CHI TIẾT TTHC - dữ liệu chi tiết được đồng bộ từ DVCQG */
+/* GIAO DIỆN CHI TIẾT TTHC - đối chiếu danh mục từ Điều phối, liên kết chi tiết DVCQG */
 (function () {
-  const DVCQG_BASE = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/";
+  const DVCQG_BASE = "https://ndc.dichvucong.gov.vn/thu-tuc-hanh-chinh/";
+  const DVCQG_SEARCH_BASE = "https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
   const QR_BASE = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=";
   let detailIndex = new Map();
   let detailReady = null;
@@ -41,7 +42,7 @@
       if (!res.ok) throw new Error("HTTP " + res.status);
       const rows = await res.json();
       detailIndex = new Map(rows.map(x => [String(x.ma || x.maThucHien || "").trim(), x]));
-      console.log(`Đã tải ${detailIndex.size} bộ dữ liệu chi tiết TTHC DVCQG`);
+      console.log(`Đã tải ${detailIndex.size} bộ dữ liệu chi tiết TTHC`);
     } catch (e) {
       console.warn("Không tải được dữ liệu chi tiết TTHC:", e);
     }
@@ -59,7 +60,7 @@
     const noOnline = typeof window.isNoOnlineService === "function" ? window.isNoOnlineService(item) : String(item.mucDo || "").includes("Chưa cung cấp");
     const uuid = String(item.dvcqgId || "").trim();
     const url = !noOnline && uuid ? DVCQG_BASE + encodeURIComponent(uuid) : "";
-    const searchUrl = !noOnline && item.ma ? `https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?keyword=${encodeURIComponent(item.ma)}` : "";
+    const searchUrl = item.ma ? `${DVCQG_SEARCH_BASE}?keyword=${encodeURIComponent(item.ma)}` : "";
 
     const decision = value(item, ["soQuyetDinh", "quyetDinh", "decision_no", "soQuyetDinhBanHanh"]);
     const result = value(item, ["ketQua", "results", "sanPham"]);
@@ -89,7 +90,7 @@
           <div class="dvc-tab-content" id="dvc-tab-condition"><h2>YÊU CẦU VÀ ĐIỀU KIỆN</h2>${lines(conditions)}</div>
           <div class="dvc-tab-content" id="dvc-tab-legal"><h2>CĂN CỨ PHÁP LÝ</h2>${lines(legal)}</div>
           <div class="dvc-extra-grid"><div><b>PHÍ / LỆ PHÍ</b>${lines(fees)}</div><div><b>KẾT QUẢ THỰC HIỆN</b>${lines(result)}</div></div>
-          ${url ? `<div class="dvc-source-actions"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">MỞ TRANG TTHC GỐC TRÊN CỔNG DVC QUỐC GIA ↗</a>${searchUrl ? `<a class="secondary" href="${esc(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU THEO MÃ ${esc(item.ma)}</a>` : ""}</div>` : `<div class="dvc-no-service">${noOnline ? "THỦ TỤC NÀY CHƯA CUNG CẤP DỊCH VỤ CÔNG TRỰC TUYẾN" : "CHƯA XÁC ĐỊNH ĐƯỢC LIÊN KẾT CHI TIẾT TRÊN CỔNG DVC QUỐC GIA"}</div>`}
+          ${url ? `<div class="dvc-source-actions"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">MỞ TRANG TTHC GỐC TRÊN CỔNG DVC QUỐC GIA ↗</a>${searchUrl ? `<a class="secondary" href="${esc(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU THEO MÃ ${esc(item.ma)}</a>` : ""}</div>` : `<div class="dvc-source-actions"><a class="secondary" href="${esc(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU MÃ ${esc(item.ma)} TRÊN CỔNG DVC QUỐC GIA ↗</a></div>`}
         </div>
       </div>`;
 
