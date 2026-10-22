@@ -38,6 +38,11 @@ function setupSourceLink() {
   sourceLink.textContent = DATA_SOURCE_NAME;
 }
 
+function isNoOnlineService(item) {
+  const service = normalize(`${item?.mucDichVu || ""} ${item?.mucDo || ""}`);
+  return service.includes("chua cung cap dvc") || service.includes("chua cung cap dich vu cong");
+}
+
 async function loadData() {
   try {
     const [oldResponse, newResponse] = await Promise.all([
@@ -63,7 +68,11 @@ async function loadData() {
     procedures = newData.map(item => {
       const code = String(item.ma || "").trim();
       const oldItem = oldByCode.get(code) || {};
-      const dvcqgId = String(item.dvcqgId || item.dvcqg_id || oldItem.dvcqgId || "").trim();
+      const noOnlineService = isNoOnlineService(item);
+      const dvcqgId = noOnlineService
+        ? ""
+        : String(item.dvcqgId || item.dvcqg_id || oldItem.dvcqgId || "").trim();
+
       return {
         ...oldItem,
         ...item,
@@ -160,14 +169,17 @@ function showFieldProcedures(field) {
 }
 
 function procedureHtml(item, index) {
+  const noOnlineService = isNoOnlineService(item);
   const normalizedService = normalize(item.mucDichVu);
-  const type = normalizedService === "toan trinh" ? "full" : "partial";
+  const type = normalizedService === "toan trinh" ? "full" : normalizedService === "mot phan" ? "partial" : "none";
+  const serviceLabel = noOnlineService ? "CHƯA CUNG CẤP DỊCH VỤ CÔNG" : (item.mucDichVu || "Chưa cập nhật");
+
   return `
     <div class="procedure-item" data-index="${index}">
       <div class="procedure-code">${escapeHtml(item.ma || "")}</div>
       <div class="procedure-name">${escapeHtml(item.ten || "")}</div>
       <div class="procedure-meta">
-        <span class="badge ${type}">${escapeHtml(item.mucDichVu || "Chưa cập nhật")}</span>
+        <span class="badge ${type}">${escapeHtml(serviceLabel)}</span>
         <span class="badge">${escapeHtml(item.coQuanChuTri || "Chưa cập nhật")}</span>
       </div>
     </div>`;
@@ -175,8 +187,10 @@ function procedureHtml(item, index) {
 
 function showDetail(item) {
   if (!modal || !modalBody || !item) return;
-  const onlineUrl = buildDvcqgUrl(item.dvcqgId);
-  const searchUrl = buildDvcqgSearchUrl(item);
+
+  const noOnlineService = isNoOnlineService(item);
+  const onlineUrl = noOnlineService ? "" : buildDvcqgUrl(item.dvcqgId);
+  const searchUrl = noOnlineService ? "" : buildDvcqgSearchUrl(item);
 
   modalBody.innerHTML = `
     <div class="detail-title">${escapeHtml(item.ten || "")}</div>
@@ -186,7 +200,7 @@ function showDetail(item) {
       ${detailRow("Cơ quan chủ trì", item.coQuanChuTri)}
       ${detailRow("Cơ quan thực hiện", item.coQuanThucHien)}
       ${detailRow("Mã cơ quan", item.maCoQuan)}
-      ${detailRow("Mức dịch vụ", item.mucDichVu)}
+      ${detailRow("Mức dịch vụ", noOnlineService ? "CHƯA CUNG CẤP DỊCH VỤ CÔNG" : item.mucDichVu)}
       ${detailRow("Cấp thực hiện", item.cap)}
       ${detailRow("Loại TTHC", item.loai)}
       ${detailRow("Mức độ", item.mucDo)}
@@ -194,11 +208,15 @@ function showDetail(item) {
       ${detailRow("Nguồn dữ liệu", item.nguon || "Danh sách TTHC cấp xã ngày 20/10/2026")}
       ${detailRow("Mã thực hiện", item.maThucHien)}
     </div>
-    ${onlineUrl
-      ? `<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>`
-      : `<div style="margin-top:20px;padding:14px;border-radius:8px;background:#fff7e6;color:#8a4b00;font-weight:600">TTHC này chưa xác định được mã liên kết chi tiết trên Cổng Dịch vụ công Quốc gia.</div>`
+    ${noOnlineService
+      ? `<div style="margin-top:20px;padding:16px;border-radius:8px;background:#fff7e6;color:#8a4b00;font-weight:700">CHƯA CUNG CẤP DỊCH VỤ CÔNG</div>`
+      : onlineUrl
+        ? `<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>`
+        : `<div style="margin-top:20px;padding:14px;border-radius:8px;background:#fff7e6;color:#8a4b00;font-weight:600">TTHC này chưa xác định được mã liên kết chi tiết trên Cổng Dịch vụ công Quốc gia.</div>`
     }
-    <a class="online-btn" style="margin-top:10px;background:#444" href="${escapeAttribute(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU TTHC NÀY TRÊN CỔNG DVC QUỐC GIA</a>`;
+    ${!noOnlineService && searchUrl
+      ? `<a class="online-btn" style="margin-top:10px;background:#444" href="${escapeAttribute(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU TTHC NÀY TRÊN CỔNG DVC QUỐC GIA</a>`
+      : ""}`;
 
   modal.classList.add("show");
 }
@@ -267,7 +285,7 @@ function escapeHtml(value) {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
+    .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
 
