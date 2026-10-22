@@ -3,32 +3,21 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Quản trị website - TTHC Mường Lay</title>
-<link rel="stylesheet" href="admin/admin.css?v=20261022-4">
+<link rel="stylesheet" href="admin/admin.css?v=20261022-5">
 </head>
 <body>
-<div id="loginScreen" class="login-screen">
-  <div class="login-card">
-    <div class="login-logo">⚙</div><h1>QUẢN TRỊ WEBSITE</h1><p>TTHC Mường Lay</p>
-    <label>Tài khoản</label><input id="loginUser" value="admin" autocomplete="username">
-    <label>Mật khẩu</label><input id="loginPass" type="password" autocomplete="current-password">
-    <button id="loginBtn">ĐĂNG NHẬP</button><div id="loginMsg" class="msg"></div>
-  </div>
-</div>
+<div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo">⚙</div><h1>QUẢN TRỊ WEBSITE</h1><p>TTHC Mường Lay</p><label>Tài khoản</label><input id="loginUser" value="admin" autocomplete="username"><label>Mật khẩu</label><input id="loginPass" type="password" autocomplete="current-password"><button id="loginBtn">ĐĂNG NHẬP</button><div id="loginMsg" class="msg"></div></div></div>
 <div id="adminApp" class="admin-app hidden">
 <header class="topbar"><div><b>QUẢN TRỊ TTHC MƯỜNG LAY</b><span> Chỉnh giao diện và hình ảnh</span></div><div class="top-actions"><a href="/" target="_blank">XEM WEBSITE ↗</a><button id="logoutBtn">ĐĂNG XUẤT</button></div></header>
 <main class="wrap">
 <div id="saveMsg" class="save-msg"></div>
-<section class="panel"><div class="panel-title"><h2>🖼️ ĐẦU TRANG</h2><span>Thay ảnh và sửa chữ</span></div>
-<div class="grid2"><div><label>Tiêu đề</label><input id="title"></div><div><label>Dòng đơn vị</label><input id="subtitle"></div><div><label>Khẩu hiệu</label><input id="slogan"></div><div><label>Màu tiêu đề</label><input id="titleColor" type="color"></div><div><label>Màu dòng đơn vị</label><input id="subtitleColor" type="color"></div><div><label>Màu khẩu hiệu</label><input id="sloganColor" type="color"></div></div>
-<div class="image-grid"><div class="image-card"><h3>LOGO</h3><img id="logoPreview" class="preview logo-preview"><input id="logoFile" type="file" accept="image/*"><button class="secondary" data-upload="logoFile">THAY LOGO</button></div><div class="image-card"><h3>ẢNH NỀN MƯỜNG LAY</h3><img id="bgPreview" class="preview pano-preview"><input id="bgFile" type="file" accept="image/*"><button class="secondary" data-upload="bgFile">THAY ẢNH NỀN</button></div></div>
+<section class="panel"><div class="panel-title"><h2>🔄 ĐỒNG BỘ THỦ TỤC HÀNH CHÍNH</h2><span>Tự động lấy dữ liệu từ Cổng Dịch vụ công Quốc gia</span></div>
+<div class="sync-box"><div class="sync-stats"><div><small>Lần đồng bộ gần nhất</small><b id="syncTime">Chưa có</b></div><div><small>Tổng TTHC</small><b id="syncTotal">—</b></div><div><small>Toàn trình</small><b id="syncFull">—</b></div><div><small>Một phần</small><b id="syncPartial">—</b></div></div><div id="syncMessage" class="save-msg" style="display:block"></div><button id="syncBtn" class="primary big">🔄 ĐỒNG BỘ NGAY</button><p class="sync-note">Hệ thống tự động đồng bộ mỗi ngày vào khoảng 02:00. Nếu Cổng DVCQG tạm thời không phản hồi, website sẽ giữ nguyên dữ liệu gần nhất.</p></div>
 </section>
-<section class="panel"><div class="panel-title"><h2>📝 CHÂN TRANG</h2><span>Thông tin cuối website</span></div>
-<div class="grid2"><div><label>Tên Trung tâm</label><input id="footerTitle"></div><div><label>Dòng mô tả</label><input id="footerSubtitle"></div><div><label>Nguồn dữ liệu</label><input id="sourceText"></div><div><label>Link nguồn</label><input id="sourceUrl"></div><div><label>Tác giả</label><input id="author"></div><div><label>Đơn vị tác giả</label><input id="unit"></div></div>
-<div class="image-card wide"><h3>ẢNH CHÂN TRANG</h3><img id="footerPreview" class="preview footer-preview"><input id="footerFile" type="file" accept="image/*"><button class="secondary" data-upload="footerFile">THAY ẢNH CHÂN TRANG</button></div>
-</section>
+<section class="panel"><div class="panel-title"><h2>🖼️ ĐẦU TRANG</h2><span>Thay ảnh và sửa chữ</span></div><div class="grid2"><div><label>Tiêu đề</label><input id="title"></div><div><label>Dòng đơn vị</label><input id="subtitle"></div><div><label>Khẩu hiệu</label><input id="slogan"></div><div><label>Màu tiêu đề</label><input id="titleColor" type="color"></div><div><label>Màu dòng đơn vị</label><input id="subtitleColor" type="color"></div><div><label>Màu khẩu hiệu</label><input id="sloganColor" type="color"></div></div><div class="image-grid"><div class="image-card"><h3>LOGO</h3><img id="logoPreview" class="preview logo-preview"><input id="logoFile" type="file" accept="image/*"><button class="secondary" data-upload="logoFile">THAY LOGO</button></div><div class="image-card"><h3>ẢNH NỀN MƯỜNG LAY</h3><img id="bgPreview" class="preview pano-preview"><input id="bgFile" type="file" accept="image/*"><button class="secondary" data-upload="bgFile">THAY ẢNH NỀN</button></div></div></section>
+<section class="panel"><div class="panel-title"><h2>📝 CHÂN TRANG</h2><span>Thông tin cuối website</span></div><div class="grid2"><div><label>Tên Trung tâm</label><input id="footerTitle"></div><div><label>Dòng mô tả</label><input id="footerSubtitle"></div><div><label>Nguồn dữ liệu</label><input id="sourceText"></div><div><label>Link nguồn</label><input id="sourceUrl"></div><div><label>Tác giả</label><input id="author"></div><div><label>Đơn vị tác giả</label><input id="unit"></div></div><div class="image-card wide"><h3>ẢNH CHÂN TRANG</h3><img id="footerPreview" class="preview footer-preview"><input id="footerFile" type="file" accept="image/*"><button class="secondary" data-upload="footerFile">THAY ẢNH CHÂN TRANG</button></div></section>
 <section class="panel"><div class="panel-title"><h2>⚙️ HIỂN THỊ</h2><span>Thiết lập nhanh</span></div><div class="display-row"><label>Số cột TTHC</label><select id="columns"><option value="2">2 cột</option><option value="3">3 cột</option><option value="4">4 cột</option></select><label class="check"><input id="showClock" type="checkbox"> Hiện đồng hồ</label><label class="check"><input id="showStats" type="checkbox"> Hiện thống kê</label></div></section>
-<section class="panel github-panel"><div class="panel-title"><h2>🔐 LƯU TRỰC TUYẾN</h2><span>Không cần GitHub Token</span></div><p>Trang quản trị và API chạy cùng tên miền Vercel nên không còn lỗi gọi chéo miền. Anh chỉ cần đăng nhập, chỉnh sửa và bấm <b>LƯU THAY ĐỔI</b>.</p></section>
+<section class="panel github-panel"><div class="panel-title"><h2>🔐 LƯU TRỰC TUYẾN</h2><span>Không cần GitHub Token</span></div><p>Trang quản trị và API chạy cùng tên miền Vercel. Anh chỉ cần đăng nhập, chỉnh sửa và bấm <b>LƯU THAY ĐỔI</b>.</p></section>
 <div class="bottom-actions"><button id="previewBtn" class="secondary big">XEM WEBSITE</button><button id="saveBtn" class="primary big">💾 LƯU THAY ĐỔI</button></div>
-</main></div>
-<script src="quan-tri.js?v=20261022-1"></script>
+</main></div><script src="quan-tri.js?v=20261022-2"></script>
 </body></html>
