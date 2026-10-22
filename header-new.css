@@ -1,12 +1,14 @@
-/* HEADER - phong cach pano hanh chinh Mường Lay */
+/* HEADER - pano hanh chinh Mường Lay */
 .header{position:relative;width:94.8%;height:150px;min-height:150px;margin:14px auto 0;overflow:hidden;background:#eef5f8;border:1px solid #d9e0e5;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .header-pano{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.80) 18%,rgba(255,255,255,.38) 36%,rgba(255,255,255,.05) 55%,rgba(255,255,255,0) 72%),url("https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457");background-size:cover;background-position:center 48%;filter:saturate(1.12) contrast(1.04)}
 .header-inner{position:relative;z-index:5;width:100%;height:100%;padding:0 1.8%;box-sizing:border-box;display:flex;align-items:flex-start;justify-content:space-between}
 .header-title{display:flex;align-items:flex-start;gap:12px;padding:8px 0 0;background:transparent;border:0;box-shadow:none}
-.logo{width:108px;height:108px;flex:0 0 108px;margin-top:1px;border:0;padding:0;border-radius:0;background:transparent;box-shadow:none}
-.logo img{width:100%;height:100%;border:0;border-radius:0;object-fit:contain}
+.logo{width:108px;height:108px;flex:0 0 108px;margin-top:1px;border:0;padding:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden}
+/* Làm nền trắng của file logo hòa vào ảnh pano, không tạo ô trắng */
+.logo img{width:100%;height:100%;border:0;border-radius:0;object-fit:contain;mix-blend-mode:multiply;filter:saturate(1.08) contrast(1.04)}
 .header-title h1{margin:3px 0 0;color:#c5161d;font-family:"Times New Roman",Times,serif;font-size:clamp(23px,2.35vw,36px);font-weight:900;line-height:1.02;white-space:nowrap;text-shadow:0 1px 1px rgba(255,255,255,.9)}
-.header-title p{margin:8px 0 0;color:#142846;font-family:"Times New Roman",Times,serif;font-size:clamp(14px,1.35vw,21px);font-weight:900;line-height:1.05;white-space:nowrap;text-shadow:0 1px 1px rgba(255,255,255,.95)}
+/* Tên Trung tâm đổi sang màu đỏ theo mẫu */
+.header-title p{margin:8px 0 0;color:#c5161d;font-family:"Times New Roman",Times,serif;font-size:clamp(14px,1.35vw,21px);font-weight:900;line-height:1.05;white-space:nowrap;text-shadow:0 1px 1px rgba(255,255,255,.95)}
 .header-slogan{position:relative;width:max-content;margin:7px auto 0;padding:0 48px;color:#c5161d;font-family:"Times New Roman",Times,serif;font-size:clamp(14px,1.25vw,20px);font-weight:900;letter-spacing:1.5px;text-align:center;text-shadow:0 1px 1px rgba(255,255,255,.95)}
 .header-slogan::before,.header-slogan::after{content:"";position:absolute;top:50%;width:40px;height:2px;background:#d63838}.header-slogan::before{right:100%}.header-slogan::after{left:100%}
 .header-tools{position:relative;z-index:8;align-self:flex-start;margin:40px 0 0 auto;display:flex;align-items:center;gap:0}
