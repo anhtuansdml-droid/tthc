@@ -27,15 +27,39 @@
 
   function norm(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9.]+/g,' ').trim()}
   function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+
+  function submitUrl(item){
+    const uuid=String(item?.dvcqgId||item?.dvcqg_id||'').trim();
+    if(!uuid)return '';
+    const params=new URLSearchParams({
+      formalityId:uuid,
+      searchType:'PROVINCE',
+      provinceCode:'11',
+      wardCode:'03151',
+      commune:'WARD',
+      showAdvanced:'false',
+      isProvince:'0',
+      isMinistry:'0'
+    });
+    return `https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?${params.toString()}`;
+  }
+
+  function searchUrl(item){
+    const ma=String(item?.ma||'').trim();
+    return ma ? `https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?keyword=${encodeURIComponent(ma)}` : 'https://ndc.dichvucong.gov.vn/';
+  }
+
   function addMessage(text,who='bot',results=[]){
     const box=document.createElement('div');box.className='tthc-msg '+who;box.textContent=text;
     if(results.length){
       const list=document.createElement('div');list.className='tthc-results';
       results.slice(0,3).forEach(r=>{
-        const a=document.createElement('a');a.className='tthc-result';a.href='#';
-        a.innerHTML=`<b>${escapeHtml(r.ten||'')}</b><small>${escapeHtml(r.ma||'')} · ${escapeHtml(r.linhVuc||'')} · ${escapeHtml(r.mucDichVu||'Chưa cập nhật')}</small>`;
-        a.addEventListener('click',e=>{e.preventDefault();window.dispatchEvent(new CustomEvent('tthc:open',{detail:r.ma}));panel.classList.remove('show')});
-        list.appendChild(a);
+        const card=document.createElement('div');
+        card.className='tthc-result';
+        const direct=submitUrl(r);
+        card.innerHTML=`<b>${escapeHtml(r.ten||'')}</b><small>${escapeHtml(r.ma||'')} · ${escapeHtml(r.linhVuc||'')} · ${escapeHtml(r.mucDichVu||'Chưa cập nhật')}</small><div class="tthc-result-actions"><a class="tthc-submit" href="${escapeHtml(direct||searchUrl(r))}" target="_blank" rel="noopener noreferrer">➤ NỘP HỒ SƠ TRỰC TUYẾN</a><button type="button" class="tthc-detail">XEM CHI TIẾT</button></div>`;
+        card.querySelector('.tthc-detail').addEventListener('click',()=>{window.dispatchEvent(new CustomEvent('tthc:open',{detail:r.ma}));panel.classList.remove('show')});
+        list.appendChild(card);
       });
       box.appendChild(list);
     }
