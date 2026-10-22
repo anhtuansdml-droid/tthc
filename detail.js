@@ -1,17 +1,13 @@
-/* GIAO DIỆN CHI TIẾT TTHC - mô phỏng bố cục Cổng DVCQG */
+/* GIAO DIỆN CHI TIẾT TTHC - dữ liệu chi tiết được đồng bộ từ DVCQG */
 (function () {
   const DVCQG_BASE = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/";
   const QR_BASE = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=";
+  let detailIndex = new Map();
+  let detailReady = null;
 
   function esc(value) {
-    return String(value ?? "Chưa có dữ liệu")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+    return String(value ?? "Chưa có dữ liệu").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
   }
-
   function value(item, keys) {
     for (const key of keys) {
       const v = item?.[key];
@@ -19,17 +15,14 @@
     }
     return "Chưa có dữ liệu";
   }
-
-  function lines(value) {
-    const text = String(value ?? "").trim();
+  function lines(v) {
+    const text = String(v ?? "").trim();
     if (!text || text === "Chưa có dữ liệu") return `<div class="detail-empty">Chưa có dữ liệu</div>`;
     return `<div class="detail-text">${esc(text).replace(/\n/g, "<br>")}</div>`;
   }
-
-  function section(title, content) {
-    return `<section class="dvc-section"><h3>${title}</h3>${content}</section>`;
+  function info(label, v, wide) {
+    return `<div class="dvc-info-item ${wide ? "wide" : ""}"><span>${label}</span><strong>${esc(v || "Chưa có dữ liệu")}</strong></div>`;
   }
-
   function tableMethods(text) {
     const raw = String(text ?? "").trim();
     if (!raw) return `<div class="detail-empty">Chưa có dữ liệu</div>`;
@@ -42,19 +35,31 @@
       return `<tr><td class="dvc-red">${labels[m[1].toUpperCase()]}</td><td class="dvc-red">${esc(m[2])}</td><td>${esc(value(window.__dvcCurrentItem, ["phiLePhi", "fees"]))}</td><td>${esc(m[3] || "Không có")}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   }
+  async function loadDetails() {
+    try {
+      const res = await fetch("data/tthc_detail.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const rows = await res.json();
+      detailIndex = new Map(rows.map(x => [String(x.ma || x.maThucHien || "").trim(), x]));
+      console.log(`Đã tải ${detailIndex.size} bộ dữ liệu chi tiết TTHC DVCQG`);
+    } catch (e) {
+      console.warn("Không tải được dữ liệu chi tiết TTHC:", e);
+    }
+  }
+  detailReady = loadDetails();
 
-  function showDetailFull(item) {
+  async function showDetailFull(baseItem) {
+    await detailReady;
     const modal = document.getElementById("detailModal");
     const body = document.getElementById("modalBody");
-    if (!modal || !body || !item) return;
+    if (!modal || !body || !baseItem) return;
 
+    const item = { ...baseItem, ...(detailIndex.get(String(baseItem.ma || "").trim()) || {}) };
     window.__dvcCurrentItem = item;
-    const noOnline = typeof window.isNoOnlineService === "function" ? window.isNoOnlineService(item) : false;
+    const noOnline = typeof window.isNoOnlineService === "function" ? window.isNoOnlineService(item) : String(item.mucDo || "").includes("Chưa cung cấp");
     const uuid = String(item.dvcqgId || "").trim();
     const url = !noOnline && uuid ? DVCQG_BASE + encodeURIComponent(uuid) : "";
-    const searchUrl = !noOnline && item.ma
-      ? `https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?keyword=${encodeURIComponent(item.ma)}`
-      : "";
+    const searchUrl = !noOnline && item.ma ? `https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?keyword=${encodeURIComponent(item.ma)}` : "";
 
     const decision = value(item, ["soQuyetDinh", "quyetDinh", "decision_no", "soQuyetDinhBanHanh"]);
     const result = value(item, ["ketQua", "results", "sanPham"]);
@@ -72,67 +77,18 @@
 
     body.innerHTML = `
       <div class="dvc-detail-shell">
-        <div class="dvc-detail-head">
-          <div class="dvc-head-title"><span>●</span> THÔNG TIN CHI TIẾT THỦ TỤC HÀNH CHÍNH</div>
-          ${url ? `<a class="dvc-submit-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">➤ Nộp hồ sơ trực tuyến</a>` : ""}
-        </div>
-
+        <div class="dvc-detail-head"><div class="dvc-head-title"><span>●</span> THÔNG TIN CHI TIẾT THỦ TỤC HÀNH CHÍNH</div>${url ? `<a class="dvc-submit-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">➤ Nộp hồ sơ trực tuyến</a>` : ""}</div>
         <div class="dvc-detail-scroll">
-          <div class="dvc-summary">
-            <div class="dvc-summary-main">
-              <h1>${esc(item.ten || "")}</h1>
-              <div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div>
-            </div>
-            ${url ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(url)}" alt="QR nộp hồ sơ trực tuyến"><strong>QUÉT ĐỂ NỘP<br>TRỰC TUYẾN</strong></div>` : ""}
-          </div>
-
+          <div class="dvc-summary"><div class="dvc-summary-main"><h1>${esc(item.ten || "")}</h1><div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div></div>${url ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(url)}" alt="QR nộp hồ sơ trực tuyến"><strong>QUÉT ĐỂ NỘP<br>TRỰC TUYẾN</strong></div>` : ""}</div>
           <div class="dvc-info-grid">
-            ${info("Mã TTHC:", item.ma)}
-            ${info("Số Quyết định:", decision)}
-            ${info("Kết quả thực hiện:", result, true)}
-            ${info("Cơ quan ban hành:", item.coQuanChuTri)}
-            ${info("Cơ quan thực hiện:", agencies, true)}
-            ${info("Cấp thực hiện:", item.cap)}
-            ${info("Loại thủ tục:", item.loai)}
-            ${info("Nguồn/Quy định:", value(item, ["nguonQuyDinh", "nguon", "source"]))}
-            ${info("Trạng thái:", item.trangThai)}
-            ${info("Thời hạn:", time)}
-            ${info("Đối tượng thực hiện:", target, true)}
-            ${info("Cơ quan phối hợp:", coordinating, true)}
-            ${info("Địa chỉ tiếp nhận:", receive, true)}
+            ${info("Mã TTHC:", item.ma)}${info("Số Quyết định:", decision)}${info("Kết quả thực hiện:", result, true)}${info("Cơ quan ban hành:", item.coQuanChuTri)}${info("Cơ quan thực hiện:", agencies, true)}${info("Cấp thực hiện:", item.cap)}${info("Loại thủ tục:", item.loai)}${info("Nguồn/Quy định:", value(item, ["nguonQuyDinh", "nguon", "source"]))}${info("Trạng thái:", item.trangThai)}${info("Thời hạn:", time)}${info("Đối tượng thực hiện:", target, true)}${info("Cơ quan phối hợp:", coordinating, true)}${info("Địa chỉ tiếp nhận:", receive, true)}
           </div>
-
-          <div class="dvc-tabs">
-            <button class="dvc-tab active" data-tab="method">☷ Cách thức & Trình tự</button>
-            <button class="dvc-tab" data-tab="dossier">▰ Thành phần hồ sơ</button>
-            <button class="dvc-tab" data-tab="condition">● Yêu cầu & Điều kiện</button>
-            <button class="dvc-tab" data-tab="legal">⚖ Căn cứ pháp lý</button>
-          </div>
-
-          <div class="dvc-tab-content active" id="dvc-tab-method">
-            <h2>1. CÁCH THỨC THỰC HIỆN</h2>
-            ${tableMethods(methods)}
-            <h2>2. TRÌNH TỰ THỰC HIỆN</h2>
-            ${lines(steps)}
-          </div>
-          <div class="dvc-tab-content" id="dvc-tab-dossier">
-            <h2>THÀNH PHẦN HỒ SƠ</h2>
-            ${lines(dossiers)}
-          </div>
-          <div class="dvc-tab-content" id="dvc-tab-condition">
-            <h2>YÊU CẦU VÀ ĐIỀU KIỆN</h2>
-            ${lines(conditions)}
-          </div>
-          <div class="dvc-tab-content" id="dvc-tab-legal">
-            <h2>CĂN CỨ PHÁP LÝ</h2>
-            ${lines(legal)}
-          </div>
-
-          <div class="dvc-extra-grid">
-            <div><b>PHÍ / LỆ PHÍ</b>${lines(fees)}</div>
-            <div><b>KẾT QUẢ THỰC HIỆN</b>${lines(result)}</div>
-          </div>
-
+          <div class="dvc-tabs"><button class="dvc-tab active" data-tab="method">☷ Cách thức & Trình tự</button><button class="dvc-tab" data-tab="dossier">▰ Thành phần hồ sơ</button><button class="dvc-tab" data-tab="condition">● Yêu cầu & Điều kiện</button><button class="dvc-tab" data-tab="legal">⚖ Căn cứ pháp lý</button></div>
+          <div class="dvc-tab-content active" id="dvc-tab-method"><h2>1. CÁCH THỨC THỰC HIỆN</h2>${tableMethods(methods)}<h2>2. TRÌNH TỰ THỰC HIỆN</h2>${lines(steps)}</div>
+          <div class="dvc-tab-content" id="dvc-tab-dossier"><h2>THÀNH PHẦN HỒ SƠ</h2>${lines(dossiers)}</div>
+          <div class="dvc-tab-content" id="dvc-tab-condition"><h2>YÊU CẦU VÀ ĐIỀU KIỆN</h2>${lines(conditions)}</div>
+          <div class="dvc-tab-content" id="dvc-tab-legal"><h2>CĂN CỨ PHÁP LÝ</h2>${lines(legal)}</div>
+          <div class="dvc-extra-grid"><div><b>PHÍ / LỆ PHÍ</b>${lines(fees)}</div><div><b>KẾT QUẢ THỰC HIỆN</b>${lines(result)}</div></div>
           ${url ? `<div class="dvc-source-actions"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">MỞ TRANG TTHC GỐC TRÊN CỔNG DVC QUỐC GIA ↗</a>${searchUrl ? `<a class="secondary" href="${esc(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU THEO MÃ ${esc(item.ma)}</a>` : ""}</div>` : `<div class="dvc-no-service">${noOnline ? "THỦ TỤC NÀY CHƯA CUNG CẤP DỊCH VỤ CÔNG TRỰC TUYẾN" : "CHƯA XÁC ĐỊNH ĐƯỢC LIÊN KẾT CHI TIẾT TRÊN CỔNG DVC QUỐC GIA"}</div>`}
         </div>
       </div>`;
@@ -143,13 +99,7 @@
       btn.classList.add("active");
       body.querySelector(`#dvc-tab-${btn.dataset.tab}`)?.classList.add("active");
     }));
-
     modal.classList.add("show");
   }
-
-  function info(label, value, wide) {
-    return `<div class="dvc-info-item ${wide ? "wide" : ""}"><span>${label}</span><strong>${esc(value || "Chưa có dữ liệu")}</strong></div>`;
-  }
-
   window.showDetail = showDetailFull;
 })();
