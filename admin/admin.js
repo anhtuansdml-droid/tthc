@@ -1,18 +1,66 @@
-const REPO='anhtuansdml-droid/tthc', BRANCH='main', CONFIG_PATH='data/site-config.json';
-const PASS_HASH='a35346bbd5700c5e5c2dc909b9599059d31d67f7bae6c3cad47c4d463f337a69';
-let config=null, pending={logo:null,background:null,footer:null};
+const API='https://tthc-coral.vercel.app/api/admin';
+let config=null, token=sessionStorage.getItem('tthc_admin_token')||'';
 const $=id=>document.getElementById(id);
-async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
-function apiHeaders(){const t=sessionStorage.getItem('gh_token');return {'Accept':'application/vnd.github+json','Authorization':'Bearer '+t,'X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'}}
-async function githubFile(path){const r=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{headers:apiHeaders()});if(!r.ok)throw new Error('Không đọc được '+path+' ('+r.status+')');return r.json()}
-async function putFile(path,content,sha,message,encoding='utf-8'){const body={message,content,branch:BRANCH};if(sha)body.sha=sha;if(encoding==='base64')body.content=content;const r=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{method:'PUT',headers:apiHeaders(),body:JSON.stringify(body)});if(!r.ok){let x='';try{x=await r.json()}catch{}throw new Error((x.message||'GitHub không cho phép lưu')+' ('+r.status+')')}return r.json()}
-async function loadConfig(){const r=await fetch('../data/site-config.json?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('Không tải được cấu hình');config=await r.json();fillForm()}
-function set(id,v){if($(id))$(id).value=v??''} function get(id){return $(id)?.value||''}
-function fillForm(){const h=config.header||{},f=config.footer||{},d=config.display||{};set('title',h.title);set('subtitle',h.subtitle);set('slogan',h.slogan);set('titleColor',h.titleColor||'#c5161d');set('subtitleColor',h.subtitleColor||'#c5161d');set('sloganColor',h.sloganColor||'#c5161d');set('footerTitle',f.title);set('footerSubtitle',f.subtitle);set('sourceText',f.sourceText);set('sourceUrl',f.sourceUrl);set('author',f.author);set('unit',f.unit);set('columns',String(d.columns||4));$('showClock').checked=d.showClock!==false;$('showStats').checked=d.showStats!==false;$('logoPreview').src=h.logo||'';$('bgPreview').src=h.background||'';$('footerPreview').src=f.background||''}
-function collect(){config.header={...(config.header||{}),title:get('title'),subtitle:get('subtitle'),slogan:get('slogan'),titleColor:get('titleColor'),subtitleColor:get('subtitleColor'),sloganColor:get('sloganColor')};config.footer={...(config.footer||{}),title:get('footerTitle'),subtitle:get('footerSubtitle'),sourceText:get('sourceText'),sourceUrl:get('sourceUrl'),author:get('author'),unit:get('unit')};config.display={...(config.display||{}),columns:Number(get('columns')),showClock:$('showClock').checked,showStats:$('showStats').checked}}
-async function uploadImage(file,type){if(!file)return;if(file.size>700000){alert('Ảnh quá lớn. Vui lòng chọn ảnh dưới 700 KB để lưu trực tiếp trên GitHub.');return}const ext=(file.name.match(/\.[a-z0-9]+$/i)||['.jpg'])[0].toLowerCase().replace('.jpeg','.jpg');const path=`assets/admin-${type}${ext}`;const buf=await file.arrayBuffer();const bytes=new Uint8Array(buf);let binary='';const chunk=0x8000;for(let i=0;i<bytes.length;i+=chunk)binary+=String.fromCharCode(...bytes.subarray(i,i+chunk));const b64=btoa(binary);let sha=null;try{sha=(await githubFile(path)).sha}catch(e){if(!String(e.message).includes('404'))throw e}await putFile(path,b64,sha,'Quản trị: cập nhật '+type,'base64');const url=`https://raw.githubusercontent.com/${REPO}/${BRANCH}/${path}?v=${Date.now()}`;if(type==='logo'){config.header.logo=url;$('logoPreview').src=url}else if(type==='background'){config.header.background=url;$('bgPreview').src=url}else{config.footer.background=url;$('footerPreview').src=url}pending[type]=true}
-async function save(){try{collect();const token=sessionStorage.getItem('gh_token');if(!token){alert('Chưa có GitHub Token. Hãy nhập token ở mục KẾT NỐI LƯU WEBSITE.');return}$('saveMsg').style.display='block';$('saveMsg').textContent='Đang lưu cấu hình...';const old=await githubFile(CONFIG_PATH);await putFile(CONFIG_PATH,btoa(unescape(encodeURIComponent(JSON.stringify(config,null,2)+'\n'))),old.sha,'Quản trị: cập nhật giao diện','base64');$('saveMsg').textContent='✓ Đã lưu. Website sẽ cập nhật sau khi GitHub Pages triển khai phiên bản mới.';setTimeout(()=>$('saveMsg').style.display='none',7000)}catch(e){$('saveMsg').style.display='block';$('saveMsg').style.background='#fff0f0';$('saveMsg').style.color='#a00000';$('saveMsg').textContent='Lỗi: '+e.message}}
-async function login(){const u=get('loginUser').trim(),p=get('loginPass');const ok=(u==='admin'&&await sha256(p)===PASS_HASH);if(!ok){$('loginMsg').textContent='Sai tài khoản hoặc mật khẩu.';return}$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');try{await loadConfig()}catch(e){$('saveMsg').style.display='block';$('saveMsg').textContent=e.message}}
-function previewFile(inputId,imgId){const f=$(inputId).files[0];if(!f)return;$(imgId).src=URL.createObjectURL(f)}
-$('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});$('logoutBtn').onclick=()=>{sessionStorage.removeItem('gh_token');location.reload()};$('githubToken').onchange=()=>sessionStorage.setItem('gh_token',$('githubToken').value.trim());$('saveBtn').onclick=save;$('previewBtn').onclick=()=>window.open('../','_blank');$('logoFile').onchange=()=>previewFile('logoFile','logoPreview');$('bgFile').onchange=()=>previewFile('bgFile','bgPreview');$('footerFile').onchange=()=>previewFile('footerFile','footerPreview');document.querySelectorAll('[data-upload]').forEach(b=>b.onclick=async()=>{const id=b.dataset.upload,type=id==='logoFile'?'logo':id==='bgFile'?'background':'footer';try{if(!sessionStorage.getItem('gh_token')){alert('Hãy nhập GitHub Token trước.');return}await uploadImage($(id).files[0],type);alert('Đã tải ảnh lên GitHub. Bấm LƯU THAY ĐỔI để hoàn tất cấu hình.')}catch(e){alert('Lỗi tải ảnh: '+e.message)}});
-(async()=>{try{if(sessionStorage.getItem('gh_token'))$('githubToken').value=sessionStorage.getItem('gh_token')}catch{}})();
+const set=(id,v)=>{if($(id))$(id).value=v??''};
+const get=id=>$(id)?.value||'';
+
+async function api(url,options={}){
+  const headers={'Content-Type':'application/json',...(options.headers||{})};
+  if(token) headers.Authorization='Bearer '+token;
+  const r=await fetch(url,{...options,headers});
+  let data={}; try{data=await r.json()}catch{}
+  if(!r.ok) throw new Error(data.message||('Lỗi máy chủ '+r.status));
+  return data;
+}
+async function login(){
+  try{
+    const data=await api(API+'?action=login',{method:'POST',body:JSON.stringify({username:get('loginUser').trim(),password:get('loginPass')})});
+    token=data.token; sessionStorage.setItem('tthc_admin_token',token);
+    $('loginScreen').classList.add('hidden'); $('adminApp').classList.remove('hidden');
+    await loadConfig();
+  }catch(e){$('loginMsg').textContent=e.message}
+}
+async function loadConfig(){
+  config=await api(API); fillForm();
+}
+function fillForm(){
+  const h=config.header||{},f=config.footer||{},d=config.display||{};
+  set('title',h.title);set('subtitle',h.subtitle);set('slogan',h.slogan);
+  set('titleColor',h.titleColor||'#c5161d');set('subtitleColor',h.subtitleColor||'#c5161d');set('sloganColor',h.sloganColor||'#c5161d');
+  set('footerTitle',f.title);set('footerSubtitle',f.subtitle);set('sourceText',f.sourceText);set('sourceUrl',f.sourceUrl);set('author',f.author);set('unit',f.unit);
+  set('columns',String(d.columns||4));$('showClock').checked=d.showClock!==false;$('showStats').checked=d.showStats!==false;
+  $('logoPreview').src=h.logo||'';$('bgPreview').src=h.background||'';$('footerPreview').src=f.background||'';
+}
+function collect(){
+  config.header={...(config.header||{}),title:get('title'),subtitle:get('subtitle'),slogan:get('slogan'),titleColor:get('titleColor'),subtitleColor:get('subtitleColor'),sloganColor:get('sloganColor')};
+  config.footer={...(config.footer||{}),title:get('footerTitle'),subtitle:get('footerSubtitle'),sourceText:get('sourceText'),sourceUrl:get('sourceUrl'),author:get('author'),unit:get('unit')};
+  config.display={...(config.display||{}),columns:Number(get('columns')),showClock:$('showClock').checked,showStats:$('showStats').checked};
+}
+function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
+async function uploadImage(file,type){
+  if(!file)return;
+  if(file.size>5*1024*1024){alert('Ảnh quá lớn. Vui lòng chọn ảnh dưới 5 MB.');return}
+  const data=await fileToDataURL(file);
+  const result=await api(API+'?action=upload&type='+encodeURIComponent(type),{method:'POST',body:JSON.stringify({data,contentType:file.type||'image/jpeg'})});
+  if(type==='logo'){config.header={...(config.header||{}),logo:result.url};$('logoPreview').src=result.url}
+  if(type==='background'){config.header={...(config.header||{}),background:result.url};$('bgPreview').src=result.url}
+  if(type==='footer'){config.footer={...(config.footer||{}),background:result.url};$('footerPreview').src=result.url}
+  $('saveMsg').style.display='block';$('saveMsg').textContent='✓ Đã tải ảnh lên. Bấm LƯU THAY ĐỔI để áp dụng.';
+}
+async function save(){
+  try{
+    collect();$('saveMsg').style.display='block';$('saveMsg').textContent='Đang lưu cấu hình...';
+    await api(API+'?action=config',{method:'POST',body:JSON.stringify(config)});
+    $('saveMsg').textContent='✓ Đã lưu. Website cập nhật cấu hình mới ngay sau khi tải lại.';
+    setTimeout(()=>$('saveMsg').style.display='none',7000);
+  }catch(e){$('saveMsg').textContent='Lỗi: '+e.message}
+}
+function previewFile(inputId,imgId){const f=$(inputId).files[0];if(f)$(imgId).src=URL.createObjectURL(f)}
+$('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+$('logoutBtn').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};
+$('saveBtn').onclick=save;$('previewBtn').onclick=()=>window.open('../','_blank');
+$('logoFile').onchange=()=>previewFile('logoFile','logoPreview');$('bgFile').onchange=()=>previewFile('bgFile','bgPreview');$('footerFile').onchange=()=>previewFile('footerFile','footerPreview');
+$('logoFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('logoFile').files[0],'logo').catch(e=>alert('Lỗi: '+e.message));
+$('bgFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('bgFile').files[0],'background').catch(e=>alert('Lỗi: '+e.message));
+$('footerFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('footerFile').files[0],'footer').catch(e=>alert('Lỗi: '+e.message));
+if(token){(async()=>{try{$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig()}catch(e){sessionStorage.removeItem('tthc_admin_token');token='';$('loginScreen').classList.remove('hidden');$('adminApp').classList.add('hidden')}})()}
