@@ -1,84 +1,19 @@
 const API='https://tthc-anhtuansdml-9137.vercel.app/api/admin';
+const SYNC_API='https://tthc-anhtuansdml-9137.vercel.app/api/sync';
 let config=null, token=sessionStorage.getItem('tthc_admin_token')||'';
 const $=id=>document.getElementById(id);
 const set=(id,v)=>{if($(id))$(id).value=v??''};
 const get=id=>$(id)?.value||'';
-
-async function api(url,options={}){
-  const body=options.body;
-  const headers={'Content-Type':'text/plain;charset=UTF-8',...(options.headers||{})};
-  const r=await fetch(url,{...options,headers,body:body==null?body:(typeof body==='string'?body:JSON.stringify(body))});
-  let data={}; try{data=await r.json()}catch{}
-  if(!r.ok) throw new Error(data.message||('Lỗi máy chủ '+r.status));
-  return data;
-}
-async function login(){
-  try{
-    const data=await api(API+'?action=login',{method:'POST',body:{username:get('loginUser').trim(),password:get('loginPass')}});
-    token=data.token; sessionStorage.setItem('tthc_admin_token',token);
-    $('loginScreen').classList.add('hidden'); $('adminApp').classList.remove('hidden');
-    await loadConfig();
-  }catch(e){$('loginMsg').textContent=e.message||'Không kết nối được máy chủ';}
-}
-async function loadConfig(){config=await api(API);fillForm();}
-function fillForm(){
-  const h=config.header||{},f=config.footer||{},d=config.display||{};
-  set('title',h.title);set('subtitle',h.subtitle);set('slogan',h.slogan);
-  set('titleColor',h.titleColor||'#c5161d');set('subtitleColor',h.subtitleColor||'#c5161d');set('sloganColor',h.sloganColor||'#c5161d');
-  set('footerTitle',f.title);set('footerSubtitle',f.subtitle);set('sourceText',f.sourceText);set('sourceUrl',f.sourceUrl);set('author',f.author);set('unit',f.unit);
-  set('columns',String(d.columns||4));$('showClock').checked=d.showClock!==false;$('showStats').checked=d.showStats!==false;
-  $('logoPreview').src=h.logo||'';$('bgPreview').src=h.background||'';$('footerPreview').src=f.background||'';
-}
-function collect(){
-  config.header={...(config.header||{}),title:get('title'),subtitle:get('subtitle'),slogan:get('slogan'),titleColor:get('titleColor'),subtitleColor:get('subtitleColor'),sloganColor:get('sloganColor')};
-  config.footer={...(config.footer||{}),title:get('footerTitle'),subtitle:get('footerSubtitle'),sourceText:get('sourceText'),sourceUrl:get('sourceUrl'),author:get('author'),unit:get('unit')};
-  config.display={...(config.display||{}),columns:Number(get('columns')),showClock:$('showClock').checked,showStats:$('showStats').checked};
-}
+async function api(url,options={}){const body=options.body;const headers={'Content-Type':'text/plain;charset=UTF-8',...(options.headers||{})};const r=await fetch(url,{...options,headers,body:body==null?body:(typeof body==='string'?body:JSON.stringify(body))});let data={};try{data=await r.json()}catch{}if(!r.ok)throw new Error(data.message||('Lỗi máy chủ '+r.status));return data}
+async function login(){try{const data=await api(API+'?action=login',{method:'POST',body:{username:get('loginUser').trim(),password:get('loginPass')}});token=data.token;sessionStorage.setItem('tthc_admin_token',token);$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig();await loadSyncStatus()}catch(e){$('loginMsg').textContent=e.message||'Không kết nối được máy chủ';}}
+async function loadConfig(){config=await api(API);fillForm()}
+function fillForm(){const h=config.header||{},f=config.footer||{},d=config.display||{};set('title',h.title);set('subtitle',h.subtitle);set('slogan',h.slogan);set('titleColor',h.titleColor||'#c5161d');set('subtitleColor',h.subtitleColor||'#c5161d');set('sloganColor',h.sloganColor||'#c5161d');set('footerTitle',f.title);set('footerSubtitle',f.subtitle);set('sourceText',f.sourceText);set('sourceUrl',f.sourceUrl);set('author',f.author);set('unit',f.unit);set('columns',String(d.columns||4));$('showClock').checked=d.showClock!==false;$('showStats').checked=d.showStats!==false;$('logoPreview').src=h.logo||'';$('bgPreview').src=h.background||'';$('footerPreview').src=f.background||''}
+function collect(){config.header={...(config.header||{}),title:get('title'),subtitle:get('subtitle'),slogan:get('slogan'),titleColor:get('titleColor'),subtitleColor:get('subtitleColor'),sloganColor:get('sloganColor')};config.footer={...(config.footer||{}),title:get('footerTitle'),subtitle:get('footerSubtitle'),sourceText:get('sourceText'),sourceUrl:get('sourceUrl'),author:get('author'),unit:get('unit')};config.display={...(config.display||{}),columns:Number(get('columns')),showClock:$('showClock').checked,showStats:$('showStats').checked}}
 function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
-async function uploadImage(file,type){
-  if(!file)return;
-  if(file.size>5*1024*1024){alert('Ảnh quá lớn. Vui lòng chọn ảnh dưới 5 MB.');return}
-  const data=await fileToDataURL(file);
-  const result=await api(API+'?action=upload&type='+encodeURIComponent(type),{method:'POST',body:{token,data,contentType:file.type||'image/jpeg'}});
-  if(type==='logo'){config.header={...(config.header||{}),logo:result.url};$('logoPreview').src=result.url}
-  if(type==='background'){config.header={...(config.header||{}),background:result.url};$('bgPreview').src=result.url}
-  if(type==='footer'){config.footer={...(config.footer||{}),background:result.url};$('footerPreview').src=result.url}
-  $('saveMsg').style.display='block';$('saveMsg').textContent='✓ Đã tải ảnh lên. Bấm LƯU THAY ĐỔI để áp dụng.';
-}
-async function probeDieuphoi(){
-  const box=$('dieuphoiResult');
-  box.className='source-result ok';box.style.display='block';box.textContent='Đang kiểm tra nguồn Điều phối...';
-  $('probeDieuphoiBtn').disabled=true;
-  try{
-    const data=await api(API+'?action=probe-source',{method:'POST',body:{token,sourceUrl:get('dieuphoiUrl')}});
-    const lines=[];
-    lines.push('✓ HTTP nguồn: '+(data.httpStatus??'không xác định'));
-    lines.push('✓ Dung lượng HTML: '+(data.htmlBytes??0)+' bytes');
-    lines.push('✓ Script phát hiện: '+(data.scripts?.length||0));
-    if(data.scripts?.length) data.scripts.slice(0,12).forEach((x,i)=>lines.push('  JS '+(i+1)+': '+x));
-    lines.push('✓ URL dữ liệu có khả năng: '+(data.dataCandidates?.length||0));
-    if(data.dataCandidates?.length) data.dataCandidates.slice(0,20).forEach((x,i)=>lines.push('  DATA '+(i+1)+': '+x));
-    if(data.notes?.length) data.notes.forEach(x=>lines.push('⚠ '+x));
-    box.textContent=lines.join('\n');
-    if(!data.ok){box.className='source-result warn'}
-  }catch(e){box.className='source-result warn';box.textContent='✕ Không kiểm tra được nguồn: '+(e.message||e)}
-  finally{$('probeDieuphoiBtn').disabled=false}
-}
-async function save(){
-  try{
-    collect();$('saveMsg').style.display='block';$('saveMsg').textContent='Đang lưu cấu hình...';
-    await api(API+'?action=config',{method:'POST',body:{token,config}});
-    $('saveMsg').textContent='✓ Đã lưu. Website cập nhật cấu hình mới ngay sau khi tải lại.';
-    setTimeout(()=>$('saveMsg').style.display='none',7000);
-  }catch(e){$('saveMsg').textContent='Lỗi: '+e.message}
-}
+async function uploadImage(file,type){if(!file)return;if(file.size>5*1024*1024){alert('Ảnh quá lớn. Vui lòng chọn ảnh dưới 5 MB.');return}const data=await fileToDataURL(file);const result=await api(API+'?action=upload&type='+encodeURIComponent(type),{method:'POST',body:{token,data,contentType:file.type||'image/jpeg'}});if(type==='logo'){config.header={...(config.header||{}),logo:result.url};$('logoPreview').src=result.url}if(type==='background'){config.header={...(config.header||{}),background:result.url};$('bgPreview').src=result.url}if(type==='footer'){config.footer={...(config.footer||{}),background:result.url};$('footerPreview').src=result.url}$('saveMsg').style.display='block';$('saveMsg').textContent='✓ Đã tải ảnh lên. Bấm LƯU THAY ĐỔI để áp dụng.'}
+async function probeDieuphoi(){const box=$('dieuphoiResult');box.className='source-result ok';box.style.display='block';box.textContent='Đang kiểm tra nguồn Điều phối...';$('probeDieuphoiBtn').disabled=true;try{const data=await api(API+'?action=probe-source',{method:'POST',body:{token,sourceUrl:get('dieuphoiUrl')}});const lines=[];lines.push('✓ HTTP nguồn: '+(data.httpStatus??'không xác định'));lines.push('✓ Dung lượng HTML: '+(data.htmlBytes??0)+' bytes');lines.push('✓ Script phát hiện: '+(data.scripts?.length||0));if(data.scripts?.length)data.scripts.slice(0,12).forEach((x,i)=>lines.push('  JS '+(i+1)+': '+x));lines.push('✓ URL dữ liệu có khả năng: '+(data.dataCandidates?.length||0));if(data.dataCandidates?.length)data.dataCandidates.slice(0,20).forEach((x,i)=>lines.push('  DATA '+(i+1)+': '+x));if(data.notes?.length)data.notes.forEach(x=>lines.push('⚠ '+x));box.textContent=lines.join('\n');if(!data.ok)box.className='source-result warn'}catch(e){box.className='source-result warn';box.textContent='✕ Không kiểm tra được nguồn: '+(e.message||e)}finally{$('probeDieuphoiBtn').disabled=false}}
+async function syncDieuphoi(){const box=$('dieuphoiResult');const status=$('syncStatus');$('syncBtn').disabled=true;box.style.display='block';box.className='source-result ok';box.textContent='Đang lấy dữ liệu từ Điều phối và đối chiếu với danh mục hiện tại...';status.textContent='⏳ Đang đồng bộ, chưa thay đổi dữ liệu nếu nguồn không hợp lệ.';try{const r=await fetch(SYNC_API+'?action=dieuphoi',{method:'POST',headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json'}});let data={};try{data=await r.json()}catch{}if(!r.ok)throw new Error(data.message||('Lỗi đồng bộ '+r.status));$('syncTotal').textContent=data.total??'—';$('syncFull').textContent=data.full??'—';$('syncPartial').textContent=data.partial??'—';$('lastSync').textContent=data.syncedAt?new Date(data.syncedAt).toLocaleString('vi-VN'):'Vừa xong';status.textContent=`✓ Đã cập nhật từ Điều phối. Thêm ${data.added||0}, sửa ${data.changed||0}, bỏ ${data.removed||0}.`;box.textContent=`✓ ĐỒNG BỘ THÀNH CÔNG\nTổng: ${data.total}\nToàn trình: ${data.full}\nMột phần: ${data.partial}\nThêm: ${data.added}\nThay đổi: ${data.changed}\nBãi khỏi danh mục: ${data.removed}\nNguồn: ${data.sourceData||'dieuphoi.netlify.app/niemyet'}`;setTimeout(()=>location.reload(),2500)}catch(e){box.className='source-result warn';box.textContent='✕ Chưa cập nhật được: '+(e.message||e);status.textContent='⚠ Dữ liệu hiện tại được giữ nguyên.'}finally{$('syncBtn').disabled=false}}
+async function loadSyncStatus(){try{const r=await fetch(SYNC_API+'?action=status');const d=await r.json();if(d?.syncedAt)$('lastSync').textContent=new Date(d.syncedAt).toLocaleString('vi-VN');if(d?.total)$('syncTotal').textContent=d.total;if(d?.full!=null)$('syncFull').textContent=d.full;if(d?.partial!=null)$('syncPartial').textContent=d.partial;if(d?.source)$('syncStatus').textContent='Nguồn gần nhất: '+d.source}catch(_){} }
+async function save(){try{collect();$('saveMsg').style.display='block';$('saveMsg').textContent='Đang lưu cấu hình...';await api(API+'?action=config',{method:'POST',body:{token,config}});$('saveMsg').textContent='✓ Đã lưu. Website cập nhật cấu hình mới ngay sau khi tải lại.';setTimeout(()=>$('saveMsg').style.display='none',7000)}catch(e){$('saveMsg').textContent='Lỗi: '+e.message}}
 function previewFile(inputId,imgId){const f=$(inputId).files[0];if(f)$(imgId).src=URL.createObjectURL(f)}
-$('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
-$('logoutBtn').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};
-$('saveBtn').onclick=save;$('previewBtn').onclick=()=>window.open('../','_blank');
-$('probeDieuphoiBtn').onclick=probeDieuphoi;
-$('logoFile').onchange=()=>previewFile('logoFile','logoPreview');$('bgFile').onchange=()=>previewFile('bgFile','bgPreview');$('footerFile').onchange=()=>previewFile('footerFile','footerPreview');
-$('logoFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('logoFile').files[0],'logo').catch(e=>alert('Lỗi: '+e.message));
-$('bgFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('bgFile').files[0],'background').catch(e=>alert('Lỗi: '+e.message));
-$('footerFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('footerFile').files[0],'footer').catch(e=>alert('Lỗi: '+e.message));
-if(token){(async()=>{try{$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig()}catch(e){sessionStorage.removeItem('tthc_admin_token');token='';$('loginScreen').classList.remove('hidden');$('adminApp').classList.add('hidden')}})()}
+$('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});$('logoutBtn').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};$('saveBtn').onclick=save;$('previewBtn').onclick=()=>window.open('../','_blank');$('probeDieuphoiBtn').onclick=probeDieuphoi;$('syncBtn').onclick=syncDieuphoi;$('logoFile').onchange=()=>previewFile('logoFile','logoPreview');$('bgFile').onchange=()=>previewFile('bgFile','bgPreview');$('footerFile').onchange=()=>previewFile('footerFile','footerPreview');$('logoFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('logoFile').files[0],'logo').catch(e=>alert('Lỗi: '+e.message));$('bgFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('bgFile').files[0],'background').catch(e=>alert('Lỗi: '+e.message));$('footerFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('footerFile').files[0],'footer').catch(e=>alert('Lỗi: '+e.message));if(token){(async()=>{try{$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig();await loadSyncStatus()}catch(e){sessionStorage.removeItem('tthc_admin_token');token='';$('loginScreen').classList.remove('hidden');$('adminApp').classList.add('hidden')}})()}
