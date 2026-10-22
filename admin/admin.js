@@ -45,6 +45,25 @@ async function uploadImage(file,type){
   if(type==='footer'){config.footer={...(config.footer||{}),background:result.url};$('footerPreview').src=result.url}
   $('saveMsg').style.display='block';$('saveMsg').textContent='✓ Đã tải ảnh lên. Bấm LƯU THAY ĐỔI để áp dụng.';
 }
+async function probeDieuphoi(){
+  const box=$('dieuphoiResult');
+  box.className='source-result ok';box.style.display='block';box.textContent='Đang kiểm tra nguồn Điều phối...';
+  $('probeDieuphoiBtn').disabled=true;
+  try{
+    const data=await api(API+'?action=probe-source',{method:'POST',body:{token,sourceUrl:get('dieuphoiUrl')}});
+    const lines=[];
+    lines.push('✓ HTTP nguồn: '+(data.httpStatus??'không xác định'));
+    lines.push('✓ Dung lượng HTML: '+(data.htmlBytes??0)+' bytes');
+    lines.push('✓ Script phát hiện: '+(data.scripts?.length||0));
+    if(data.scripts?.length) data.scripts.slice(0,12).forEach((x,i)=>lines.push('  JS '+(i+1)+': '+x));
+    lines.push('✓ URL dữ liệu có khả năng: '+(data.dataCandidates?.length||0));
+    if(data.dataCandidates?.length) data.dataCandidates.slice(0,20).forEach((x,i)=>lines.push('  DATA '+(i+1)+': '+x));
+    if(data.notes?.length) data.notes.forEach(x=>lines.push('⚠ '+x));
+    box.textContent=lines.join('\n');
+    if(!data.ok){box.className='source-result warn'}
+  }catch(e){box.className='source-result warn';box.textContent='✕ Không kiểm tra được nguồn: '+(e.message||e)}
+  finally{$('probeDieuphoiBtn').disabled=false}
+}
 async function save(){
   try{
     collect();$('saveMsg').style.display='block';$('saveMsg').textContent='Đang lưu cấu hình...';
@@ -57,6 +76,7 @@ function previewFile(inputId,imgId){const f=$(inputId).files[0];if(f)$(imgId).sr
 $('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 $('logoutBtn').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};
 $('saveBtn').onclick=save;$('previewBtn').onclick=()=>window.open('../','_blank');
+$('probeDieuphoiBtn').onclick=probeDieuphoi;
 $('logoFile').onchange=()=>previewFile('logoFile','logoPreview');$('bgFile').onchange=()=>previewFile('bgFile','bgPreview');$('footerFile').onchange=()=>previewFile('footerFile','footerPreview');
 $('logoFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('logoFile').files[0],'logo').catch(e=>alert('Lỗi: '+e.message));
 $('bgFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('bgFile').files[0],'background').catch(e=>alert('Lỗi: '+e.message));
