@@ -41,7 +41,18 @@ function validToken(req, body = {}) {
   const b = Buffer.from(expected);
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
+
 async function readConfig() {
+  try {
+    const found = await list({ prefix: 'config/site-config-', limit: 50 });
+    const blobs = (found.blobs || []).filter(b => b.url);
+    blobs.sort((a, b) => new Date(b.uploadedAt || 0) - new Date(a.uploadedAt || 0));
+    if (blobs[0]?.url) {
+      const r = await fetch(blobs[0].url, { cache: 'no-store' });
+      if (r.ok) return await r.json();
+    }
+  } catch (_) {}
+
   try {
     const found = await list({ prefix: 'config/site-config.json', limit: 1 });
     if (found.blobs?.[0]?.url) {
@@ -49,6 +60,7 @@ async function readConfig() {
       if (r.ok) return await r.json();
     }
   } catch (_) {}
+
   const r = await fetch(DEFAULT_CONFIG_URL, { cache: 'no-store' });
   if (!r.ok) throw new Error('Không đọc được cấu hình mặc định');
   return await r.json();
@@ -78,9 +90,15 @@ export default async function handler(req, res) {
     if (req.method === 'POST' && action === 'config') {
       const config = body.config || body;
       if (!config || typeof config !== 'object') return json(res, 400, { ok: false, message: 'Dữ liệu cấu hình không hợp lệ.' });
-      const blob = await put('config/site-config.json', JSON.stringify(config, null, 2) + '\n', {
-        access: 'public', addRandomSuffix: false, allowOverwrite: true,
-        contentType: 'application/json; charset=utf-8', cacheControlMaxAge: 60
+
+      // Tạo file cấu hình mới thay vì ghi đè file cũ. Cách này tránh độ trễ
+      // do CDN/cache khi ghi đè cùng một pathname trên Vercel Blob.
+      const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '');
+      const blob = await put(`config/site-config-${stamp}.json`, JSON.stringify(config, null, 2) + '\n', {
+        access: 'public',
+        addRandomSuffix: false,
+        contentType: 'application/json; charset=utf-8',
+        cacheControlMaxAge: 0
       });
       return json(res, 200, { ok: true, url: blob.url });
     }
@@ -103,7 +121,7 @@ export default async function handler(req, res) {
 
     return json(res, 405, { ok: false, message: 'Method không được hỗ trợ.' });
   } catch (e) {
-    console.error(e);
+    console.error('ADMIN_API_ERROR', e);
     return json(res, 500, { ok: false, message: e?.message || 'Lỗi máy chủ.' });
   }
 }
