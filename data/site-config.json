@@ -1,0 +1,25 @@
+{
+  "header": {
+    "title": "BẢNG NIÊM YẾT THỦ TỤC HÀNH CHÍNH",
+    "subtitle": "TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY",
+    "slogan": "HÀNH CHÍNH PHỤC VỤ",
+    "logo": "https://degi.gialai.gov.vn/upload/105741/20250710/410369872_747078237462919_5911013010256606941_n_a5b4e.jpg",
+    "background": "https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457",
+    "titleColor": "#c5161d",
+    "subtitleColor": "#c5161d",
+    "sloganColor": "#c5161d"
+  },
+  "footer": {
+    "title": "TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY",
+    "subtitle": "Bảng niêm yết thủ tục hành chính điện tử",
+    "sourceText": "Cổng Dịch vụ công Quốc gia",
+    "sourceUrl": "https://dichvucong.gov.vn/",
+    "author": "Trần Anh Tuấn",
+    "unit": "Trung tâm Phục vụ hành chính công phường Mường Lay"
+  },
+  "display": {
+    "columns": 4,
+    "showClock": true,
+    "showStats": true
+  }
+}
