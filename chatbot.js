@@ -1,3 +1,5 @@
+import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1';
+
 (() => {
   const panel=document.getElementById('tthcChatPanel');
   const launcher=document.getElementById('tthcChatLauncher');
@@ -7,16 +9,21 @@
   const send=document.getElementById('tthcChatSend');
   if(!panel||!launcher||!messages||!input||!send)return;
 
+  const MODEL='onnx-community/Qwen2.5-0.5B-Instruct';
+  let generator=null;
+  let loadingPromise=null;
   let procedures=[];
+  let history=[];
+
   const groups=[
-    {words:['khai sinh','mới sinh','sinh con','đẻ','trẻ sơ sinh','giấy khai sinh'],terms:['khai sinh']},
-    {words:['khai tử','người mất','qua đời','tử vong','giấy báo tử'],terms:['khai tử']},
-    {words:['kết hôn','đăng ký kết hôn','lấy vợ','lấy chồng','đám cưới'],terms:['kết hôn']},
-    {words:['hộ kinh doanh','mở cửa hàng','mở quán','đăng ký kinh doanh','buôn bán'],terms:['hộ kinh doanh','đăng ký kinh doanh']},
+    {words:['khai sinh','mới sinh','sinh con','đẻ','trẻ sơ sinh','giấy khai sinh'],terms:['khai sinh','trẻ em']},
+    {words:['khai tử','người mất','qua đời','tử vong','giấy báo tử'],terms:['khai tử','tử']},
+    {words:['kết hôn','đăng ký kết hôn','lấy vợ','lấy chồng','đám cưới'],terms:['kết hôn','hôn nhân']},
+    {words:['hộ kinh doanh','mở cửa hàng','mở quán','đăng ký kinh doanh','buôn bán','tạp hóa'],terms:['hộ kinh doanh','đăng ký kinh doanh']},
     {words:['xây nhà','xây dựng','xin phép xây dựng','giấy phép xây dựng'],terms:['xây dựng','giấy phép xây dựng']},
     {words:['đất','sổ đỏ','sổ hồng','đất đai','chuyển nhượng đất','tặng cho đất','sang tên đất'],terms:['đất đai','đăng ký đất đai','chuyển nhượng','tặng cho']},
     {words:['an toàn thực phẩm','vệ sinh an toàn thực phẩm','đủ điều kiện an toàn thực phẩm','giấy chứng nhận an toàn thực phẩm'],terms:['an toàn thực phẩm']},
-    {words:['trợ cấp','người cao tuổi','người già','bảo trợ xã hội','khuyết tật','hộ nghèo'],terms:['trợ cấp','bảo trợ xã hội','người cao tuổi','khuyết tật']},
+    {words:['trợ cấp','người cao tuổi','người già','bảo trợ xã hội','khuyết tật','hộ nghèo','chế độ'],terms:['trợ cấp','bảo trợ xã hội','người cao tuổi','khuyết tật','hộ nghèo']},
     {words:['căn cước','cccd','thẻ căn cước','định danh'],terms:['căn cước','định danh']},
     {words:['thường trú','tạm trú','cư trú','chuyển hộ khẩu','nhập khẩu'],terms:['cư trú','thường trú','tạm trú']},
     {words:['chứng thực','sao y','bản sao','công chứng'],terms:['chứng thực','sao y']},
@@ -31,19 +38,9 @@
   function submitUrl(item){
     const uuid=String(item?.dvcqgId||item?.dvcqg_id||'').trim();
     if(!uuid)return '';
-    const params=new URLSearchParams({
-      formalityId:uuid,
-      searchType:'PROVINCE',
-      provinceCode:'11',
-      wardCode:'03151',
-      commune:'WARD',
-      showAdvanced:'false',
-      isProvince:'0',
-      isMinistry:'0'
-    });
+    const params=new URLSearchParams({formalityId:uuid,searchType:'PROVINCE',provinceCode:'11',wardCode:'03151',commune:'WARD',showAdvanced:'false',isProvince:'0',isMinistry:'0'});
     return `https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?${params.toString()}`;
   }
-
   function searchUrl(item){
     const ma=String(item?.ma||'').trim();
     return ma ? `https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?keyword=${encodeURIComponent(ma)}` : 'https://ndc.dichvucong.gov.vn/';
@@ -54,8 +51,7 @@
     if(results.length){
       const list=document.createElement('div');list.className='tthc-results';
       results.slice(0,3).forEach(r=>{
-        const card=document.createElement('div');
-        card.className='tthc-result';
+        const card=document.createElement('div');card.className='tthc-result';
         const direct=submitUrl(r);
         card.innerHTML=`<b>${escapeHtml(r.ten||'')}</b><small>${escapeHtml(r.ma||'')} · ${escapeHtml(r.linhVuc||'')} · ${escapeHtml(r.mucDichVu||'Chưa cập nhật')}</small><div class="tthc-result-actions"><a class="tthc-submit" href="${escapeHtml(direct||searchUrl(r))}" target="_blank" rel="noopener noreferrer">➤ NỘP HỒ SƠ TRỰC TUYẾN</a><button type="button" class="tthc-detail">XEM CHI TIẾT</button></div>`;
         card.querySelector('.tthc-detail').addEventListener('click',()=>{window.dispatchEvent(new CustomEvent('tthc:open',{detail:r.ma}));panel.classList.remove('show')});
@@ -66,7 +62,12 @@
     messages.appendChild(box);messages.scrollTop=messages.scrollHeight;
   }
 
-  function findMatches(q){
+  async function loadData(){
+    const urls=['data/tthc-live.json','data/tthc_430_2026-10-20.json','data/tthc.json'];
+    for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(!r.ok)continue;const d=await r.json();if(Array.isArray(d)&&d.length){procedures=d;break}}catch(_){} }
+  }
+
+  function findCandidates(q){
     const nq=norm(q);
     const active=groups.filter(g=>g.words.some(w=>nq.includes(norm(w))));
     const tokens=nq.split(/\s+/).filter(x=>x.length>2);
@@ -74,31 +75,72 @@
       const text=norm([p.ma,p.ten,p.linhVuc,p.coQuanChuTri,p.coQuanThucHien,p.mucDichVu].join(' '));
       let score=0;
       tokens.forEach(t=>{if(text.includes(t))score+=1});
-      active.forEach(g=>g.terms.forEach(t=>{if(text.includes(norm(t)))score+=7}));
-      if(nq.includes(norm(p.ma||'')) && p.ma)score+=100;
+      active.forEach(g=>g.terms.forEach(t=>{if(text.includes(norm(t)))score+=8}));
+      if(nq.includes(norm(p.ma||''))&&p.ma)score+=100;
       return {p,score};
-    }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.p);
+    }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,12).map(x=>x.p);
   }
 
-  async function loadData(){
-    const urls=['data/tthc-live.json','data/tthc_430_2026-10-20.json','data/tthc.json'];
-    for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(!r.ok)continue;const d=await r.json();if(Array.isArray(d)&&d.length){procedures=d;break}}catch(_){} }
+  function cleanJson(text){
+    const s=String(text||'').replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
+    try{return JSON.parse(s)}catch(_){const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a>=0&&b>a){try{return JSON.parse(s.slice(a,b+1))}catch(__){}}}
+    return null;
   }
 
-  function reply(q){
-    const results=findMatches(q);
-    if(!results.length){
-      return {text:'Tôi chưa xác định được chính xác thủ tục từ nhu cầu này. Anh/chị có thể nói rõ thêm mình muốn làm việc gì, ví dụ: “mới sinh con”, “mở hộ kinh doanh”, “xin phép xây nhà”, “làm giấy tờ đất”… Nếu cần cán bộ hỗ trợ trực tiếp, gọi 0932 293 502.',results:[]};
+  async function getDevice(){
+    try{if(navigator.gpu){const adapter=await navigator.gpu.requestAdapter();if(adapter)return 'webgpu';}}catch(_){}
+    return 'wasm';
+  }
+
+  async function getGenerator(){
+    if(generator)return generator;
+    if(!loadingPromise){
+      addMessage('⏳ Trợ lý AI đang khởi động lần đầu. Trình duyệt sẽ tải mô hình AI và ghi nhớ vào bộ nhớ đệm; lần sau sẽ nhanh hơn.','bot');
+      loadingPromise=(async()=>{
+        const device=await getDevice();
+        const g=await pipeline('text-generation',MODEL,{dtype:'q4',device});
+        generator=g;
+        return g;
+      })().catch(e=>{loadingPromise=null;throw e});
     }
-    if(results.length===1)return {text:'Tôi tìm thấy thủ tục có thể phù hợp với nhu cầu của anh/chị:',results};
-    return {text:`Tôi tìm thấy ${results.length} thủ tục có thể phù hợp. Anh/chị xem các lựa chọn dưới đây:`,results};
+    return loadingPromise;
+  }
+
+  async function askGenerativeAI(q,candidates){
+    const g=await getGenerator();
+    const candidateText=candidates.map((x,i)=>({index:i,ma:x.ma,ten:x.ten,linhVuc:x.linhVuc,mucDichVu:x.mucDichVu,coQuanThucHien:x.coQuanThucHien}));
+    const system=`Bạn là Trợ lý TTHC của Trung tâm Phục vụ hành chính công phường Mường Lay. Bạn phải trả lời bằng tiếng Việt, ngắn gọn, dễ hiểu. Người dân có thể mô tả nhu cầu đời thường và không biết tên thủ tục. Nhiệm vụ của bạn là hiểu ý định rồi chọn tối đa 3 thủ tục CHỈ trong danh sách ứng viên được cung cấp. Tuyệt đối không bịa tên, mã hoặc thủ tục ngoài danh sách. Nếu thông tin chưa đủ để xác định, hãy hỏi đúng 1 câu làm rõ và để indices là []. Nếu không có ứng viên phù hợp, indices là []. Chỉ trả về JSON hợp lệ theo mẫu {"message":"...","indices":[0,1]}.`;
+    const context=history.slice(-4).map(x=>({role:x.role,content:x.content}));
+    const messagesForModel=[{role:'system',content:system},...context,{role:'user',content:`Nhu cầu hiện tại: ${q}\n\nDanh sách ứng viên TTHC:\n${JSON.stringify(candidateText)}`}];
+    const output=await g(messagesForModel,{max_new_tokens:220,temperature:0.2,do_sample:false});
+    const generated=output?.[0]?.generated_text;
+    const raw=Array.isArray(generated)?generated.at(-1)?.content:(generated||'');
+    const parsed=cleanJson(raw);
+    if(!parsed||!Array.isArray(parsed.indices)||typeof parsed.message!=='string')throw new Error('AI trả về dữ liệu không hợp lệ');
+    const selected=parsed.indices.filter(i=>Number.isInteger(i)&&i>=0&&i<candidates.length).slice(0,3).map(i=>candidates[i]);
+    return {text:parsed.message,results:selected};
+  }
+
+  function fallback(q){
+    const results=findCandidates(q).slice(0,3);
+    if(!results.length)return {text:'Tôi chưa tìm thấy thủ tục phù hợp trong danh mục đang niêm yết. Anh/chị có thể mô tả rõ hơn nhu cầu hoặc gọi 0932 293 502 để được cán bộ hỗ trợ.',results:[]};
+    return {text:'Tôi tìm thấy một số thủ tục có thể phù hợp với nhu cầu của anh/chị:',results};
   }
 
   async function ask(){
     const q=input.value.trim();if(!q)return;
     input.value='';addMessage(q,'user');send.disabled=true;send.textContent='…';
     if(!procedures.length)await loadData();
-    const out=reply(q);addMessage(out.text,'bot',out.results);
+    const candidates=findCandidates(q);
+    let out;
+    try{
+      if(candidates.length){out=await askGenerativeAI(q,candidates)}else out=fallback(q);
+    }catch(e){
+      console.warn('AI browser fallback:',e);
+      out=fallback(q);
+    }
+    history.push({role:'user',content:q});history.push({role:'assistant',content:out.text});
+    addMessage(out.text,'bot',out.results);
     send.disabled=false;send.textContent='GỬI';input.focus();
   }
 
@@ -107,6 +149,6 @@
   send.addEventListener('click',ask);
   input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask()}});
   document.querySelectorAll('.tthc-suggest').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.q||b.textContent;ask()}));
-  addMessage('Xin chào! Tôi là Trợ lý TTHC Mường Lay. Bạn không cần biết tên thủ tục — chỉ cần mô tả việc mình muốn làm, tôi sẽ tìm thủ tục phù hợp trong danh mục đang niêm yết.');
+  addMessage('Xin chào! Tôi là Trợ lý AI TTHC Mường Lay. Bạn không cần biết tên thủ tục — chỉ cần nói việc mình muốn làm. Tôi sẽ hiểu nhu cầu và đối chiếu với danh mục TTHC đang niêm yết.');
   loadData();
 })();
