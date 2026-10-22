@@ -1,171 +1,19 @@
 import { put, list } from '@vercel/blob';
 import crypto from 'node:crypto';
-
-const DVC_API = 'https://dichvucong.gov.vn/api/v1/submitting/formality/list-all-public-formality-by-citizen';
-const STATIC_DATA = 'https://raw.githubusercontent.com/anhtuansdml-droid/tthc/main/data/tthc_430_2026-10-20.json';
-const LIVE_PATH = 'data/tthc-live.json';
-const META_PATH = 'data/tthc-sync-meta.json';
-const DVC_DETAIL_BASE = 'https://dichvucong.gov.vn/thu-tuc-hanh-chinh/';
-
-function json(res, status, body) { return res.status(status).json(body); }
-function norm(v) { return String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(); }
-function tokenValid(req) {
-  const auth = req.headers.authorization || '';
-  const supplied = auth.startsWith('Bearer ') ? auth.slice(7) : '';
-  if (process.env.CRON_SECRET && supplied === process.env.CRON_SECRET) return true;
-  if (!supplied) return false;
-  const parts = supplied.split('.');
-  if (parts.length !== 3 || parts[0] !== 'admin') return false;
-  const exp = Number(parts[1]);
-  if (!Number.isFinite(exp) || exp < Date.now()) return false;
-  const payload = `${parts[0]}.${parts[1]}`;
-  const expected = crypto.createHmac('sha256', process.env.ADMIN_PASSWORD || '').update(payload).digest('base64url');
-  const a = Buffer.from(parts[2]); const b = Buffer.from(expected);
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
-}
-async function getBlob(path) {
-  const found = await list({ prefix: path, limit: 20 });
-  const exact = (found.blobs || []).find(x => x.pathname === path && x.url);
-  if (!exact) return null;
-  const r = await fetch(exact.url + '?v=' + Date.now(), { cache: 'no-store' });
-  if (!r.ok) return null;
-  return await r.json();
-}
-function findCandidateArrays(value, out = []) {
-  if (!value || typeof value !== 'object') return out;
-  if (Array.isArray(value)) {
-    if (value.some(x => x && typeof x === 'object' && (x.code || x.ma || x.formalityCode || x.procedureCode || x.formalityId))) out.push(value);
-    value.slice(0, 5).forEach(x => findCandidateArrays(x, out));
-  } else {
-    Object.values(value).forEach(x => findCandidateArrays(x, out));
-  }
-  return out;
-}
-function extractRows(payload) {
-  const arrays = findCandidateArrays(payload);
-  if (!arrays.length) return [];
-  return arrays.sort((a,b) => b.length - a.length)[0];
-}
-function first(obj, keys) {
-  for (const k of keys) if (obj && obj[k] != null && String(obj[k]).trim() !== '') return obj[k];
-  return '';
-}
-function mapRow(row, old = {}) {
-  const ma = String(first(row, ['code','ma','maThuTuc','formalityCode','procedureCode']) || old.ma || '').trim();
-  const ten = String(first(row, ['procedureName','name','ten','tenThuTuc','formalityName']) || old.ten || '').trim();
-  const uuid = String(first(row, ['uuid','dvcqgId','formalityUuid','formalityUUID']) || old.dvcqgId || '').trim();
-  const agency = String(first(row, ['executingAgencies','executingAgency','coQuanThucHien','agencyName','departmentName']) || old.coQuanThucHien || '').trim();
-  const level = String(first(row, ['executionLevel','cap','level']) || old.cap || '').trim();
-  const service = String(first(row, ['onlineLevel','mucDichVu','mucDo','serviceLevel']) || old.mucDichVu || '').trim();
-  const field = String(first(row, ['categoryName','category','linhVuc','fieldName']) || old.linhVuc || '').trim();
-  return {
-    ...old,
-    ma,
-    ten,
-    linhVuc: field || old.linhVuc || 'Chưa xác định',
-    coQuanChuTri: String(first(row, ['departmentPromulgate','coQuanChuTri','promulgatingAgency']) || old.coQuanChuTri || '').trim(),
-    cap: level || old.cap || 'Cấp Xã',
-    mucDo: String(first(row, ['serviceType','mucDo']) || old.mucDo || '').trim(),
-    maThucHien: String(first(row, ['executionCode','maThucHien']) || old.maThucHien || ma).trim(),
-    coQuanThucHien: agency || old.coQuanThucHien || 'UBND phường Mường Lay',
-    maCoQuan: old.maCoQuan || 'H18.111',
-    mucDichVu: service || old.mucDichVu || 'Chưa cung cấp DVC',
-    dvcqgId: uuid,
-    url: uuid ? DVC_DETAIL_BASE + encodeURIComponent(uuid) : '',
-    trangThai: String(first(row, ['status','trangThai']) || old.trangThai || 'Chính thức').trim(),
-    nguon: 'Cổng Dịch vụ công Quốc gia - đồng bộ tự động'
-  };
-}
-async function dvcPage(lastId = '', q = '', departmentCode = 'H18.111') {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
-  try {
-    const r = await fetch(DVC_API, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ limit: 100, lastId, q, categoryId: '', departmentCode }),
-      signal: controller.signal, cache: 'no-store'
-    });
-    if (!r.ok) throw new Error(`DVCQG HTTP ${r.status}`);
-    return await r.json();
-  } finally { clearTimeout(timer); }
-}
-function getLastId(payload, rows) {
-  const direct = payload?.lastId || payload?.data?.lastId || payload?.result?.lastId || '';
-  if (direct && String(direct) !== String(rows[rows.length - 1]?.id || '')) return String(direct);
-  const last = rows[rows.length - 1] || {};
-  return String(last.id || last.formalityId || last._id || '');
-}
-async function discover(oldData) {
-  const pages = [];
-  let lastId = '';
-  for (let i = 0; i < 20; i++) {
-    const payload = await dvcPage(lastId, '', 'H18.111');
-    const rows = extractRows(payload);
-    if (!rows.length) break;
-    pages.push(...rows);
-    const next = getLastId(payload, rows);
-    if (!next || next === lastId || rows.length < 100) break;
-    lastId = next;
-  }
-  const oldByCode = new Map((oldData || []).map(x => [String(x.ma || '').trim(), x]));
-  const filtered = pages
-    .map(r => mapRow(r, oldByCode.get(String(first(r,['code','ma','maThuTuc','formalityCode','procedureCode'])).trim()) || {}))
-    .filter(x => x.ma && x.ten)
-    .filter(x => {
-      const a = norm(x.coQuanThucHien);
-      return !a.includes('ban chqs') && !a.includes('ban chi huy quan su') && (a.includes('mường lay') || a.includes('muong lay') || x.maCoQuan === 'H18.111');
-    });
-  const unique = new Map();
-  filtered.forEach(x => unique.set(x.ma, x));
-  return [...unique.values()];
-}
-async function saveLive(data, meta) {
-  await put(LIVE_PATH, JSON.stringify(data, null, 2) + '\n', { access:'public', addRandomSuffix:false, allowOverwrite:true, contentType:'application/json; charset=utf-8', cacheControlMaxAge:0 });
-  await put(META_PATH, JSON.stringify(meta, null, 2) + '\n', { access:'public', addRandomSuffix:false, allowOverwrite:true, contentType:'application/json; charset=utf-8', cacheControlMaxAge:0 });
-}
-async function syncNow() {
-  const staticRes = await fetch(STATIC_DATA + '?v=' + Date.now(), { cache:'no-store' });
-  if (!staticRes.ok) throw new Error('Không tải được dữ liệu nền của website');
-  const oldData = await staticRes.json();
-  if (!Array.isArray(oldData) || !oldData.length) throw new Error('Dữ liệu nền không hợp lệ');
-  let data = [];
-  let mode = 'full-discovery';
-  try { data = await discover(oldData); } catch (e) { mode = 'refresh-fallback'; console.error('DVC_DISCOVERY_FAILED', e); }
-  if (!data.length) {
-    data = oldData.map(x => ({ ...x, nguon: 'Dữ liệu nền - chưa đồng bộ được Cổng DVCQG' }));
-  }
-  const oldCodes = new Set(oldData.map(x => String(x.ma || '').trim()).filter(Boolean));
-  const newCodes = new Set(data.map(x => String(x.ma || '').trim()).filter(Boolean));
-  const added = data.filter(x => !oldCodes.has(x.ma)).length;
-  const removed = oldData.filter(x => !newCodes.has(x.ma)).length;
-  const changed = data.filter(x => { const o = oldData.find(y => y.ma === x.ma); return o && JSON.stringify({...o,nguon:''}) !== JSON.stringify({...x,nguon:''}); }).length;
-  const meta = { ok:true, mode, syncedAt:new Date().toISOString(), total:data.length, full:data.filter(x=>norm(x.mucDichVu)==='toan trinh').length, partial:data.filter(x=>norm(x.mucDichVu)==='mot phan').length, noOnline:data.filter(x=>norm(`${x.mucDichVu} ${x.mucDo}`).includes('chua cung cap')).length, added, removed, changed, source:'Cổng Dịch vụ công Quốc gia', warning: mode==='refresh-fallback' ? 'Cổng DVCQG chưa trả được danh sách; website giữ dữ liệu an toàn gần nhất.' : '' };
-  if (mode === 'full-discovery') await saveLive(data, meta);
-  else {
-    const current = await getBlob(LIVE_PATH);
-    await saveLive(current || data, {...meta, total:(current || data).length});
-    data = current || data;
-  }
-  return { ...meta, procedures:data };
-}
-export default async function handler(req,res){
-  try {
-    const action = req.query?.action || '';
-    if (req.method === 'GET' && action === 'data') {
-      const live = await getBlob(LIVE_PATH);
-      if (live && Array.isArray(live)) return json(res,200,{procedures:live});
-      const r = await fetch(STATIC_DATA + '?v=' + Date.now(), {cache:'no-store'});
-      return json(res,200,{procedures:await r.json()});
-    }
-    if (req.method === 'GET' && action === 'status') {
-      const meta = await getBlob(META_PATH);
-      return json(res,200,meta || {ok:true,syncedAt:null,total:0});
-    }
-    if (req.method !== 'POST' || !tokenValid(req)) return json(res,401,{ok:false,message:'Không có quyền đồng bộ.'});
-    const result = await syncNow();
-    return json(res,200,{ok:true,...result,procedures:undefined});
-  } catch(e) {
-    console.error('TTHC_SYNC_ERROR',e);
-    return json(res,500,{ok:false,message:e?.name==='AbortError'?'Cổng DVCQG phản hồi quá lâu. Dữ liệu website được giữ nguyên.':(e?.message||'Lỗi đồng bộ')});
-  }
-}
+const DVC_API='https://dichvucong.gov.vn/api/v1/submitting/formality/list-all-public-formality-by-citizen';
+const STATIC_DATA='https://raw.githubusercontent.com/anhtuansdml-droid/tthc/main/data/tthc_430_2026-10-20.json';
+const LIVE_PATH='data/tthc-live.json'; const META_PATH='data/tthc-sync-meta.json'; const DVC_DETAIL_BASE='https://dichvucong.gov.vn/thu-tuc-hanh-chinh/';
+function json(res,status,body){return res.status(status).json(body)}
+function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+function tokenValid(req){const auth=req.headers.authorization||'';const supplied=auth.startsWith('Bearer ')?auth.slice(7):'';if(process.env.CRON_SECRET&&supplied===process.env.CRON_SECRET)return true;if(!supplied)return false;const p=supplied.split('.');if(p.length!==3||p[0]!=='admin')return false;const exp=Number(p[1]);if(!Number.isFinite(exp)||exp<Date.now())return false;const payload=`${p[0]}.${p[1]}`;const expected=crypto.createHmac('sha256',process.env.ADMIN_PASSWORD||'').update(payload).digest('base64url');const a=Buffer.from(p[2]),b=Buffer.from(expected);return a.length===b.length&&crypto.timingSafeEqual(a,b)}
+async function getBlob(path){const found=await list({prefix:path,limit:20});const exact=(found.blobs||[]).find(x=>x.pathname===path&&x.url);if(!exact)return null;const r=await fetch(exact.url+'?v='+Date.now(),{cache:'no-store'});if(!r.ok)return null;return await r.json()}
+function findCandidateArrays(value,out=[]){if(!value||typeof value!=='object')return out;if(Array.isArray(value)){if(value.some(x=>x&&typeof x==='object'&&(x.code||x.ma||x.formalityCode||x.procedureCode||x.formalityId)))out.push(value);value.slice(0,5).forEach(x=>findCandidateArrays(x,out))}else Object.values(value).forEach(x=>findCandidateArrays(x,out));return out}
+function extractRows(payload){const arrays=findCandidateArrays(payload);return arrays.length?arrays.sort((a,b)=>b.length-a.length)[0]:[]}
+function first(obj,keys){for(const k of keys)if(obj&&obj[k]!=null&&String(obj[k]).trim()!=='')return obj[k];return ''}
+function mapRow(row,old={}){const ma=String(first(row,['code','ma','maThuTuc','formalityCode','procedureCode'])||old.ma||'').trim();const ten=String(first(row,['procedureName','name','ten','tenThuTuc','formalityName'])||old.ten||'').trim();const uuid=String(first(row,['uuid','dvcqgId','formalityUuid','formalityUUID'])||old.dvcqgId||'').trim();const agency=String(first(row,['executingAgencies','executingAgency','coQuanThucHien','agencyName','departmentName'])||old.coQuanThucHien||'').trim();return {...old,ma,ten,linhVuc:String(first(row,['categoryName','category','linhVuc','fieldName'])||old.linhVuc||'Chưa xác định').trim(),coQuanChuTri:String(first(row,['departmentPromulgate','coQuanChuTri','promulgatingAgency'])||old.coQuanChuTri||'').trim(),cap:String(first(row,['executionLevel','cap','level'])||old.cap||'Cấp Xã').trim(),mucDo:String(first(row,['serviceType','mucDo'])||old.mucDo||'').trim(),maThucHien:String(first(row,['executionCode','maThucHien'])||old.maThucHien||ma).trim(),coQuanThucHien:agency||old.coQuanThucHien||'UBND phường Mường Lay',maCoQuan:old.maCoQuan||'H18.111',mucDichVu:String(first(row,['onlineLevel','mucDichVu','mucDo','serviceLevel'])||old.mucDichVu||'Chưa cung cấp DVC').trim(),dvcqgId:uuid,url:uuid?DVC_DETAIL_BASE+encodeURIComponent(uuid):'',trangThai:String(first(row,['status','trangThai'])||old.trangThai||'Chính thức').trim(),nguon:'Cổng Dịch vụ công Quốc gia - đồng bộ tự động'}}
+async function dvcPage(lastId=''){const c=new AbortController();const t=setTimeout(()=>c.abort(),12000);try{const r=await fetch(DVC_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({limit:100,lastId,q:'',categoryId:'',departmentCode:'H18.111'}),signal:c.signal,cache:'no-store'});if(!r.ok)throw new Error(`DVCQG HTTP ${r.status}`);return await r.json()}finally{clearTimeout(t)}}
+function getLastId(payload,rows){const direct=payload?.lastId||payload?.data?.lastId||payload?.result?.lastId||'';if(direct)return String(direct);const last=rows[rows.length-1]||{};return String(last.id||last.formalityId||last._id||'')}
+async function discover(oldData){const pages=[];let lastId='';for(let i=0;i<5;i++){const payload=await dvcPage(lastId);const rows=extractRows(payload);if(!rows.length)break;pages.push(...rows);const next=getLastId(payload,rows);if(!next||next===lastId||rows.length<100)break;lastId=next}const oldByCode=new Map(oldData.map(x=>[String(x.ma||'').trim(),x]));const unique=new Map();pages.map(r=>mapRow(r,oldByCode.get(String(first(r,['code','ma','maThuTuc','formalityCode','procedureCode'])).trim())||{})).filter(x=>x.ma&&x.ten).filter(x=>{const a=norm(x.coQuanThucHien);return !a.includes('ban chqs')&&!a.includes('ban chi huy quan su')&&(a.includes('mường lay')||a.includes('muong lay')||x.maCoQuan==='H18.111')}).forEach(x=>unique.set(x.ma,x));return [...unique.values()]}
+async function saveLive(data,meta){await put(LIVE_PATH,JSON.stringify(data,null,2)+'\n',{access:'public',addRandomSuffix:false,allowOverwrite:true,contentType:'application/json; charset=utf-8',cacheControlMaxAge:0});await put(META_PATH,JSON.stringify(meta,null,2)+'\n',{access:'public',addRandomSuffix:false,allowOverwrite:true,contentType:'application/json; charset=utf-8',cacheControlMaxAge:0})}
+async function syncNow(){const r=await fetch(STATIC_DATA+'?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('Không tải được dữ liệu nền của website');const oldData=await r.json();if(!Array.isArray(oldData)||!oldData.length)throw new Error('Dữ liệu nền không hợp lệ');let data=[];let mode='full-discovery';try{data=await discover(oldData)}catch(e){mode='refresh-fallback';console.error('DVC_DISCOVERY_FAILED',e)}if(!data.length)data=oldData.map(x=>({...x,nguon:'Dữ liệu nền - chưa đồng bộ được Cổng DVCQG'}));const oldCodes=new Set(oldData.map(x=>String(x.ma||'').trim()).filter(Boolean));const newCodes=new Set(data.map(x=>String(x.ma||'').trim()).filter(Boolean));const added=data.filter(x=>!oldCodes.has(x.ma)).length;const removed=oldData.filter(x=>!newCodes.has(x.ma)).length;const changed=data.filter(x=>{const o=oldData.find(y=>y.ma===x.ma);return o&&JSON.stringify({...o,nguon:''})!==JSON.stringify({...x,nguon:''})}).length;const meta={ok:true,mode,syncedAt:new Date().toISOString(),total:data.length,full:data.filter(x=>norm(x.mucDichVu)==='toan trinh').length,partial:data.filter(x=>norm(x.mucDichVu)==='mot phan').length,noOnline:data.filter(x=>norm(`${x.mucDichVu} ${x.mucDo}`).includes('chua cung cap')).length,added,removed,changed,source:'Cổng Dịch vụ công Quốc gia',warning:mode==='refresh-fallback'?'Cổng DVCQG chưa trả được danh sách; website giữ dữ liệu an toàn gần nhất.':''};if(mode==='full-discovery')await saveLive(data,meta);else{const current=await getBlob(LIVE_PATH);await saveLive(current||data,{...meta,total:(current||data).length});data=current||data}return {...meta,procedures:data}}
+export default async function handler(req,res){try{const action=req.query?.action||'';if(req.method==='GET'&&action==='data'){const live=await getBlob(LIVE_PATH);if(live&&Array.isArray(live))return json(res,200,{procedures:live});const r=await fetch(STATIC_DATA+'?v='+Date.now(),{cache:'no-store'});return json(res,200,{procedures:await r.json()})}if(req.method==='GET'&&action==='status'){const meta=await getBlob(META_PATH);return json(res,200,meta||{ok:true,syncedAt:null,total:0})}if(req.method!=='POST'||!tokenValid(req))return json(res,401,{ok:false,message:'Không có quyền đồng bộ.'});const result=await syncNow();return json(res,200,{ok:true,...result,procedures:undefined})}catch(e){console.error('TTHC_SYNC_ERROR',e);return json(res,500,{ok:false,message:e?.name==='AbortError'?'Cổng DVCQG phản hồi quá lâu. Dữ liệu website được giữ nguyên.':(e?.message||'Lỗi đồng bộ')})}}
