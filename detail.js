@@ -77,7 +77,7 @@
 
     body.innerHTML = `
       <div class="dvc-detail-shell">
-        <div class="dvc-detail-head"><div class="dvc-head-title"><span>●</span> THÔNG TIN CHI TIẾT THỦ TỤC HÀNH CHÍNH</div>${url ? `<a class="dvc-submit-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">➤ Nộp hồ sơ trực tuyến</a>` : ""}</div>
+        <div class="dvc-detail-head"><div class="dvc-head-title"><span>●</span> THÔNG TIN CHI TIẾT THỦ TỤC HÀNH CHÍNH</div><div class="dvc-head-actions">${url ? `<a class="dvc-submit-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">➤ Nộp hồ sơ trực tuyến</a>` : ""}<button type="button" class="dvc-close-btn" aria-label="Đóng" title="Đóng" onclick="document.getElementById('detailModal')?.classList.remove('show')">×</button></div></div>
         <div class="dvc-detail-scroll">
           <div class="dvc-summary"><div class="dvc-summary-main"><h1>${esc(item.ten || "")}</h1><div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div></div>${url ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(url)}" alt="QR nộp hồ sơ trực tuyến"><strong>QUÉT ĐỂ NỘP<br>TRỰC TUYẾN</strong></div>` : ""}</div>
           <div class="dvc-info-grid">
