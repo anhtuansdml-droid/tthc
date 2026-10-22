@@ -5,24 +5,22 @@ const set=(id,v)=>{if($(id))$(id).value=v??''};
 const get=id=>$(id)?.value||'';
 
 async function api(url,options={}){
-  const headers={'Content-Type':'application/json',...(options.headers||{})};
-  if(token) headers.Authorization='Bearer '+token;
-  const r=await fetch(url,{...options,headers});
+  const body=options.body;
+  const headers={'Content-Type':'text/plain;charset=UTF-8',...(options.headers||{})};
+  const r=await fetch(url,{...options,headers,body:body==null?body:(typeof body==='string'?body:JSON.stringify(body))});
   let data={}; try{data=await r.json()}catch{}
   if(!r.ok) throw new Error(data.message||('Lỗi máy chủ '+r.status));
   return data;
 }
 async function login(){
   try{
-    const data=await api(API+'?action=login',{method:'POST',body:JSON.stringify({username:get('loginUser').trim(),password:get('loginPass')})});
+    const data=await api(API+'?action=login',{method:'POST',body:{username:get('loginUser').trim(),password:get('loginPass')}});
     token=data.token; sessionStorage.setItem('tthc_admin_token',token);
     $('loginScreen').classList.add('hidden'); $('adminApp').classList.remove('hidden');
     await loadConfig();
-  }catch(e){$('loginMsg').textContent=e.message}
+  }catch(e){$('loginMsg').textContent=e.message||'Không kết nối được máy chủ';}
 }
-async function loadConfig(){
-  config=await api(API); fillForm();
-}
+async function loadConfig(){config=await api(API);fillForm();}
 function fillForm(){
   const h=config.header||{},f=config.footer||{},d=config.display||{};
   set('title',h.title);set('subtitle',h.subtitle);set('slogan',h.slogan);
@@ -41,7 +39,7 @@ async function uploadImage(file,type){
   if(!file)return;
   if(file.size>5*1024*1024){alert('Ảnh quá lớn. Vui lòng chọn ảnh dưới 5 MB.');return}
   const data=await fileToDataURL(file);
-  const result=await api(API+'?action=upload&type='+encodeURIComponent(type),{method:'POST',body:JSON.stringify({data,contentType:file.type||'image/jpeg'})});
+  const result=await api(API+'?action=upload&type='+encodeURIComponent(type),{method:'POST',body:{token,data,contentType:file.type||'image/jpeg'}});
   if(type==='logo'){config.header={...(config.header||{}),logo:result.url};$('logoPreview').src=result.url}
   if(type==='background'){config.header={...(config.header||{}),background:result.url};$('bgPreview').src=result.url}
   if(type==='footer'){config.footer={...(config.footer||{}),background:result.url};$('footerPreview').src=result.url}
@@ -50,7 +48,7 @@ async function uploadImage(file,type){
 async function save(){
   try{
     collect();$('saveMsg').style.display='block';$('saveMsg').textContent='Đang lưu cấu hình...';
-    await api(API+'?action=config',{method:'POST',body:JSON.stringify(config)});
+    await api(API+'?action=config',{method:'POST',body:{token,config}});
     $('saveMsg').textContent='✓ Đã lưu. Website cập nhật cấu hình mới ngay sau khi tải lại.';
     setTimeout(()=>$('saveMsg').style.display='none',7000);
   }catch(e){$('saveMsg').textContent='Lỗi: '+e.message}
