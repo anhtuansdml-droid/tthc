@@ -1,0 +1,60 @@
+/* ===== BANNER MƯỜNG LAY + THÔNG TIN TÁC GIẢ ===== */
+.footer-banner{
+  position:relative;
+  width:min(1600px,calc(100% - 40px));
+  min-height:300px;
+  margin:34px auto 0;
+  overflow:hidden;
+  border-radius:16px 16px 0 0;
+  background:#102b4a url("https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457") center center/cover no-repeat;
+  box-shadow:0 -3px 18px rgba(0,0,0,.12);
+}
+.footer-banner::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(8,32,57,.02) 35%,rgba(7,30,54,.78) 100%);
+}
+.footer-banner::after{
+  content:"";
+  position:absolute;
+  left:-4%;right:-4%;bottom:-52px;
+  height:92px;
+  background:linear-gradient(180deg,#ffd33d 0 17%,#e30613 18% 58%,#b4000a 59% 100%);
+  border-radius:50% 50% 0 0/55% 55% 0 0;
+  transform:rotate(-1.2deg);
+}
+.footer-banner-info{
+  position:absolute;
+  left:50%;
+  bottom:38px;
+  transform:translateX(-50%);
+  z-index:2;
+  width:min(1000px,calc(100% - 50px));
+  display:grid;
+  grid-template-columns:1fr 1px 1fr;
+  gap:28px;
+  align-items:center;
+  color:#fff;
+  text-align:left;
+  text-shadow:0 2px 4px rgba(0,0,0,.65);
+}
+.footer-banner-col{text-align:center}
+.footer-banner-title{font-size:19px;font-weight:900;letter-spacing:.2px}
+.footer-banner-sub{margin-top:7px;font-size:15px;font-weight:700}
+.footer-banner-author{text-align:left;font-size:15px;line-height:1.65}
+.footer-banner-author strong{color:#ffd84a;font-size:17px}
+.footer-banner-divider{width:2px;height:78px;background:rgba(255,255,255,.65)}
+.footer-banner-source{color:#ffd84a;font-weight:900}
+.footer-banner-ribbon{display:none}
+
+.footer{margin-top:0}
+
+@media(max-width:800px){
+  .footer-banner{width:calc(100% - 20px);min-height:330px;margin-top:24px;border-radius:12px 12px 0 0}
+  .footer-banner-info{bottom:48px;width:calc(100% - 30px);grid-template-columns:1fr;gap:8px}
+  .footer-banner-divider{width:100%;height:1px}
+  .footer-banner-author{text-align:center}
+  .footer-banner-title{font-size:16px}
+  .footer-banner-sub,.footer-banner-author{font-size:13px}
+}
