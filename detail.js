@@ -19,6 +19,12 @@
     }
     return "Chưa có dữ liệu";
   }
+  function serviceLevel(item) {
+    const s = String(item?.mucDichVu || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+    if (s === "toan trinh") return "Toàn trình";
+    if (s === "mot phan") return "Một phần";
+    return "Chưa cung cấp DVC";
+  }
   function lines(v) {
     const text = String(v ?? "").trim();
     if (!text || text === "Chưa có dữ liệu") return `<div class="detail-empty">Chưa có dữ liệu</div>`;
@@ -52,7 +58,6 @@
   }
   detailReady = loadDetails();
 
-  // Link nộp hồ sơ: mở đúng TTHC trên DVCQG và truyền sẵn tỉnh/xã để hệ thống tự lọc cơ quan thực hiện.
   function buildSubmitUrl(item) {
     const uuid = String(item?.dvcqgId || "").trim();
     if (!uuid) return "";
@@ -96,6 +101,7 @@
     const legal = value(item, ["canCuPhapLy", "legal_basis"]);
     const agencies = value(item, ["coQuanThucHien", "executing_agencies"]);
     const coordinating = value(item, ["coQuanPhoiHop", "coQuanPhoiHopThucHien", "coordinating_agencies"]);
+    const service = serviceLevel(item);
 
     body.innerHTML = `
       <div class="dvc-detail-shell">
@@ -103,7 +109,7 @@
         <div class="dvc-detail-scroll">
           <div class="dvc-summary"><div class="dvc-summary-main"><h1>${esc(item.ten || "")}</h1><div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div></div>${submitUrl ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(submitUrl)}" alt="QR nộp hồ sơ trực tuyến"><strong>QUÉT ĐỂ NỘP<br>TRỰC TUYẾN</strong></div>` : ""}</div>
           <div class="dvc-info-grid">
-            ${info("Mã TTHC:", item.ma)}${info("Số Quyết định:", decision)}${info("Kết quả thực hiện:", result, true)}${info("Cơ quan ban hành:", item.coQuanChuTri)}${info("Cơ quan thực hiện:", agencies, true)}${info("Cấp thực hiện:", item.cap)}${info("Loại thủ tục:", item.loai)}${info("Nguồn/Quy định:", value(item, ["nguonQuyDinh", "nguon", "source"]))}${info("Trạng thái:", item.trangThai)}${info("Thời hạn:", time)}${info("Đối tượng thực hiện:", target, true)}${info("Cơ quan phối hợp:", coordinating, true)}${info("Địa chỉ tiếp nhận:", receive, true)}
+            ${info("Mã TTHC:", item.ma)}${info("Số Quyết định:", decision)}${info("Kết quả thực hiện:", result, true)}${info("Cơ quan ban hành:", item.coQuanChuTri)}${info("Cơ quan thực hiện:", agencies, true)}${info("Cấp thực hiện:", item.cap)}${info("Loại thủ tục:", service)}${info("Nguồn/Quy định:", "Cổng Dịch vụ công Quốc gia")}${info("Trạng thái:", item.trangThai)}${info("Thời hạn:", time)}${info("Đối tượng thực hiện:", target, true)}${info("Cơ quan phối hợp:", coordinating, true)}${info("Địa chỉ tiếp nhận:", receive, true)}
           </div>
           <div class="dvc-tabs"><button class="dvc-tab active" data-tab="method">☷ Cách thức & Trình tự</button><button class="dvc-tab" data-tab="dossier">▰ Thành phần hồ sơ</button><button class="dvc-tab" data-tab="condition">● Yêu cầu & Điều kiện</button><button class="dvc-tab" data-tab="legal">⚖ Căn cứ pháp lý</button></div>
           <div class="dvc-tab-content active" id="dvc-tab-method"><h2>1. CÁCH THỨC THỰC HIỆN</h2>${tableMethods(methods)}<h2>2. TRÌNH TỰ THỰC HIỆN</h2>${lines(steps)}</div>
