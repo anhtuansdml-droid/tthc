@@ -23,7 +23,7 @@ jobs:
   update-links:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -65,9 +65,6 @@ jobs:
               return re.sub(r'\s+', ' ', s).strip()
 
           def norm_code(s):
-              """Chi bo sung so 0 o CUOI ma, khong xoa so 0 o DAU segment.
-              Vi du 2.00072 == 2.000720, nhung 1.01304 != 1.001304.
-              """
               s = '' if s is None else str(s).strip()
               parts = s.split('.')
               if len(parts) >= 2 and all(p.isdigit() for p in parts):
@@ -77,7 +74,6 @@ jobs:
 
           with open(DATA, 'r', encoding='utf-8') as f:
               data = json.load(f)
-
           end = min(len(data), START + COUNT - 1)
           selected = data[START - 1:end]
 
@@ -90,14 +86,11 @@ jobs:
           df['_nname'] = df['procedure_name'].map(norm_text)
           df = df.sort_values(['_ward'], ascending=[False])
 
-          # Chi dung ma sau khi chuan hoa an toan; khong dung kieu 1.01304 -> 1.001304.
           by_code = {}
           for _, r in df.iterrows():
               code = r['_ncode']
               if code and code not in by_code:
                   by_code[code] = r
-
-          # Ten chi dung khi duy nhat trong dataset.
           by_name = {}
           for _, r in df.iterrows():
               name = r['_nname']
@@ -110,32 +103,22 @@ jobs:
 
           found_batch = 0
           methods = {'ma': 0, 'ten': 0}
-          used_ids = set()
-          # Bao gom cac UUID dang co ngoai batch de khong gan trung cho TTHC khac.
-          for item in data:
-              if str(item.get('dvcqgId','')).strip():
-                  used_ids.add(str(item['dvcqgId']).strip())
+          used_ids = {str(x.get('dvcqgId','')).strip() for x in data if str(x.get('dvcqgId','')).strip()}
           for item in selected:
               used_ids.discard(str(item.get('dvcqgId','')).strip())
 
           for idx, item in enumerate(selected, start=START):
               code = str(item.get('ma','')).strip()
               name = str(item.get('ten','')).strip()
-              ncode = norm_code(code)
-              nname = norm_text(name)
-              row = by_code.get(ncode)
+              row = by_code.get(norm_code(code))
               method = 'ma'
-
-              # Neu ma khong co, chi dung ten khi co DUY NHAT mot ban ghi.
-              if row is None and nname:
-                  candidates = by_name.get(nname, [])
+              if row is None and name:
+                  candidates = by_name.get(norm_text(name), [])
                   if len(candidates) == 1:
                       row = candidates[0]
                       method = 'ten'
-
               if row is not None and str(row['formality_id']).strip():
                   fid = str(row['formality_id']).strip()
-                  # Mot UUID khong duoc gan cho 2 TTHC khac nhau.
                   if fid in used_ids:
                       row = None
                       print(f'[{idx}/{len(data)}] BO QUA TRUNG UUID {code} | {fid}')
@@ -145,8 +128,7 @@ jobs:
                       used_ids.add(fid)
                       found_batch += 1
                       methods[method] += 1
-                      print(f'[{idx}/{len(data)}] OK {code} | {method} | {fid} | {row["code"]}')
-
+                      print(f'[{idx}/{len(data)}] OK {code} | {method} | {fid}')
               if row is None:
                   item.pop('dvcqgId', None)
                   item['url'] = ''
@@ -162,33 +144,24 @@ jobs:
           for x in found_all:
               duplicate_ids.setdefault(x['dvcqgId'], []).append(x['ma'])
           duplicate_ids = {k:v for k,v in duplicate_ids.items() if len(v) > 1}
-
-          report = {
-              'total': len(data),
-              'found': len(found_all),
-              'missing': len(missing_all),
-              'duplicateUuidCount': len(duplicate_ids),
-              'lastBatch': {'start': START, 'count': len(selected), 'end': end, 'foundBatch': found_batch, 'methods': methods},
-              'source': 'tmquan/dichvucong-gov-vn procedures parquet; exact normalized code -> unique exact name; no fuzzy matching',
-              'foundItems': found_all,
-              'missingItems': missing_all,
-              'duplicateUuidItems': duplicate_ids
-          }
+          report = {'total': len(data), 'found': len(found_all), 'missing': len(missing_all), 'duplicateUuidCount': len(duplicate_ids), 'lastBatch': {'start': START, 'count': len(selected), 'end': end, 'foundBatch': found_batch, 'methods': methods}, 'source': 'tmquan/dichvucong-gov-vn procedures parquet; exact normalized code -> unique exact name; no fuzzy matching', 'foundItems': found_all, 'missingItems': missing_all, 'duplicateUuidItems': duplicate_ids}
           with open(REPORT, 'w', encoding='utf-8') as f:
               json.dump(report, f, ensure_ascii=False, indent=2)
               f.write('\n')
-
           print(f'DONE {START}-{end} | batch_found={found_batch} | ma={methods["ma"]} | ten={methods["ten"]} | all_found={len(found_all)} | missing={len(missing_all)} | duplicate_uuid={len(duplicate_ids)}')
           PY
+
+      - name: Dong bo du lieu chi tiet TTHC co DVC
+        run: python scripts/sync_dvcqg_detail.py
 
       - name: Commit ket qua
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/tthc_430_2026-10-20.json data/dvcqg_link_report.json
+          git add data/tthc_430_2026-10-20.json data/dvcqg_link_report.json data/tthc_detail.json data/dvcqg_detail_sync_report.json
           if git diff --cached --quiet; then
             echo "Khong co thay doi."
           else
-            git commit -m "Sua doi chieu UUID DVCQG an toan"
+            git commit -m "Dong bo du lieu chi tiet TTHC DVCQG"
             git push
           fi
