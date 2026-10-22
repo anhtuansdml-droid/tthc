@@ -31,7 +31,7 @@ jobs:
       - name: Cai Python va thu vien
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pandas pyarrow
+          python -m pip install pandas pyarrow rapidfuzz
 
       - name: Tai dataset TTHC co UUID DVCQG
         run: |
@@ -41,20 +41,36 @@ jobs:
             -o .cache/procedures.parquet
           ls -lh .cache/procedures.parquet
 
-      - name: Cap nhat UUID va link DVCQG
+      - name: Doi chieu UUID DVCQG theo ma va ten
         env:
           START: ${{ inputs.start || '1' }}
           COUNT: ${{ inputs.count || '430' }}
         run: |
           python - <<'PY'
-          import json, os
+          import json, os, re, unicodedata
           import pandas as pd
+          from rapidfuzz.fuzz import ratio
 
           DATA = 'data/tthc_430_2026-10-20.json'
           REPORT = 'data/dvcqg_link_report.json'
           PARQUET = '.cache/procedures.parquet'
           START = max(1, int(os.environ.get('START', '1')))
           COUNT = max(1, int(os.environ.get('COUNT', '430')))
+
+          def norm_text(s):
+              s = '' if s is None else str(s)
+              s = unicodedata.normalize('NFD', s)
+              s = ''.join(c for c in s if unicodedata.category(c) != 'Mn')
+              s = s.lower().replace('đ', 'd')
+              s = re.sub(r'[^a-z0-9]+', ' ', s)
+              return re.sub(r'\s+', ' ', s).strip()
+
+          def norm_code(s):
+              s = '' if s is None else str(s).strip()
+              parts = s.split('.')
+              if len(parts) >= 2 and all(p.isdigit() for p in parts):
+                  return '.'.join(str(int(p)) for p in parts)
+              return re.sub(r'\s+', '', s).lower()
 
           with open(DATA, 'r', encoding='utf-8') as f:
               data = json.load(f)
@@ -64,44 +80,87 @@ jobs:
           codes = {str(x.get('ma','')).strip() for x in selected if str(x.get('ma','')).strip()}
 
           df = pd.read_parquet(PARQUET, columns=['formality_id','code','source_url','procedure_name','is_ward'])
-          df['code'] = df['code'].fillna('').astype(str).str.strip()
-          df['formality_id'] = df['formality_id'].fillna('').astype(str).str.strip()
-          df['source_url'] = df['source_url'].fillna('').astype(str).str.strip()
-          df = df[df['code'].isin(codes)].copy()
-
-          # Uu tien ban ghi cap xa neu cung ma co nhieu ban ghi.
+          for col in ['code','formality_id','source_url','procedure_name']:
+              df[col] = df[col].fillna('').astype(str).str.strip()
+          df = df[df['formality_id'] != ''].copy()
           df['_ward'] = df['is_ward'].fillna(False).astype(bool)
-          df = df.sort_values(['code', '_ward'], ascending=[True, False]).drop_duplicates('code', keep='first')
-          lookup = {r['code']: r for _, r in df.iterrows()}
+          df['_ncode'] = df['code'].map(norm_code)
+          df['_nname'] = df['procedure_name'].map(norm_text)
+
+          # Uu tien ban ghi cap xa khi cung ma/ten co nhieu ban ghi.
+          df = df.sort_values(['_ward'], ascending=[False])
+
+          by_code = {}
+          by_name = {}
+          for _, r in df.iterrows():
+              code = r['_ncode']
+              name = r['_nname']
+              if code and code not in by_code:
+                  by_code[code] = r
+              if name:
+                  by_name.setdefault(name, []).append(r)
+
+          def make_url(r):
+              fid = str(r['formality_id']).strip()
+              return str(r['source_url']).strip() or f'https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId={fid}'
 
           found_batch = 0
+          methods = {'ma': 0, 'ten': 0, 'fuzzy': 0}
           for idx, item in enumerate(selected, start=START):
               code = str(item.get('ma','')).strip()
-              row = lookup.get(code)
-              if row is not None and row['formality_id']:
+              name = str(item.get('ten','')).strip()
+              ncode = norm_code(code)
+              nname = norm_text(name)
+              row = by_code.get(ncode)
+              method = 'ma'
+
+              # Neu ma da thay doi/dang viet khac, doi chieu ten chinh xac.
+              if row is None and nname:
+                  candidates = by_name.get(nname, [])
+                  if len(candidates) == 1:
+                      row = candidates[0]
+                      method = 'ten'
+
+              # Fuzzy name chi chap nhan khi rat sat va khong co doi thu gan nhau.
+              if row is None and nname:
+                  scored = []
+                  for cand_name, candidates in by_name.items():
+                      score = ratio(nname, cand_name)
+                      if score >= 94:
+                          for cand in candidates[:3]:
+                              scored.append((score, cand))
+                  scored.sort(key=lambda x: x[0], reverse=True)
+                  if scored:
+                      best_score, best = scored[0]
+                      second_score = scored[1][0] if len(scored) > 1 else 0
+                      if best_score >= 97 or (best_score >= 94 and best_score - second_score >= 2):
+                          row = best
+                          method = 'fuzzy'
+
+              if row is not None and str(row['formality_id']).strip():
                   fid = str(row['formality_id']).strip()
                   item['dvcqgId'] = fid
-                  # Link hien tai cua dataset DVCQG; khong phu thuoc viec runner co truy cap duoc dichvucong.gov.vn hay khong.
-                  item['url'] = str(row['source_url']).strip() or f'https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId={fid}'
+                  item['url'] = make_url(row)
                   found_batch += 1
-                  print(f'[{idx}/{len(data)}] OK {code} -> {fid}')
+                  methods[method] += 1
+                  print(f'[{idx}/{len(data)}] OK {code} | {method} | {fid} | {row["code"]}')
               else:
                   item.pop('dvcqgId', None)
                   item['url'] = ''
-                  print(f'[{idx}/{len(data)}] KHONG TIM THAY {code}')
+                  print(f'[{idx}/{len(data)}] KHONG TIM THAY {code} | {name}')
 
           with open(DATA, 'w', encoding='utf-8') as f:
               json.dump(data, f, ensure_ascii=False, indent=2)
               f.write('\n')
 
-          found_all = [{'ma': x.get('ma'), 'dvcqgId': x.get('dvcqgId'), 'url': x.get('url','')} for x in data if str(x.get('dvcqgId','')).strip()]
-          missing_all = [{'ma': x.get('ma')} for x in data if not str(x.get('dvcqgId','')).strip()]
+          found_all = [{'ma': x.get('ma'), 'ten': x.get('ten'), 'dvcqgId': x.get('dvcqgId'), 'url': x.get('url','')} for x in data if str(x.get('dvcqgId','')).strip()]
+          missing_all = [{'ma': x.get('ma'), 'ten': x.get('ten')} for x in data if not str(x.get('dvcqgId','')).strip()]
           report = {
               'total': len(data),
               'found': len(found_all),
               'missing': len(missing_all),
-              'lastBatch': {'start': START, 'count': len(selected), 'end': end, 'foundBatch': found_batch},
-              'source': 'tmquan/dichvucong-gov-vn procedures parquet',
+              'lastBatch': {'start': START, 'count': len(selected), 'end': end, 'foundBatch': found_batch, 'methods': methods},
+              'source': 'tmquan/dichvucong-gov-vn procedures parquet; match ma -> ten -> fuzzy ten',
               'foundItems': found_all,
               'missingItems': missing_all
           }
@@ -109,7 +168,7 @@ jobs:
               json.dump(report, f, ensure_ascii=False, indent=2)
               f.write('\n')
 
-          print(f'DONE {START}-{end} | batch_found={found_batch} | all_found={len(found_all)} | missing={len(missing_all)}')
+          print(f'DONE {START}-{end} | batch_found={found_batch} | ma={methods["ma"]} | ten={methods["ten"]} | fuzzy={methods["fuzzy"]} | all_found={len(found_all)} | missing={len(missing_all)}')
           PY
 
       - name: Commit ket qua
@@ -120,6 +179,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Khong co thay doi."
           else
-            git commit -m "Cap nhat UUID va link TTHC DVCQG"
+            git commit -m "Doi chieu bo sung UUID DVCQG theo ten TTHC"
             git push
           fi
