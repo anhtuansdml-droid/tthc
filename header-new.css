@@ -1,15 +1,19 @@
-/* HEADER MỚI - theo mẫu người dùng cung cấp */
-.header{position:relative;min-height:185px;height:clamp(133px,9.92vw,190px);overflow:hidden;background:#fff;border-bottom:0;box-shadow:none}
-.header-pano{position:absolute;inset:0;background-image:url("https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457");background-size:cover;background-position:center 45%;filter:saturate(1.08) contrast(1.03)}
-.header-inner{position:relative;z-index:2;height:100%;min-height:0;max-width:none;padding:0 2.2%;display:flex;align-items:center;justify-content:space-between}
-/* Không phủ nền trắng lên ảnh: tiêu đề nằm trực tiếp trên pano */
-.header-title{display:flex;align-items:center;gap:14px;padding:8px 20px 8px 10px;background:transparent;border-radius:0;box-shadow:none;border:0}
-.logo{width:82px;height:82px;flex:0 0 82px;border:0;padding:0;border-radius:0;background:transparent;box-shadow:none}
-.logo img{width:100%;height:100%;border-radius:0;object-fit:contain}
-.header-title h1{margin:0;color:#c5161d;font-size:clamp(21px,2.15vw,34px);font-weight:900;line-height:1.05;white-space:nowrap;text-shadow:0 1px 2px rgba(255,255,255,.75),0 2px 4px rgba(0,0,0,.28)}
-.header-title p{margin:6px 0 0;color:#152a49;font-size:clamp(12px,1.25vw,20px);font-weight:800;line-height:1.1;white-space:nowrap;text-shadow:0 1px 2px rgba(255,255,255,.85),0 2px 3px rgba(0,0,0,.25)}
-.header-slogan{margin-top:7px;color:#c5161d;font-size:clamp(11px,1.05vw,17px);font-weight:900;letter-spacing:2px;text-align:center;text-shadow:0 1px 2px rgba(255,255,255,.8),0 1px 3px rgba(0,0,0,.22)}
-.header-tools{align-self:flex-start;margin-top:35px;display:flex;gap:7px;z-index:3}
-.clock{font-size:clamp(11px,1vw,16px);font-weight:800;color:#fff;white-space:nowrap;background:#b51018;padding:10px 15px;border-radius:9px;box-shadow:0 3px 10px rgba(100,0,0,.25)}
-.theme-btn{border:0;background:#fff8df;color:#172033;border-radius:9px;padding:9px 13px;cursor:pointer;font-size:20px;box-shadow:0 3px 10px rgba(0,0,0,.16)}
-@media(max-width:760px){.header{height:145px;min-height:145px}.header-inner{padding:0 10px}.header-title{gap:7px;padding:4px 8px}.logo{width:54px;height:54px;flex-basis:54px}.header-title h1{font-size:19px}.header-title p{font-size:11px}.header-slogan{font-size:10px;letter-spacing:1px}.header-tools{margin-top:14px}.clock{font-size:10px;padding:7px 8px}.theme-btn{font-size:16px;padding:7px 9px}}
+/* HEADER - phong cach pano hanh chinh Mường Lay */
+.header{position:relative;width:94.8%;height:150px;min-height:150px;margin:14px auto 0;overflow:hidden;background:#eef5f8;border:1px solid #d9e0e5;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.header-pano{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.80) 18%,rgba(255,255,255,.38) 36%,rgba(255,255,255,.05) 55%,rgba(255,255,255,0) 72%),url("https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457");background-size:cover;background-position:center 48%;filter:saturate(1.12) contrast(1.04)}
+.header-inner{position:relative;z-index:5;width:100%;height:100%;padding:0 1.8%;box-sizing:border-box;display:flex;align-items:flex-start;justify-content:space-between}
+.header-title{display:flex;align-items:flex-start;gap:12px;padding:8px 0 0;background:transparent;border:0;box-shadow:none}
+.logo{width:108px;height:108px;flex:0 0 108px;margin-top:1px;border:0;padding:0;border-radius:0;background:transparent;box-shadow:none}
+.logo img{width:100%;height:100%;border:0;border-radius:0;object-fit:contain}
+.header-title h1{margin:3px 0 0;color:#c5161d;font-family:"Times New Roman",Times,serif;font-size:clamp(23px,2.35vw,36px);font-weight:900;line-height:1.02;white-space:nowrap;text-shadow:0 1px 1px rgba(255,255,255,.9)}
+.header-title p{margin:8px 0 0;color:#142846;font-family:"Times New Roman",Times,serif;font-size:clamp(14px,1.35vw,21px);font-weight:900;line-height:1.05;white-space:nowrap;text-shadow:0 1px 1px rgba(255,255,255,.95)}
+.header-slogan{position:relative;width:max-content;margin:7px auto 0;padding:0 48px;color:#c5161d;font-family:"Times New Roman",Times,serif;font-size:clamp(14px,1.25vw,20px);font-weight:900;letter-spacing:1.5px;text-align:center;text-shadow:0 1px 1px rgba(255,255,255,.95)}
+.header-slogan::before,.header-slogan::after{content:"";position:absolute;top:50%;width:40px;height:2px;background:#d63838}.header-slogan::before{right:100%}.header-slogan::after{left:100%}
+.header-tools{position:relative;z-index:8;align-self:flex-start;margin:40px 0 0 auto;display:flex;align-items:center;gap:0}
+.clock{font-family:"Times New Roman",Times,serif;font-size:clamp(11px,1vw,15px);font-weight:800;color:#fff;white-space:nowrap;background:#ad171d;padding:12px 17px;border-radius:10px 0 0 10px;box-shadow:0 2px 7px rgba(90,0,0,.22)}
+.theme-btn{width:54px;height:43px;border:1px solid #d9b66d;border-left:0;background:#fff8df;color:#172033;border-radius:0 10px 10px 0;padding:0;cursor:pointer;font-size:22px;box-shadow:0 2px 7px rgba(0,0,0,.16)}
+/* dải vàng và dải đỏ uốn cong ở chân pano */
+.header::before{content:"";position:absolute;z-index:6;left:-3%;right:-3%;bottom:12px;height:28px;background:#f4cf22;clip-path:polygon(0 0,18% 44%,39% 58%,62% 68%,82% 60%,100% 28%,100% 100%,0 100%)}
+.header::after{content:"";position:absolute;z-index:7;left:-3%;right:-3%;bottom:-3px;height:34px;background:#df151c;clip-path:polygon(0 18%,16% 56%,36% 67%,58% 72%,78% 64%,100% 36%,100% 100%,0 100%)}
+@media(max-width:900px){.header{width:96%;height:140px;min-height:140px}.logo{width:88px;height:88px;flex-basis:88px}.header-title h1{font-size:25px}.header-title p{font-size:14px}.header-slogan{font-size:14px}.header-tools{margin-top:32px}}
+@media(max-width:760px){.header{width:100%;height:132px;min-height:132px;margin-top:8px;border-left:0;border-right:0}.header-inner{padding:0 8px}.header-title{gap:6px;padding-top:7px}.logo{width:66px;height:66px;flex-basis:66px}.header-title h1{font-size:18px;margin-top:1px}.header-title p{font-size:10px;margin-top:5px}.header-slogan{font-size:10px;margin-top:5px;padding:0 18px}.header-slogan::before,.header-slogan::after{width:14px}.header-tools{margin-top:16px}.clock{font-size:9px;padding:8px 8px}.theme-btn{width:35px;height:32px;font-size:16px}.header::before{bottom:9px;height:24px}.header::after{height:28px}}
