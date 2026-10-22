@@ -2,6 +2,7 @@ import { put, list } from '@vercel/blob';
 import crypto from 'node:crypto';
 
 const DEFAULT_CONFIG_URL = 'https://raw.githubusercontent.com/anhtuansdml-droid/tthc/main/data/site-config.json';
+const LIVE_CONFIG_PATH = 'config/site-config.json';
 const ALLOWED_ORIGINS = new Set([
   'https://anhtuansdml-droid.github.io',
   'https://tthc-anhtuansdml-9137.vercel.app'
@@ -42,26 +43,29 @@ function validToken(req, body = {}) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
+async function fetchBlobJson(url) {
+  const r = await fetch(url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now(), { cache: 'no-store' });
+  if (!r.ok) throw new Error('Blob response ' + r.status);
+  return await r.json();
+}
+
 async function readConfig() {
+  // Đọc file LIVE cố định trước. Đây là nguồn cấu hình duy nhất sau khi quản trị viên lưu.
+  try {
+    const found = await list({ prefix: LIVE_CONFIG_PATH, limit: 20 });
+    const exact = (found.blobs || []).find(b => b.pathname === LIVE_CONFIG_PATH && b.url);
+    if (exact?.url) return await fetchBlobJson(exact.url);
+  } catch (_) {}
+
+  // Tương thích với các bản cấu hình versioned đã tạo trước đây.
   try {
     const found = await list({ prefix: 'config/site-config-', limit: 50 });
     const blobs = (found.blobs || []).filter(b => b.url);
     blobs.sort((a, b) => new Date(b.uploadedAt || 0) - new Date(a.uploadedAt || 0));
-    if (blobs[0]?.url) {
-      const r = await fetch(blobs[0].url, { cache: 'no-store' });
-      if (r.ok) return await r.json();
-    }
+    if (blobs[0]?.url) return await fetchBlobJson(blobs[0].url);
   } catch (_) {}
 
-  try {
-    const found = await list({ prefix: 'config/site-config.json', limit: 1 });
-    if (found.blobs?.[0]?.url) {
-      const r = await fetch(found.blobs[0].url, { cache: 'no-store' });
-      if (r.ok) return await r.json();
-    }
-  } catch (_) {}
-
-  const r = await fetch(DEFAULT_CONFIG_URL, { cache: 'no-store' });
+  const r = await fetch(DEFAULT_CONFIG_URL + '?v=' + Date.now(), { cache: 'no-store' });
   if (!r.ok) throw new Error('Không đọc được cấu hình mặc định');
   return await r.json();
 }
@@ -91,16 +95,16 @@ export default async function handler(req, res) {
       const config = body.config || body;
       if (!config || typeof config !== 'object') return json(res, 400, { ok: false, message: 'Dữ liệu cấu hình không hợp lệ.' });
 
-      // Tạo file cấu hình mới thay vì ghi đè file cũ. Cách này tránh độ trễ
-      // do CDN/cache khi ghi đè cùng một pathname trên Vercel Blob.
-      const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '');
-      const blob = await put(`config/site-config-${stamp}.json`, JSON.stringify(config, null, 2) + '\n', {
+      // Ghi vào một pathname cố định để website luôn đọc đúng cấu hình mới nhất.
+      // cacheControlMaxAge=0 + cache-bust ở GET giúp thay đổi hiển thị ngay sau khi lưu.
+      const blob = await put(LIVE_CONFIG_PATH, JSON.stringify(config, null, 2) + '\n', {
         access: 'public',
         addRandomSuffix: false,
+        allowOverwrite: true,
         contentType: 'application/json; charset=utf-8',
         cacheControlMaxAge: 0
       });
-      return json(res, 200, { ok: true, url: blob.url });
+      return json(res, 200, { ok: true, url: blob.url, savedAt: new Date().toISOString() });
     }
 
     if (req.method === 'POST' && action === 'upload') {
@@ -116,7 +120,7 @@ export default async function handler(req, res) {
         access: 'public', addRandomSuffix: false, allowOverwrite: true,
         contentType: mime, cacheControlMaxAge: 86400
       });
-      return json(res, 200, { ok: true, url: blob.url });
+      return json(res, 200, { ok: true, url: blob.url + (blob.url.includes('?') ? '&' : '?') + 'v=' + Date.now() });
     }
 
     return json(res, 405, { ok: false, message: 'Method không được hỗ trợ.' });
