@@ -1,0 +1,310 @@
+{
+  "tongTTHC": 430,
+  "coDVC": 370,
+  "daDongBoChiTiet": 295,
+  "chuaTimThayDuLieuDVCQG": 75,
+  "maChuaTimThay": [
+    {
+      "ma": "1.11691",
+      "ten": "Hỗ trợ chi phí mai táng cho đối tượng bảo trợ xã hội"
+    },
+    {
+      "ma": "1.116909",
+      "ten": "Thực hiện trợ cấp xã hội và nhận chăm sóc, nuôi dưỡng, hỗ trợ kinh phí nhận chăm sóc, nuôi dưỡng hằng tháng"
+    },
+    {
+      "ma": "1.116908",
+      "ten": "Tiếp nhận đối tượng cần bảo vệ khẩn cấp vào cơ sở trợ giúp xã hội"
+    },
+    {
+      "ma": "1.116907",
+      "ten": "Tiếp nhận đối tượng bảo trợ xã hội có hoàn cảnh đặc biệt khó khăn vào cơ sở trợ giúp xã hội"
+    },
+    {
+      "ma": "1.116849",
+      "ten": "Giải thể trung tâm học tập cộng đồng tư thục (Theo đề nghị của tổ chức, cá nhân thành lập trung tâm)"
+    },
+    {
+      "ma": "1.116848",
+      "ten": "Sáp nhập, chia, tách trung tâm học tập cộng đồng tư thục"
+    },
+    {
+      "ma": "1.116847",
+      "ten": "Cho phép thành lập trung tâm học tập cộng đồng tư thục"
+    },
+    {
+      "ma": "1.116846",
+      "ten": "Cho phép cơ sở giáo dục khác thực hiện chương trình giáo dục phổ thông cấp tiểu học, cấp trung học cơ sở"
+    },
+    {
+      "ma": "1.116845",
+      "ten": "Giải thể trường tiểu học, trường trung học cơ sở và trường phổ thông có nhiều cấp học trong đó có cấp học cao nhất là trung học cơ sở (Theo đề nghị của tổ chức, cá nhân thành lập trường)"
+    },
+    {
+      "ma": "1.116844",
+      "ten": "Sáp nhập, chia, tách trường tiểu học, trường trung học cơ sở và trường phổ thông có nhiều cấp học trong đó có cấp học cao nhất là trung học cơ sở"
+    },
+    {
+      "ma": "1.116843",
+      "ten": "Cấp phép hoạt động giáo dục đối với trường tiểu học, trường trung học cơ sở và trường phổ thông có nhiều cấp học trong đó có cấp học cao nhất là trung học cơ sở"
+    },
+    {
+      "ma": "1.116842",
+      "ten": "Cho phép thành lập trường tiểu học, trường trung học cơ sở và trường phổ thông có nhiều cấp học trong đó có cấp học cao nhất là trung học cơ sở"
+    },
+    {
+      "ma": "1.116841",
+      "ten": "Giải thể nhóm lớp mầm non độc lập dân lập, tư thục (Theo đề nghị của tổ chức, cá nhân thành lập nhóm lớp)"
+    },
+    {
+      "ma": "1.11684",
+      "ten": "Sáp nhập, chia, tách nhóm lớp mầm non độc lập dân lập, tư thục"
+    },
+    {
+      "ma": "1.116838",
+      "ten": "Giải thể trường mầm non (Theo đề nghị của tổ chức, cá nhân thành lập trường)"
+    },
+    {
+      "ma": "1.116837",
+      "ten": "Sáp nhập, chia, tách trường mầm non"
+    },
+    {
+      "ma": "1.116836",
+      "ten": "Cấp phép hoạt động giáo dục đối với trường mầm non"
+    },
+    {
+      "ma": "1.116835",
+      "ten": "Cho phép thành lập trường mầm non"
+    },
+    {
+      "ma": "1.116823",
+      "ten": "Sáp nhập, chia, tách lớp dành cho người khuyết tật tư thục ngoài cơ sở giáo dục"
+    },
+    {
+      "ma": "1.116822",
+      "ten": "Giải thể lớp độc lập tư thục (Theo đề nghị của tổ chức, cá nhân thành lập lớp)"
+    },
+    {
+      "ma": "1.116821",
+      "ten": "Sáp nhập, chia, tách lớp độc lập tư thục"
+    },
+    {
+      "ma": "1.11682",
+      "ten": "Cho phép thành lập lớp độc lập tư thục"
+    },
+    {
+      "ma": "1.116819",
+      "ten": "Giải thể lớp dành cho người khuyết tật tư thục ngoài cơ sở giáo dục (Theo đề nghị của tổ chức, cá nhân thành lập)"
+    },
+    {
+      "ma": "1.116818",
+      "ten": "Cho phép thành lập lớp dành cho người khuyết tật tư thục ngoài cơ sở giáo dục"
+    },
+    {
+      "ma": "1.116817",
+      "ten": "Thay đổi địa điểm hoạt động giáo dục của trường mầm non, trường tiểu học, trường trung học cơ sở, trường phổ thông có nhiều cấp học trong đó có cấp học cao nhất là trung học cơ sở"
+    },
+    {
+      "ma": "1.116816",
+      "ten": "Đổi tên trường mầm non, trường tiểu học, trường trung học cơ sở, trường phổ thông có nhiều cấp học trong đó có cấp học cao nhất là trung học cơ sở"
+    },
+    {
+      "ma": "1.116679",
+      "ten": "Xác nhận đăng ký thu hồi khoáng sản thuộc thẩm quyền của Chủ tịch Ủy ban nhân dân cấp xã"
+    },
+    {
+      "ma": "1.116678",
+      "ten": "Quyết toán tiền cấp quyền khai thác khoáng sản thuộc thẩm quyền của Chủ tịch Ủy ban nhân dân cấp xã"
+    },
+    {
+      "ma": "1.116557",
+      "ten": "Thủ tục cung cấp thông tin theo yêu cầu (dành cho công dân thông qua tổ chức, đoàn thể, doanh nghiệp)"
+    },
+    {
+      "ma": "1.116556",
+      "ten": "Thủ tục cung cấp thông tin theo yêu cầu (dành cho cá nhân)"
+    },
+    {
+      "ma": "1.116316",
+      "ten": "Kiểm tra chất lượng hàng hóa nhập khẩu có mức độ rủi ro cao thuộc trách nhiệm quản lý nhà nước của Bộ Nội vụ tại Danh mục ban hành kèm theo Thông tư số 16/2026/TT-BNV"
+    },
+    {
+      "ma": "1.116215",
+      "ten": "Công nhận hộ nghèo, hộ cận nghèo, hộ thoát nghèo trong năm theo chuẩn nghèo đa chiều quốc gia giai đoạn 2027-2030"
+    },
+    {
+      "ma": "1.116214",
+      "ten": "Công nhận hộ nghèo, hộ cận nghèo, hộ thoát nghèo định kỳ hằng năm theo chuẩn nghèo đa chiều quốc gia giai đoạn 2027-2030"
+    },
+    {
+      "ma": "1.11595",
+      "ten": "Công bố mở bến thủy nội địa, bến khách ngang sông, kết cấu hạ tầng đường thủy nội địa phục vụ thi công công trình, dự án và bến dân sinh"
+    },
+    {
+      "ma": "1.115949",
+      "ten": "Công bố đóng cảng, bến thủy nội địa, khu neo đậu"
+    },
+    {
+      "ma": "3.000611",
+      "ten": "Đánh giá, phân hạng sản phẩm OCOP"
+    },
+    {
+      "ma": "1.116338",
+      "ten": "Thủ tục thẩm định Báo cáo nghiên cứu khả thi đầu tư xây dựng/ Báo\ncáo nghiên cứu khả thi đầu tư xây dựng điều chỉnh"
+    },
+    {
+      "ma": "1.115377",
+      "ten": "Thông báo phát triển nguồn điện mặt trời mái nhà tự sản xuất, tự tiêu thụ đấu nối với hệ thống điện quốc gia tại cấp điện áp hạ áp"
+    },
+    {
+      "ma": "3.000576",
+      "ten": "Thủ tục khai báo hoạt động phát hành xuất bản phẩm"
+    },
+    {
+      "ma": "3.000569",
+      "ten": "Thủ tục xác nhận đăng ký hoạt động in (cấp xã)"
+    },
+    {
+      "ma": "1.012536",
+      "ten": "Phê duyệt dự án, phương án hỗ trợ phát triển sản xuất cộng đồng"
+    },
+    {
+      "ma": "1.00504",
+      "ten": "Xác nhận trình báo đường thủy nội địa hoặc trình báo đường thủy nội địa bổ sung"
+    },
+    {
+      "ma": "1.00397",
+      "ten": "Đăng ký lại phương tiện trong trường hợp chuyển quyền sở hữu phương tiện đồng thời thay đổi cơ quan đăng ký phương tiện"
+    },
+    {
+      "ma": "1.00393",
+      "ten": "Cấp lại Giấy chứng nhận đăng ký phương tiện"
+    },
+    {
+      "ma": "1.01431",
+      "ten": "Thủ tục hưởng trợ cấp sinh hoạt hàng tháng đối với Nghệ nhân nhân dân, Nghệ nhân ưu tú"
+    },
+    {
+      "ma": "2.00208",
+      "ten": "Thủ tục thanh toán thù lao cho hòa giải viên"
+    },
+    {
+      "ma": "2.00095",
+      "ten": "Thủ tục công nhận tổ trưởng tổ hòa giải (cấp xã)"
+    },
+    {
+      "ma": "2.00093",
+      "ten": "Thủ tục thôi làm hòa giải viên (cấp xã)"
+    },
+    {
+      "ma": "1.00008",
+      "ten": "Thủ tục đăng ký nhận cha, mẹ, con có yếu tố nước ngoài tại khu vực biên giới"
+    },
+    {
+      "ma": "1.00011",
+      "ten": "Thủ tục đăng ký khai sinh có yếu tố nước ngoài tại khu vực biên giới"
+    },
+    {
+      "ma": "2.00072",
+      "ten": "Đăng ký thay đổi nội dung đăng ký hộ kinh doanh"
+    },
+    {
+      "ma": "1.014736",
+      "ten": "Lựa chọn, phê duyệt dự án phát triển sản xuất liên kết theo chuỗi giá trị"
+    },
+    {
+      "ma": "1.01304",
+      "ten": "Thủ tục khai, nộp phí bảo vệ môi trường đối với khí thải"
+    },
+    {
+      "ma": "1.00528",
+      "ten": "Đăng ký thành lập hợp tác xã, liên hiệp hợp tác xã; đăng ký chuyển đổi tổ hợp tác thành hợp tác xã; đăng ký khi hợp tác xã, liên hiệp hợp tác xã chia, tách, hợp nhất"
+    },
+    {
+      "ma": "1.00501",
+      "ten": "Chấm dứt hoạt động chi nhánh, văn phòng đại diện, địa điểm kinh doanh của hợp tác xã, liên hiệp hợp tác xã"
+    },
+    {
+      "ma": "1.00157",
+      "ten": "Tạm ngừng kinh doanh, tiếp tục kinh doanh trước thời hạn đã đăng ký của hộ kinh doanh"
+    },
+    {
+      "ma": "2.00282",
+      "ten": "Hỗ trợ người lao động đi làm việc ở nước ngoài theo hợp đồng"
+    },
+    {
+      "ma": "1.0142",
+      "ten": "Cấp lại giấy phép lao động đối với người lao động nước ngoài làm việc tại Việt Nam"
+    },
+    {
+      "ma": "1.01375",
+      "ten": "Thăm viếng mộ liệt sĩ."
+    },
+    {
+      "ma": "1.01371",
+      "ten": "Hỗ trợ chi phí y tế và thu nhập thực tế bị mất hoặc giảm sút cho người đang trực tiếp tham gia hoạt động chữ thập đỏ bị tai nạn dẫn đến thiệt hại về sức khỏe"
+    },
+    {
+      "ma": "1.01083",
+      "ten": "Di chuyển hài cốt liệt sĩ đang an táng ngoài nghĩa trang liệt sĩ về an táng tại nghĩa trang liệt sĩ theo nguyện vọng của đại diện thân nhân hoặc người hưởng trợ cấp thờ cúng liệt sĩ"
+    },
+    {
+      "ma": "1.01082",
+      "ten": "Giải quyết chế độ người có công giúp đỡ cách mạng."
+    },
+    {
+      "ma": "1.01081",
+      "ten": "Công nhận đối với người bị thương trong chiến tranh không thuộc quân đội, công an"
+    },
+    {
+      "ma": "3.00025",
+      "ten": "Phê duyệt hoặc điều chỉnh phương án quản lý rừng bền vững của chủ rừng là hộ gia đình, cá nhân, cộng đồng dân cư hoặc hộ gia đình cá nhân liên kết thành nhóm hộ, tổ hợp tác trường hợp có tổ chức các hoạt động du lịch sinh thái"
+    },
+    {
+      "ma": "1.01486",
+      "ten": "Cấp giấy phép cho các hoạt động trồng cây lâu năm trong phạm vi bảo vệ công trình thủy lợi do Chủ tịch UBND cấp tỉnh phân cấp cho Chủ tịch UBND cấp xã"
+    },
+    {
+      "ma": "1.01485",
+      "ten": "Cấp giấy phép cho các hoạt động trong phạm vi bảo vệ công trình thủy lợi đối với hoạt động du lịch, thể thao, nghiên cứu khoa học, kinh doanh, dịch vụ do Chủ tịch UBND cấp tỉnh phân cấp cho Chủ tịch UBND cấp xã"
+    },
+    {
+      "ma": "1.01395",
+      "ten": "Chuyển hình thức giao đất, cho thuê đất."
+    },
+    {
+      "ma": "1.00468",
+      "ten": "Xác nhận nguồn gốc loài thủy sản thuộc Phụ lục Công ước quốc tế về buôn bán các loài động vật, thực vật hoang dã nguy cấp và các loài thủy sản nguy cấp, quý, hiếm có nguồn gốc từ nuôi trồng"
+    },
+    {
+      "ma": "1.00344",
+      "ten": "Thẩm định, phê duyệt phương án ứng phó với tình huống khẩn cấp thuộc thẩm quyền của UBND cấp xã"
+    },
+    {
+      "ma": "2.00277",
+      "ten": "Xét duyệt học sinh bán trú, học viên bán trú hỗ trợ kinh phí, hỗ trợ gạo"
+    },
+    {
+      "ma": "2.00196",
+      "ten": "Cấp chính sách nội trú cho học sinh, sinh viên tham gia chương trình đào tạo trình độ cao đẳng, trung cấp tại các cơ sở giáo dục nghề nghiệp tư thục hoặc cơ sở giáo dục có vốn đầu tư nước ngoài"
+    },
+    {
+      "ma": "1.00895",
+      "ten": "Trợ cấp đối với trẻ em mầm non là con công nhân, người lao động làm việc tại khu công nghiệp"
+    },
+    {
+      "ma": "1.00509",
+      "ten": "Xét tuyển sinh vào trường phổ thông dân tộc nội trú"
+    },
+    {
+      "ma": "1.01259",
+      "ten": "THỦ TỤC ĐĂNG KÝ SINH HOẠT TÔN GIÁO TẬP TRUNG (CẤP XÃ)"
+    },
+    {
+      "ma": "2.00262",
+      "ten": "Thông báo về việc thực hiện hoạt động bán hàng không tại địa điểm giao dịch thường xuyên"
+    }
+  ],
+  "nguon": "Cổng Dịch vụ công Quốc gia (dữ liệu được thu thập qua API công khai; bản dữ liệu trung gian tmquan/dichvucong-gov-vn)",
+  "capNhat": "2026-10-22T08:43:36.861947+00:00"
+}
