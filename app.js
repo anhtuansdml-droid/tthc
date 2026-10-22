@@ -1,6 +1,7 @@
-const DATA_SOURCE_URL = "https://dieuphoi.netlify.app/niemyet";
-const DATA_SOURCE_NAME = "Trang Niêm yết TTHC - Điều phối";
+const DATA_SOURCE_URL = "https://dichvucong.gov.vn/";
+const DATA_SOURCE_NAME = "Cổng Dịch vụ công Quốc gia";
 const DVCQG_BASE_URL = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/";
+const DVCQG_SEARCH_URL = "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
 
 let procedures = [];
 let filteredProcedures = [];
@@ -68,7 +69,7 @@ async function loadData() {
         ...item,
         dvcqgId,
         url: buildDvcqgUrl(dvcqgId),
-        nguon: DATA_SOURCE_NAME
+        nguon: "Danh sách TTHC cấp xã ngày 20/10/2026"
       };
     });
 
@@ -90,6 +91,13 @@ async function loadData() {
 function buildDvcqgUrl(dvcqgId) {
   const id = String(dvcqgId || "").trim();
   return id ? DVCQG_BASE_URL + encodeURIComponent(id) : "";
+}
+
+function buildDvcqgSearchUrl(item) {
+  const params = new URLSearchParams();
+  if (item && item.ma) params.set("keyword", String(item.ma).trim());
+  else if (item && item.ten) params.set("keyword", String(item.ten).trim());
+  return params.toString() ? `${DVCQG_SEARCH_URL}?${params.toString()}` : DVCQG_SEARCH_URL;
 }
 
 function updateStatistics() {
@@ -168,6 +176,7 @@ function procedureHtml(item, index) {
 function showDetail(item) {
   if (!modal || !modalBody || !item) return;
   const onlineUrl = buildDvcqgUrl(item.dvcqgId);
+  const searchUrl = buildDvcqgSearchUrl(item);
 
   modalBody.innerHTML = `
     <div class="detail-title">${escapeHtml(item.ten || "")}</div>
@@ -182,10 +191,14 @@ function showDetail(item) {
       ${detailRow("Loại TTHC", item.loai)}
       ${detailRow("Mức độ", item.mucDo)}
       ${detailRow("Trạng thái", item.trangThai)}
-      ${detailRow("Nguồn", DATA_SOURCE_NAME)}
+      ${detailRow("Nguồn dữ liệu", item.nguon || "Danh sách TTHC cấp xã ngày 20/10/2026")}
       ${detailRow("Mã thực hiện", item.maThucHien)}
     </div>
-    ${onlineUrl ? `<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>` : `<div style="margin-top:20px;color:#b00000;font-weight:600">TTHC này chưa có mã liên kết trên Cổng Dịch vụ công Quốc gia.</div>`}`;
+    ${onlineUrl
+      ? `<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>`
+      : `<div style="margin-top:20px;padding:14px;border-radius:8px;background:#fff7e6;color:#8a4b00;font-weight:600">TTHC này chưa xác định được mã liên kết chi tiết trên Cổng Dịch vụ công Quốc gia.</div>`
+    }
+    <a class="online-btn" style="margin-top:10px;background:#444" href="${escapeAttribute(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU TTHC NÀY TRÊN CỔNG DVC QUỐC GIA</a>`;
 
   modal.classList.add("show");
 }
@@ -259,5 +272,5 @@ function escapeHtml(value) {
 }
 
 function escapeAttribute(value) {
-  return escapeHtml(value);
+  return escapeHtml(value).replace(/`/g, "&#096;");
 }
