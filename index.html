@@ -6,6 +6,7 @@
   <meta name="description" content="Bảng niêm yết thủ tục hành chính điện tử của Trung tâm Phục vụ hành chính công phường Mường Lay">
   <title>Bảng niêm yết thủ tục hành chính - Mường Lay</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="detail.css">
 </head>
 <body>
   <header class="header">
@@ -41,24 +42,13 @@
   </nav>
 
   <section class="statistics">
-    <div class="stat-card">
-      <div class="stat-number" id="totalCount">0</div>
-      <div class="stat-label">TỔNG SỐ TTHC</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="fullCount">0</div>
-      <div class="stat-label">DỊCH VỤ CÔNG TOÀN TRÌNH</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="partialCount">0</div>
-      <div class="stat-label">DỊCH VỤ CÔNG MỘT PHẦN</div>
-    </div>
+    <div class="stat-card"><div class="stat-number" id="totalCount">0</div><div class="stat-label">TỔNG SỐ TTHC</div></div>
+    <div class="stat-card"><div class="stat-number" id="fullCount">0</div><div class="stat-label">DỊCH VỤ CÔNG TOÀN TRÌNH</div></div>
+    <div class="stat-card"><div class="stat-number" id="partialCount">0</div><div class="stat-label">DỊCH VỤ CÔNG MỘT PHẦN</div></div>
   </section>
 
   <main class="main">
-    <div class="section-title">
-      <h2 id="contentTitle">DANH SÁCH LĨNH VỰC</h2>
-    </div>
+    <div class="section-title"><h2 id="contentTitle">DANH SÁCH LĨNH VỰC</h2></div>
     <div id="fieldContainer" class="field-grid"></div>
   </main>
 
@@ -74,30 +64,16 @@
 
   <div id="configModal" class="modal config-modal">
     <div class="config-content">
-      <div class="config-header">
-        <h2>⚙ CẤU HÌNH HIỂN THỊ LĨNH VỰC</h2>
-        <button id="configClose" class="config-close" title="Đóng">×</button>
-      </div>
+      <div class="config-header"><h2>⚙ CẤU HÌNH HIỂN THỊ LĨNH VỰC</h2><button id="configClose" class="config-close" title="Đóng">×</button></div>
       <div class="config-body">
         <div class="config-top-row">
-          <select id="configAgency" class="config-select" aria-label="Cơ quan chủ trì">
-            <option value="">-- Tất cả Cơ quan chủ trì --</option>
-          </select>
-          <div class="config-search">
-            <span>🔎</span>
-            <input id="configSearch" type="text" placeholder="Tìm nhanh tên lĩnh vực (VD: Đất đai, Lý lịch...)" autocomplete="off">
-          </div>
+          <select id="configAgency" class="config-select" aria-label="Cơ quan chủ trì"><option value="">-- Tất cả Cơ quan chủ trì --</option></select>
+          <div class="config-search"><span>🔎</span><input id="configSearch" type="text" placeholder="Tìm nhanh tên lĩnh vực (VD: Đất đai, Lý lịch...)" autocomplete="off"></div>
         </div>
-        <label class="config-select-all">
-          <input id="configSelectAll" type="checkbox">
-          <span>Chọn / Bỏ chọn tất cả Lĩnh vực đang hiển thị bên dưới</span>
-        </label>
+        <label class="config-select-all"><input id="configSelectAll" type="checkbox"><span>Chọn / Bỏ chọn tất cả Lĩnh vực đang hiển thị bên dưới</span></label>
         <div id="configFieldList" class="config-field-list"></div>
       </div>
-      <div class="config-footer">
-        <button id="configCancel" class="config-cancel">Hủy bỏ</button>
-        <button id="configSave" class="config-save">▣ Lưu cấu hình Lĩnh vực</button>
-      </div>
+      <div class="config-footer"><button id="configCancel" class="config-cancel">Hủy bỏ</button><button id="configSave" class="config-save">▣ Lưu cấu hình Lĩnh vực</button></div>
     </div>
   </div>
 
@@ -108,5 +84,6 @@
   </footer>
 
   <script src="app.js"></script>
+  <script src="detail.js"></script>
 </body>
 </html>
