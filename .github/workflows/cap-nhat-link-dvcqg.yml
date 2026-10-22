@@ -12,7 +12,7 @@ on:
       count:
         description: "So TTHC can xu ly"
         required: true
-        default: "10"
+        default: "430"
   schedule:
     - cron: "17 20 * * 0"
 
@@ -28,82 +28,89 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Cai Playwright
+      - name: Cai Python va thu vien
         run: |
-          npm init -y
-          npm install playwright
-          npx playwright install --with-deps chromium
+          python -m pip install --upgrade pip
+          python -m pip install pandas pyarrow
 
-      - name: Cap nhat UUID Cổng DVC Quốc gia qua trinh duyet
+      - name: Tai dataset TTHC co UUID DVCQG
+        run: |
+          mkdir -p .cache
+          curl -L --fail --retry 3 --connect-timeout 20 --max-time 120 \
+            "https://huggingface.co/datasets/tmquan/dichvucong-gov-vn/resolve/main/procedures-00000-of-00001.parquet?download=true" \
+            -o .cache/procedures.parquet
+          ls -lh .cache/procedures.parquet
+
+      - name: Cap nhat UUID va link DVCQG
         env:
-          PYTHONUNBUFFERED: "1"
           START: ${{ inputs.start || '1' }}
-          COUNT: ${{ inputs.count || '10' }}
+          COUNT: ${{ inputs.count || '430' }}
         run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const { chromium } = require('playwright');
+          python - <<'PY'
+          import json, os
+          import pandas as pd
 
-          const DATA = 'data/tthc_430_2026-10-20.json';
-          const REPORT = 'data/dvcqg_link_report.json';
-          const BASE = 'https://dichvucong.gov.vn/thu-tuc-hanh-chinh/';
-          const start = Math.max(1, Number(process.env.START || 1));
-          const count = Math.max(1, Number(process.env.COUNT || 10));
-          const data = JSON.parse(fs.readFileSync(DATA, 'utf8'));
-          const end = Math.min(data.length, start + count - 1);
-          const selected = data.slice(start - 1, end);
+          DATA = 'data/tthc_430_2026-10-20.json'
+          REPORT = 'data/dvcqg_link_report.json'
+          PARQUET = '.cache/procedures.parquet'
+          START = max(1, int(os.environ.get('START', '1')))
+          COUNT = max(1, int(os.environ.get('COUNT', '430')))
 
-          (async () => {
-            const browser = await chromium.launch({headless:true});
-            const page = await browser.newPage({userAgent:'Mozilla/5.0'});
-            await page.goto('https://dichvucong.gov.vn/', {waitUntil:'domcontentloaded', timeout:60000});
-            console.log('DVCQG page:', await page.title());
+          with open(DATA, 'r', encoding='utf-8') as f:
+              data = json.load(f)
 
-            for (let i=0; i<selected.length; i++) {
-              const item = selected[i];
-              const code = String(item.ma || '').trim();
-              console.log(`[${start+i}/${data.length}] Dang tra: ${code}`);
-              let found = null;
-              try {
-                const result = await page.evaluate(async (code) => {
-                  const r = await fetch('/api/v1/submitting/formality/list-all-public-formality-by-citizen', {
-                    method:'POST', headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({limit:100,lastId:'',q:code,categoryId:'',departmentCode:''})
-                  });
-                  return {status:r.status, body:await r.text()};
-                }, code);
-                console.log('  API status:', result.status);
-                if (result.status === 200) {
-                  const body = JSON.parse(result.body);
-                  const items = body?.data?.items || [];
-                  found = items.find(x => String(x.code || x.codeNotation || '').trim() === code && x.id);
-                }
-              } catch(e) { console.log('  LOI:', e.message); }
+          end = min(len(data), START + COUNT - 1)
+          selected = data[START - 1:end]
+          codes = {str(x.get('ma','')).strip() for x in selected if str(x.get('ma','')).strip()}
 
-              if (found) {
-                item.dvcqgId = String(found.id).trim();
-                item.url = BASE + encodeURIComponent(item.dvcqgId);
-                console.log('  OK:', item.dvcqgId);
-              } else {
-                delete item.dvcqgId;
-                item.url = '';
-                console.log('  KHONG TIM THAY KHOP CHINH XAC');
-              }
-              fs.writeFileSync(DATA, JSON.stringify(data,null,2)+'\n');
-            }
+          df = pd.read_parquet(PARQUET, columns=['formality_id','code','source_url','procedure_name','is_ward'])
+          df['code'] = df['code'].fillna('').astype(str).str.strip()
+          df['formality_id'] = df['formality_id'].fillna('').astype(str).str.strip()
+          df['source_url'] = df['source_url'].fillna('').astype(str).str.strip()
+          df = df[df['code'].isin(codes)].copy()
 
-            const foundAll = data.filter(x => String(x.dvcqgId||'').trim()).map(x => ({ma:x.ma,dvcqgId:x.dvcqgId}));
-            const missingAll = data.filter(x => !String(x.dvcqgId||'').trim()).map(x => ({ma:x.ma}));
-            fs.writeFileSync(REPORT, JSON.stringify({total:data.length,found:foundAll.length,missing:missingAll.length,lastBatch:{start,count:selected.length,end},foundItems:foundAll,missingItems:missingAll},null,2)+'\n');
-            await browser.close();
-            console.log(`DONE ${start}-${end} | found=${foundAll.length} | missing=${missingAll.length}`);
-          })().catch(e => { console.error(e); process.exit(1); });
-          NODE
+          # Uu tien ban ghi cap xa neu cung ma co nhieu ban ghi.
+          df['_ward'] = df['is_ward'].fillna(False).astype(bool)
+          df = df.sort_values(['code', '_ward'], ascending=[True, False]).drop_duplicates('code', keep='first')
+          lookup = {r['code']: r for _, r in df.iterrows()}
+
+          found_batch = 0
+          for idx, item in enumerate(selected, start=START):
+              code = str(item.get('ma','')).strip()
+              row = lookup.get(code)
+              if row is not None and row['formality_id']:
+                  fid = str(row['formality_id']).strip()
+                  item['dvcqgId'] = fid
+                  # Link hien tai cua dataset DVCQG; khong phu thuoc viec runner co truy cap duoc dichvucong.gov.vn hay khong.
+                  item['url'] = str(row['source_url']).strip() or f'https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId={fid}'
+                  found_batch += 1
+                  print(f'[{idx}/{len(data)}] OK {code} -> {fid}')
+              else:
+                  item.pop('dvcqgId', None)
+                  item['url'] = ''
+                  print(f'[{idx}/{len(data)}] KHONG TIM THAY {code}')
+
+          with open(DATA, 'w', encoding='utf-8') as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+              f.write('\n')
+
+          found_all = [{'ma': x.get('ma'), 'dvcqgId': x.get('dvcqgId'), 'url': x.get('url','')} for x in data if str(x.get('dvcqgId','')).strip()]
+          missing_all = [{'ma': x.get('ma')} for x in data if not str(x.get('dvcqgId','')).strip()]
+          report = {
+              'total': len(data),
+              'found': len(found_all),
+              'missing': len(missing_all),
+              'lastBatch': {'start': START, 'count': len(selected), 'end': end, 'foundBatch': found_batch},
+              'source': 'tmquan/dichvucong-gov-vn procedures parquet',
+              'foundItems': found_all,
+              'missingItems': missing_all
+          }
+          with open(REPORT, 'w', encoding='utf-8') as f:
+              json.dump(report, f, ensure_ascii=False, indent=2)
+              f.write('\n')
+
+          print(f'DONE {START}-{end} | batch_found={found_batch} | all_found={len(found_all)} | missing={len(missing_all)}')
+          PY
 
       - name: Commit ket qua
         run: |
@@ -113,6 +120,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Khong co thay doi."
           else
-            git commit -m "Cap nhat link TTHC DVCQG theo dot"
+            git commit -m "Cap nhat UUID va link TTHC DVCQG"
             git push
           fi
