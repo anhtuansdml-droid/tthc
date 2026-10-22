@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Quản trị website - TTHC Mường Lay</title>
-<link rel="stylesheet" href="admin.css?v=20261022-4">
+<link rel="stylesheet" href="admin.css?v=20261022-5">
 </head>
 <body>
 <div id="loginScreen" class="login-screen">
@@ -18,20 +18,20 @@
 <header class="topbar"><div><b>QUẢN TRỊ TTHC MƯỜNG LAY</b><span> Chỉnh giao diện và hình ảnh</span></div><div class="top-actions"><a href="../" target="_blank">XEM WEBSITE ↗</a><button id="logoutBtn">ĐĂNG XUẤT</button></div></header>
 <main class="wrap">
 <div id="saveMsg" class="save-msg"></div>
-<section class="panel sync-source-panel"><div class="panel-title"><h2>📥 CẬP NHẬT DANH MỤC TTHC</h2><span>Thử lấy dữ liệu từ hệ thống Điều phối</span></div>
+<section class="panel sync-source-panel"><div class="panel-title"><h2>📥 NGUỒN CẬP NHẬT TTHC</h2><span>Điều phối DVC</span></div>
 <div class="sync-box source-box">
-  <label>Nguồn dữ liệu</label>
+  <label>Nguồn dữ liệu cập nhật</label>
   <input id="dieuphoiUrl" value="https://dieuphoi.netlify.app/niemyet" readonly>
   <div class="source-actions">
     <a class="secondary source-link" href="https://dieuphoi.netlify.app/niemyet" target="_blank" rel="noopener">MỞ TRANG ĐIỀU PHỐI ↗</a>
     <button id="probeDieuphoiBtn" class="primary big">🔎 KIỂM TRA NGUỒN</button>
   </div>
   <div id="dieuphoiResult" class="source-result"></div>
-  <p class="sync-note">Bước thử này kiểm tra trang Điều phối và tìm đường dẫn dữ liệu mà trang đang sử dụng. Chỉ khi xác định được nguồn dữ liệu thực tế mới cho phép thay danh mục 430 TTHC hiện tại.</p>
+  <p class="sync-note">Website sẽ lấy danh mục từ hệ thống Điều phối. Hệ thống chỉ thay dữ liệu khi tìm được danh mục hợp lệ; nếu nguồn lỗi thì giữ nguyên dữ liệu gần nhất.</p>
 </div>
 </section>
-<section class="panel"><div class="panel-title"><h2>🔄 ĐỒNG BỘ THỦ TỤC HÀNH CHÍNH</h2><span>Tự động lấy dữ liệu từ nguồn đã cấu hình</span></div>
-<div class="sync-box"><div class="sync-stats"><div><small>Lần đồng bộ gần nhất</small><b id="lastSync">Chưa có</b></div><div><small>Tổng TTHC</small><b id="syncTotal">430</b></div><div><small>Toàn trình</small><b id="syncFull">290</b></div><div><small>Một phần</small><b id="syncPartial">80</b></div></div><div id="syncStatus" class="sync-note">Nguồn hiện tại chưa được xác nhận.</div><button id="syncBtn" class="primary big">🔄 ĐỒNG BỘ NGAY</button><p class="sync-note">Hệ thống giữ lại dữ liệu an toàn gần nhất nếu nguồn cập nhật không hợp lệ.</p></div>
+<section class="panel"><div class="panel-title"><h2>🔄 ĐỒNG BỘ TỪ ĐIỀU PHỐI DVC</h2><span>Nguồn: dieuphoi.netlify.app/niemyet</span></div>
+<div class="sync-box"><div class="sync-stats"><div><small>Lần đồng bộ Điều phối gần nhất</small><b id="lastSync">Chưa có</b></div><div><small>Tổng TTHC</small><b id="syncTotal">430</b></div><div><small>Toàn trình</small><b id="syncFull">290</b></div><div><small>Một phần</small><b id="syncPartial">80</b></div></div><div id="syncStatus" class="sync-note">Chưa có lần đồng bộ thành công từ Điều phối.</div><button id="syncBtn" class="primary big">🔄 ĐỒNG BỘ TỪ ĐIỀU PHỐI</button><p class="sync-note">Không dùng kết quả đồng bộ trực tiếp từ Cổng DVCQG cho nút này. DVCQG chỉ là nguồn tham khảo/đích liên kết chi tiết.</p></div>
 </section>
 <section class="panel"><div class="panel-title"><h2>🖼️ ĐẦU TRANG</h2><span>Thay ảnh và sửa chữ</span></div>
 <div class="grid2"><div><label>Tiêu đề</label><input id="title"></div><div><label>Dòng đơn vị</label><input id="subtitle"></div><div><label>Khẩu hiệu</label><input id="slogan"></div><div><label>Màu tiêu đề</label><input id="titleColor" type="color"></div><div><label>Màu dòng đơn vị</label><input id="subtitleColor" type="color"></div><div><label>Màu khẩu hiệu</label><input id="sloganColor" type="color"></div></div>
@@ -45,5 +45,5 @@
 <section class="panel github-panel"><div class="panel-title"><h2>🔐 LƯU TRỰC TUYẾN</h2><span>Không cần GitHub Token</span></div><p>Hệ thống quản trị đã được kết nối với máy chủ riêng. Anh chỉ cần đăng nhập, chỉnh sửa và bấm <b>LƯU THAY ĐỔI</b>.</p></section>
 <div class="bottom-actions"><button id="previewBtn" class="secondary big">XEM TRƯỚC WEBSITE</button><button id="saveBtn" class="primary big">💾 LƯU THAY ĐỔI</button></div>
 </main></div>
-<script src="admin.js?v=20261022-4"></script>
+<script src="admin.js?v=20261022-5"></script>
 </body></html>
