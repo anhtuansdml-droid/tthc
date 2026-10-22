@@ -6,7 +6,6 @@
   <meta name="description" content="Bảng niêm yết thủ tục hành chính điện tử của Trung tâm Phục vụ hành chính công phường Mường Lay">
   <title>Bảng niêm yết thủ tục hành chính - Mường Lay</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="pano.css">
 </head>
 <body>
   <header class="header">
@@ -31,13 +30,13 @@
 
   <nav class="nav">
     <div class="nav-inner">
-      <button class="home-btn" onclick="location.reload()">TRANG CHỦ</button>
+      <button class="home-btn" onclick="location.reload()">⌂ TRANG CHỦ</button>
       <div class="search-box">
         <span>🔎</span>
-        <input id="searchInput" type="text" placeholder="Nhập mã, tên, lĩnh vực hoặc cơ quan thực hiện..." autocomplete="off">
+        <input id="searchInput" type="text" placeholder="Nhập mã thủ tục, tên thủ tục, hoặc từ khóa cần tìm..." autocomplete="off">
       </div>
       <button id="configBtn" class="config-btn" title="Cấu hình lĩnh vực hiển thị">⚙ CẤU HÌNH</button>
-      <button class="pakn-btn" onclick="window.open('https://dichvucong.gov.vn/', '_blank')">CỔNG DVC QUỐC GIA</button>
+      <button class="pakn-btn" onclick="window.open('https://dichvucong.gov.vn/', '_blank')">☑ HƯỚNG DẪN TRA CỨU</button>
     </div>
   </nav>
 
@@ -79,7 +78,6 @@
         <h2>⚙ CẤU HÌNH HIỂN THỊ LĨNH VỰC</h2>
         <button id="configClose" class="config-close" title="Đóng">×</button>
       </div>
-
       <div class="config-body">
         <div class="config-top-row">
           <select id="configAgency" class="config-select" aria-label="Cơ quan chủ trì">
@@ -90,15 +88,12 @@
             <input id="configSearch" type="text" placeholder="Tìm nhanh tên lĩnh vực (VD: Đất đai, Lý lịch...)" autocomplete="off">
           </div>
         </div>
-
         <label class="config-select-all">
           <input id="configSelectAll" type="checkbox">
           <span>Chọn / Bỏ chọn tất cả Lĩnh vực đang hiển thị bên dưới</span>
         </label>
-
         <div id="configFieldList" class="config-field-list"></div>
       </div>
-
       <div class="config-footer">
         <button id="configCancel" class="config-cancel">Hủy bỏ</button>
         <button id="configSave" class="config-save">▣ Lưu cấu hình Lĩnh vực</button>
