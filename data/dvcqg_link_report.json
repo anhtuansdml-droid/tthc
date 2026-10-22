@@ -1,19 +1,19 @@
 {
   "total": 430,
-  "found": 359,
-  "missing": 71,
+  "found": 334,
+  "missing": 96,
+  "duplicateUuidCount": 0,
   "lastBatch": {
     "start": 1,
     "count": 430,
     "end": 430,
-    "foundBatch": 359,
+    "foundBatch": 334,
     "methods": {
-      "ma": 304,
-      "ten": 45,
-      "fuzzy": 10
+      "ma": 323,
+      "ten": 11
     }
   },
-  "source": "tmquan/dichvucong-gov-vn procedures parquet; match ma -> ten -> fuzzy ten",
+  "source": "tmquan/dichvucong-gov-vn procedures parquet; exact normalized code -> unique exact name; no fuzzy matching",
   "foundItems": [
     {
       "ma": "1.11691",
@@ -32,24 +32,6 @@
       "ten": "Tiếp nhận đối tượng bảo trợ xã hội có hoàn cảnh đặc biệt khó khăn vào cơ sở trợ giúp xã hội",
       "dvcqgId": "019d2bff-44ae-736f-a3c1-fc73741af598",
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-44ae-736f-a3c1-fc73741af598&formalityCaseId=019dc460-24d0-7519-a905-88181a4c7650"
-    },
-    {
-      "ma": "1.116849",
-      "ten": "Giải thể trung tâm học tập cộng đồng tư thục (Theo đề nghị của tổ chức, cá nhân thành lập trung tâm)",
-      "dvcqgId": "019d2bf8-d8a9-721f-a319-6c06b79bbfeb",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-d8a9-721f-a319-6c06b79bbfeb&formalityCaseId=019db865-cf17-74e1-ac59-ab0bf7b6f490"
-    },
-    {
-      "ma": "1.11684",
-      "ten": "Sáp nhập, chia, tách nhóm lớp mầm non độc lập dân lập, tư thục",
-      "dvcqgId": "019d2bf7-fc16-713e-8225-6848e39102b0",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf7-fc16-713e-8225-6848e39102b0&formalityCaseId=019dc706-e2ed-70a8-ad9c-bedd898e9944"
-    },
-    {
-      "ma": "1.11682",
-      "ten": "Cho phép thành lập lớp độc lập tư thục",
-      "dvcqgId": "019d2bf7-fc0d-76ce-8104-3ea082285617",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf7-fc0d-76ce-8104-3ea082285617&formalityCaseId=019dc705-0851-7618-b878-5431298a54ad"
     },
     {
       "ma": "3.000718",
@@ -82,12 +64,6 @@
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76cb-741b-996e-33d1ef50be50&formalityCaseId=019db442-12f1-725c-8fc2-925499bf4817"
     },
     {
-      "ma": "3.000713",
-      "ten": "Sử dụng đất kết hợp đa mục đích, gia hạn phương án sử dụng đất kết hợp đa mục đích",
-      "dvcqgId": "019d2bfa-866f-73bf-bcda-6e34ff8bda48",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-866f-73bf-bcda-6e34ff8bda48&formalityCaseId=019db5d3-c1fc-77ee-9638-369dcf8977c2"
-    },
-    {
       "ma": "3.000712",
       "ten": "Xác định lại diện tích đất ở của hộ gia đình, cá nhân đã được cấp Giấy chứng nhận trước ngày 01 tháng 7 năm 2004.",
       "dvcqgId": "019d2bfa-76ef-752f-a5e5-ff4ce5737bb1",
@@ -100,100 +76,16 @@
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8671-7318-8ef7-15304f36d400&formalityCaseId=019db5cf-1c4c-7641-b2d7-b19eb7597611"
     },
     {
-      "ma": "3.000709",
-      "ten": "Trình tự, thủ tục giao đất ở có thu tiền sử dụng đất không thông qua đấu giá, không đấu thầu lựa chọn nhà đầu tư thực hiện dự án có sử dụng đất đối với cá nhân là cán bộ, công chức, viên chức, sĩ quan tại ngũ, quân nhân chuyên nghiệp, công chức quốc phòng, công nhân và viên chức quốc phòng, sĩ quan, hạ sĩ quan, công nhân công an, người làm công tác cơ yếu và người làm công tác khác trong tổ chức cơ yếu hưởng lương từ ngân sách nhà nước mà chưa được giao đất ở, nhà ở; giáo viên, nhân viên y tế đang công tác tại các xã biên giới, hải đảo thuộc vùng có điều kiện kinh tế - xã hội khó khăn, vùng có điều kiện kinh tế - xã hội đặc biệt khó khăn nhưng chưa có đất ở, nhà ở tại nơi công tác hoặc chưa được hưởng chính sách hỗ trợ về nhà ở theo quy định của pháp luật về nhà ở; cá nhân thường trú tại xã mà không có đất ở và chưa được Nhà nước giao đất ở hoặc chưa được hưởng chính sách hỗ trợ về nhà ở theo quy định của pháp luật về nhà ở",
-      "dvcqgId": "019d2bfa-8675-7789-bf5f-782e3f81d418",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8675-7789-bf5f-782e3f81d418&formalityCaseId=019db5cd-ee4f-7428-9720-0340b56045c6"
-    },
-    {
-      "ma": "3.000708",
-      "ten": "Chuyển hình thức giao đất, cho thuê đất",
-      "dvcqgId": "019d2bfa-8678-7030-8757-70c3e9763bc1",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8678-7030-8757-70c3e9763bc1&formalityCaseId=019db5cd-1fea-7338-b3f7-2ad2ed03c0c6"
-    },
-    {
       "ma": "3.000685",
       "ten": "Đăng ký, cấp Giấy chứng nhận đối với trường hợp cá nhân, hộ gia đình đã được cấp Giấy chứng nhận một phần diện tích vào loại đất ở trước ngày 01 tháng 7 năm 2004, phần diện tích còn lại của thửa đất chưa được cấp Giấy chứng nhận",
       "dvcqgId": "019d2bfa-6f6c-7009-bce8-877375012f82",
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6f6c-7009-bce8-877375012f82&formalityCaseId=019db9b1-d0a5-756a-a162-3f8914a7cbf8"
     },
     {
-      "ma": "3.000672",
-      "ten": "Đăng ký, cấp Giấy chứng nhận đối với trường hợp cá nhân, hộ gia đình đã được cấp Giấy chứng nhận một phần diện tích vào loại đất ở trước ngày 01 tháng 7 năm 2004, phần diện tích còn lại của thửa đất chưa được cấp Giấy chứng nhận",
-      "dvcqgId": "019d2bfa-6f6c-7009-bce8-877375012f82",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6f6c-7009-bce8-877375012f82&formalityCaseId=019db9b1-d0a5-756a-a162-3f8914a7cbf8"
-    },
-    {
-      "ma": "3.00067",
-      "ten": "Tặng cho quyền sử dụng đất cho Nhà nước hoặc cộng đồng dân cư hoặc mở rộng đường giao thông đối với trường hợp thửa đất chưa được cấp Giấy chứng nhận",
-      "dvcqgId": "019d2bfa-8673-706e-96e4-fd2b840004ba",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8673-706e-96e4-fd2b840004ba&formalityCaseId=019d2d30-ed0d-7249-b514-f66f82bdeab4"
-    },
-    {
-      "ma": "3.000669",
-      "ten": "Đăng ký đất đai, tài sản gắn liền với đất, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất lần đầu đối với hộ gia đình, cá nhân, cộng đồng dân cư, người gốc Việt Nam định cư ở nước ngoài",
-      "dvcqgId": "019d2bfa-8678-770b-8917-1872078767cd",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8678-770b-8917-1872078767cd&formalityCaseId=019db5d6-20e7-734e-931f-cef4ff956f81"
-    },
-    {
-      "ma": "3.000668",
-      "ten": "Đăng ký đất đai, tài sản gắn liền với đất, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất lần đầu đối với tổ chức đang sử dụng đất",
-      "dvcqgId": "019d2bfa-6eeb-7460-9097-1804edf38aec",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6eeb-7460-9097-1804edf38aec&formalityCaseId=019db43e-c892-71fe-884a-fef954724508"
-    },
-    {
-      "ma": "3.000667",
-      "ten": "Thu hồi Giấy chứng nhận đã cấp lần đầu không đúng quy định của pháp luật đất đai do người sử dụng đất, chủ sở hữu tài sản gắn liền với đất phát hiện và cấp lại Giấy chứng nhận sau khi thu hồi",
-      "dvcqgId": "019d2bfa-76e6-7468-b6f2-417e588578f5",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76e6-7468-b6f2-417e588578f5&formalityCaseId=019db44a-16ab-7568-80a1-a5d1b793b860"
-    },
-    {
-      "ma": "3.000666",
-      "ten": "Đính chính Giấy chứng nhận đã cấp lần đầu có sai sót",
-      "dvcqgId": "019d2bfa-76cb-741b-996e-33d1ef50be50",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76cb-741b-996e-33d1ef50be50&formalityCaseId=019db442-12f1-725c-8fc2-925499bf4817"
-    },
-    {
-      "ma": "3.000665",
-      "ten": "Xác định lại diện tích đất ở của hộ gia đình, cá nhân đã được cấp Giấy chứng nhận trước ngày 01 tháng 7 năm 2004.",
-      "dvcqgId": "019d2bfa-76ef-752f-a5e5-ff4ce5737bb1",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76ef-752f-a5e5-ff4ce5737bb1&formalityCaseId=019db446-a8ea-7301-a595-a0eef55929ef"
-    },
-    {
-      "ma": "3.000663",
-      "ten": "Giải quyết tranh chấp đất đai thuộc thẩm quyền của Chủ tịch Ủy ban nhân dân cấp xã",
-      "dvcqgId": "019d2bfa-8671-7318-8ef7-15304f36d400",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8671-7318-8ef7-15304f36d400&formalityCaseId=019db5cf-1c4c-7641-b2d7-b19eb7597611"
-    },
-    {
-      "ma": "3.000662",
-      "ten": "Sử dụng đất kết hợp đa mục đích, gia hạn phương án sử dụng đất kết hợp đa mục đích",
-      "dvcqgId": "019d2bfa-866f-73bf-bcda-6e34ff8bda48",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-866f-73bf-bcda-6e34ff8bda48&formalityCaseId=019db5d3-c1fc-77ee-9638-369dcf8977c2"
-    },
-    {
-      "ma": "3.000661",
-      "ten": "Trình tự, thủ tục giao đất ở có thu tiền sử dụng đất không thông qua đấu giá, không đấu thầu lựa chọn nhà đầu tư thực hiện dự án có sử dụng đất đối với cá nhân là cán bộ, công chức, viên chức, sĩ quan tại ngũ, quân nhân chuyên nghiệp, công chức quốc phòng, công nhân và viên chức quốc phòng, sĩ quan, hạ sĩ quan, công nhân công an, người làm công tác cơ yếu và người làm công tác khác trong tổ chức cơ yếu hưởng lương từ ngân sách nhà nước mà chưa được giao đất ở, nhà ở; giáo viên, nhân viên y tế đang công tác tại các xã biên giới, hải đảo thuộc vùng có điều kiện kinh tế - xã hội khó khăn, vùng có điều kiện kinh tế - xã hội đặc biệt khó khăn nhưng chưa có đất ở, nhà ở tại nơi công tác hoặc chưa được hưởng chính sách hỗ trợ về nhà ở theo quy định của pháp luật về nhà ở; cá nhân thường trú tại xã mà không có đất ở và chưa được Nhà nước giao đất ở hoặc chưa được hưởng chính sách hỗ trợ về nhà ở theo quy định của pháp luật về nhà ở",
-      "dvcqgId": "019d2bfa-8675-7789-bf5f-782e3f81d418",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8675-7789-bf5f-782e3f81d418&formalityCaseId=019db5cd-ee4f-7428-9720-0340b56045c6"
-    },
-    {
-      "ma": "3.00066",
-      "ten": "Chuyển hình thức giao đất, cho thuê đất",
-      "dvcqgId": "019d2bfa-8678-7030-8757-70c3e9763bc1",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8678-7030-8757-70c3e9763bc1&formalityCaseId=019db5cd-1fea-7338-b3f7-2ad2ed03c0c6"
-    },
-    {
       "ma": "1.115148",
       "ten": "Thủ tục tính hoặc tính lại tiền sử dụng đất theo quy định tại các điểm a, b, c và d khoản 2 Điều 12 Nghị định số  50/2026/NĐ-CP ngày 31/01/2026 của Chính phủ",
       "dvcqgId": "019e8732-a3da-753b-85f5-0590fe1e27c7",
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019e8732-a3da-753b-85f5-0590fe1e27c7&formalityCaseId=019e87bd-b212-765f-8284-ec8bfca1f356"
-    },
-    {
-      "ma": "3.00057",
-      "ten": "Thủ tục xác nhận thay đổi thông tin đăng ký hoạt động in (cấp xã)",
-      "dvcqgId": "019d2bfd-fbe9-7337-b1ce-fd09019ebb44",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-fbe9-7337-b1ce-fd09019ebb44&formalityCaseId=019d2cd7-c5b7-709c-8e32-c1889c73527f"
     },
     {
       "ma": "1.115116",
@@ -1122,8 +1014,8 @@
     {
       "ma": "1.01304",
       "ten": "Thủ tục khai, nộp phí bảo vệ môi trường đối với khí thải",
-      "dvcqgId": "019d2bf7-e49f-75ce-8add-39abbec34cf9",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf7-e49f-75ce-8add-39abbec34cf9&formalityCaseId=019dcc24-62b3-775f-bd0c-43b09195c51d"
+      "dvcqgId": "019d2bfc-ca45-755d-a6d4-63b33d218a43",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfc-ca45-755d-a6d4-63b33d218a43&formalityCaseId=019d2d88-0656-73ab-897b-87245601ab7d"
     },
     {
       "ma": "1.005378",
@@ -1212,8 +1104,8 @@
     {
       "ma": "2.00282",
       "ten": "Hỗ trợ người lao động đi làm việc ở nước ngoài theo hợp đồng",
-      "dvcqgId": "019d2bff-44af-74e9-bab9-2f56edd7097c",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bff-44af-74e9-bab9-2f56edd7097c&formalityCaseId=019d2d6f-36b0-742e-b760-8b6d9821377d"
+      "dvcqgId": "019d2bfb-4a4d-725a-82b7-7280739a65eb",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfb-4a4d-725a-82b7-7280739a65eb&formalityCaseId=019dc558-4361-7461-93a1-193f5258ab43"
     },
     {
       "ma": "2.002303",
@@ -1422,8 +1314,8 @@
     {
       "ma": "1.01082",
       "ten": "Giải quyết chế độ người có công giúp đỡ cách mạng.",
-      "dvcqgId": "019d2bfd-ad86-76a9-9fe1-f0e29c99c683",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfd-ad86-76a9-9fe1-f0e29c99c683&formalityCaseId=019d2ca2-26e6-7374-ad5e-abcf47001b4a"
+      "dvcqgId": "019d2bfa-fc32-7233-91ef-87cd222c5a1b",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-fc32-7233-91ef-87cd222c5a1b&formalityCaseId=019dbdf7-3fb8-75b9-aaf0-51deeed8ba24"
     },
     {
       "ma": "1.010817",
@@ -1738,12 +1630,6 @@
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-867b-703e-a311-18fc1df76fc8&formalityCaseId=019db5cc-268b-74fa-b56d-659369f3f901"
     },
     {
-      "ma": "1.013978",
-      "ten": "Đăng ký đất đai, tài sản gắn liền với đất, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất lần đầu đối với hộ gia đình, cá nhân, cộng đồng dân cư, người gốc Việt Nam định cư ở nước ngoài",
-      "dvcqgId": "019d2bfa-8678-770b-8917-1872078767cd",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8678-770b-8917-1872078767cd&formalityCaseId=019db5d6-20e7-734e-931f-cef4ff956f81"
-    },
-    {
       "ma": "1.01395",
       "ten": "Chuyển hình thức giao đất, cho thuê đất.",
       "dvcqgId": "019d2bfa-8678-7030-8757-70c3e9763bc1",
@@ -1762,22 +1648,10 @@
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8675-7789-bf5f-782e3f81d418&formalityCaseId=019db5cd-ee4f-7428-9720-0340b56045c6"
     },
     {
-      "ma": "1.013979",
-      "ten": "Tặng cho quyền sử dụng đất cho Nhà nước hoặc cộng đồng dân cư hoặc mở rộng đường giao thông đối với trường hợp thửa đất chưa được cấp Giấy chứng nhận",
-      "dvcqgId": "019d2bfa-8673-706e-96e4-fd2b840004ba",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8673-706e-96e4-fd2b840004ba&formalityCaseId=019d2d30-ed0d-7249-b514-f66f82bdeab4"
-    },
-    {
       "ma": "1.013952",
       "ten": "Điều chỉnh quyết định giao đất, cho thuê đất, cho phép chuyển mục đích sử dụng đất do thay đổi căn cứ quyết định giao đất, cho thuê đất, cho phép chuyển mục đích sử dụng đất; điều chỉnh thời hạn sử dụng đất của dự án đầu tư.",
       "dvcqgId": "019d2bfa-8672-74d6-a162-9d0368d68fb5",
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8672-74d6-a162-9d0368d68fb5&formalityCaseId=019db5c9-925a-731b-823f-4a2ccbecb0b4"
-    },
-    {
-      "ma": "1.013967",
-      "ten": "Giải quyết tranh chấp đất đai thuộc thẩm quyền của Chủ tịch Ủy ban nhân dân cấp xã",
-      "dvcqgId": "019d2bfa-8671-7318-8ef7-15304f36d400",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-8671-7318-8ef7-15304f36d400&formalityCaseId=019db5cf-1c4c-7641-b2d7-b19eb7597611"
     },
     {
       "ma": "1.013965",
@@ -1804,28 +1678,10 @@
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-7709-762d-a041-dfefe2e1e92d&formalityCaseId=019d2f40-75fc-75a8-a220-362f0c01768d"
     },
     {
-      "ma": "1.012817",
-      "ten": "Xác định lại diện tích đất ở của hộ gia đình, cá nhân đã được cấp Giấy chứng nhận trước ngày 01 tháng 7 năm 2004",
-      "dvcqgId": "019d2bfa-76ef-752f-a5e5-ff4ce5737bb1",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76ef-752f-a5e5-ff4ce5737bb1&formalityCaseId=019db446-a8ea-7301-a595-a0eef55929ef"
-    },
-    {
-      "ma": "1.012818",
-      "ten": "Thu hồi Giấy chứng nhận đã cấp lần đầu không đúng quy định của pháp luật đất đai do người sử dụng đất, chủ sở hữu tài sản gắn liền với đất phát hiện và cấp lại Giấy chứng nhận sau khi thu hồi",
-      "dvcqgId": "019d2bfa-76e6-7468-b6f2-417e588578f5",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76e6-7468-b6f2-417e588578f5&formalityCaseId=019db44a-16ab-7568-80a1-a5d1b793b860"
-    },
-    {
       "ma": "1.012812",
       "ten": "Hòa giải tranh chấp đất đai",
       "dvcqgId": "019d2bfa-76e6-7468-b6f2-3d412e902b88",
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76e6-7468-b6f2-3d412e902b88&formalityCaseId=019db443-f63d-73f2-8193-81f9801de37e"
-    },
-    {
-      "ma": "1.012796",
-      "ten": "Đính chính Giấy chứng nhận đã cấp lần đầu có sai sót",
-      "dvcqgId": "019d2bfa-76cb-741b-996e-33d1ef50be50",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-76cb-741b-996e-33d1ef50be50&formalityCaseId=019db442-12f1-725c-8fc2-925499bf4817"
     },
     {
       "ma": "1.012766",
@@ -1838,12 +1694,6 @@
       "ten": "Chuyển mục đích sử dụng rừng sang mục đích khác đối với cá nhân",
       "dvcqgId": "019d2bfa-6ef5-7737-a1e5-62fbb059a72b",
       "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6ef5-7737-a1e5-62fbb059a72b&formalityCaseId=019db438-cb74-7130-af87-bb10b196ad78"
-    },
-    {
-      "ma": "1.012753",
-      "ten": "Đăng ký đất đai, tài sản gắn liền với đất, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất lần đầu đối với tổ chức đang sử dụng đất",
-      "dvcqgId": "019d2bfa-6eeb-7460-9097-1804edf38aec",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-6eeb-7460-9097-1804edf38aec&formalityCaseId=019db43e-c892-71fe-884a-fef954724508"
     },
     {
       "ma": "1.012531",
@@ -1962,8 +1812,8 @@
     {
       "ma": "1.00344",
       "ten": "Thẩm định, phê duyệt phương án ứng phó với tình huống khẩn cấp thuộc thẩm quyền của UBND cấp xã",
-      "dvcqgId": "019d2bfe-0b72-775c-a663-dd09bc4b394c",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfe-0b72-775c-a663-dd09bc4b394c&formalityCaseId=019d2cf7-930f-76ab-9f22-3f464fbb6b81"
+      "dvcqgId": "019d2bfa-18ee-778b-9a30-66fd633ab7f3",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bfa-18ee-778b-9a30-66fd633ab7f3&formalityCaseId=019db41d-ff53-70ba-8282-3617f0de7d90"
     },
     {
       "ma": "1.003434",
@@ -2148,8 +1998,8 @@
     {
       "ma": "2.00262",
       "ten": "Thông báo về việc thực hiện hoạt động bán hàng không tại địa điểm giao dịch thường xuyên",
-      "dvcqgId": "019d2bf8-238c-7128-9d0b-aef1203a0c07",
-      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-238c-7128-9d0b-aef1203a0c07&formalityCaseId=019dc6e5-e758-715a-b12f-bc54a81188f4"
+      "dvcqgId": "019d2bf8-4a88-761c-a413-252b766cc878",
+      "url": "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId=019d2bf8-4a88-761c-a413-252b766cc878&formalityCaseId=019d2ca5-5c32-729c-8dfc-bf97f7a7eee0"
     },
     {
       "ma": "2.000206",
@@ -2178,6 +2028,10 @@
     {
       "ma": "1.116909",
       "ten": "Thực hiện trợ cấp xã hội và nhận chăm sóc, nuôi dưỡng, hỗ trợ kinh phí nhận chăm sóc, nuôi dưỡng hằng tháng"
+    },
+    {
+      "ma": "1.116849",
+      "ten": "Giải thể trung tâm học tập cộng đồng tư thục (Theo đề nghị của tổ chức, cá nhân thành lập trung tâm)"
     },
     {
       "ma": "1.116848",
@@ -2212,6 +2066,10 @@
       "ten": "Giải thể nhóm lớp mầm non độc lập dân lập, tư thục (Theo đề nghị của tổ chức, cá nhân thành lập nhóm lớp)"
     },
     {
+      "ma": "1.11684",
+      "ten": "Sáp nhập, chia, tách nhóm lớp mầm non độc lập dân lập, tư thục"
+    },
+    {
       "ma": "1.116839",
       "ten": "Cho phép thành lập nhóm, lớp mầm non độc lập dân lập, tư thục"
     },
@@ -2242,6 +2100,10 @@
     {
       "ma": "1.116821",
       "ten": "Sáp nhập, chia, tách lớp độc lập tư thục"
+    },
+    {
+      "ma": "1.11682",
+      "ten": "Cho phép thành lập lớp độc lập tư thục"
     },
     {
       "ma": "1.116819",
@@ -2304,8 +2166,20 @@
       "ten": "Đăng ký, cấp Giấy chứng nhận đối với thửa đất có diện tích tăng thêm do thay đổi ranh giới so với Giấy chứng nhận đã cấp (quy định tại điểm b và điểm c khoản 2 Điều 24 Nghị định số 101/2024/NĐ-CP và khoản 4 Điều 24 Nghị định số 101/2024/NĐ-CP)"
     },
     {
+      "ma": "3.000713",
+      "ten": "Sử dụng đất kết hợp đa mục đích, gia hạn phương án sử dụng đất kết hợp đa mục đích"
+    },
+    {
       "ma": "3.000711",
       "ten": "Hòa giải tranh chấp đất đai thuộc thẩm quyền cấp xã"
+    },
+    {
+      "ma": "3.000709",
+      "ten": "Trình tự, thủ tục giao đất ở có thu tiền sử dụng đất không thông qua đấu giá, không đấu thầu lựa chọn nhà đầu tư thực hiện dự án có sử dụng đất đối với cá nhân là cán bộ, công chức, viên chức, sĩ quan tại ngũ, quân nhân chuyên nghiệp, công chức quốc phòng, công nhân và viên chức quốc phòng, sĩ quan, hạ sĩ quan, công nhân công an, người làm công tác cơ yếu và người làm công tác khác trong tổ chức cơ yếu hưởng lương từ ngân sách nhà nước mà chưa được giao đất ở, nhà ở; giáo viên, nhân viên y tế đang công tác tại các xã biên giới, hải đảo thuộc vùng có điều kiện kinh tế - xã hội khó khăn, vùng có điều kiện kinh tế - xã hội đặc biệt khó khăn nhưng chưa có đất ở, nhà ở tại nơi công tác hoặc chưa được hưởng chính sách hỗ trợ về nhà ở theo quy định của pháp luật về nhà ở; cá nhân thường trú tại xã mà không có đất ở và chưa được Nhà nước giao đất ở hoặc chưa được hưởng chính sách hỗ trợ về nhà ở theo quy định của pháp luật về nhà ở"
+    },
+    {
+      "ma": "3.000708",
+      "ten": "Chuyển hình thức giao đất, cho thuê đất"
     },
     {
       "ma": "3.000707",
@@ -2316,12 +2190,56 @@
       "ten": "Giao đất, cho thuê đất, chuyển mục đích sử dụng đất đối với trường hợp giao đất, cho thuê đất không đấu giá quyền sử dụng đất, không đấu thầu lựa chọn nhà đầu tư thực hiện dự án có sử dụng đất và trường hợp giao đất, cho thuê đất thông qua đấu thầu lựa chọn nhà đầu tư thực hiện dự án có sử dụng đất; giao đất và giao rừng; cho thuê đất và cho thuê rừng"
     },
     {
+      "ma": "3.000672",
+      "ten": "Đăng ký, cấp Giấy chứng nhận đối với trường hợp cá nhân, hộ gia đình đã được cấp Giấy chứng nhận một phần diện tích vào loại đất ở trước ngày 01 tháng 7 năm 2004, phần diện tích còn lại của thửa đất chưa được cấp Giấy chứng nhận"
+    },
+    {
       "ma": "3.000671",
       "ten": "Đăng ký, cấp Giấy chứng nhận đối với thửa đất có diện tích tăng thêm do thay đổi ranh giới so với Giấy chứng nhận đã cấp (quy định tại điểm b và điểm c khoản 2 Điều 24 Nghị định số 101/2024/NĐ-CP và khoản 4 Điều 24 Nghị định số 101/2024/NĐ-CP)"
     },
     {
+      "ma": "3.00067",
+      "ten": "Tặng cho quyền sử dụng đất cho Nhà nước hoặc cộng đồng dân cư hoặc mở rộng đường giao thông đối với trường hợp thửa đất chưa được cấp Giấy chứng nhận"
+    },
+    {
+      "ma": "3.000669",
+      "ten": "Đăng ký đất đai, tài sản gắn liền với đất, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất lần đầu đối với hộ gia đình, cá nhân, cộng đồng dân cư, người gốc Việt Nam định cư ở nước ngoài"
+    },
+    {
+      "ma": "3.000668",
+      "ten": "Đăng ký đất đai, tài sản gắn liền với đất, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất lần đầu đối với tổ chức đang sử dụng đất"
+    },
+    {
+      "ma": "3.000667",
+      "ten": "Thu hồi Giấy chứng nhận đã cấp lần đầu không đúng quy định của pháp luật đất đai do người sử dụng đất, chủ sở hữu tài sản gắn liền với đất phát hiện và cấp lại Giấy chứng nhận sau khi thu hồi"
+    },
+    {
+      "ma": "3.000666",
+      "ten": "Đính chính Giấy chứng nhận đã cấp lần đầu có sai sót"
+    },
+    {
+      "ma": "3.000665",
+      "ten": "Xác định lại diện tích đất ở của hộ gia đình, cá nhân đã được cấp Giấy chứng nhận trước ngày 01 tháng 7 năm 2004."
+    },
+    {
       "ma": "3.000664",
       "ten": "Hòa giải tranh chấp đất đai thuộc thẩm quyền cấp xã"
+    },
+    {
+      "ma": "3.000663",
+      "ten": "Giải quyết tranh chấp đất đai thuộc thẩm quyền của Chủ tịch Ủy ban nhân dân cấp xã"
+    },
+    {
+      "ma": "3.000662",
+      "ten": "Sử dụng đất kết hợp đa mục đích, gia hạn phương án sử dụng đất kết hợp đa mục đích"
+    },
+    {
+      "ma": "3.000661",
+      "ten": "Trình tự, thủ tục giao đất ở có thu tiền sử dụng đất không thông qua đấu giá, không đấu thầu lựa chọn nhà đầu tư thực hiện dự án có sử dụng đất đối với cá nhân là cán bộ, công chức, viên chức, sĩ quan tại ngũ, quân nhân chuyên nghiệp, công chức quốc phòng, công nhân và viên chức quốc phòng, sĩ quan, hạ sĩ quan, công nhân công an, người làm công tác cơ yếu và người làm công tác khác trong tổ chức cơ yếu hưởng lương từ ngân sách nhà nước mà chưa được giao đất ở, nhà ở; giáo viên, nhân viên y tế đang công tác tại các xã biên giới, hải đảo thuộc vùng có điều kiện kinh tế - xã hội khó khăn, vùng có điều kiện kinh tế - xã hội đặc biệt khó khăn nhưng chưa có đất ở, nhà ở tại nơi công tác hoặc chưa được hưởng chính sách hỗ trợ về nhà ở theo quy định của pháp luật về nhà ở; cá nhân thường trú tại xã mà không có đất ở và chưa được Nhà nước giao đất ở hoặc chưa được hưởng chính sách hỗ trợ về nhà ở theo quy định của pháp luật về nhà ở"
+    },
+    {
+      "ma": "3.00066",
+      "ten": "Chuyển hình thức giao đất, cho thuê đất"
     },
     {
       "ma": "3.000659",
@@ -2354,6 +2272,10 @@
     {
       "ma": "3.000576",
       "ten": "Thủ tục khai báo hoạt động phát hành xuất bản phẩm"
+    },
+    {
+      "ma": "3.00057",
+      "ten": "Thủ tục xác nhận thay đổi thông tin đăng ký hoạt động in (cấp xã)"
     },
     {
       "ma": "3.000569",
@@ -2444,6 +2366,34 @@
       "ten": "Giải quyết chế độ đối với quân nhân, cán bộ đi chiến trường B,C,K trong thời kỳ chống Mỹ cứu nước không có thân nhân phải trực tiếp nuôi dưỡng và quân nhân, cán bộ được đảng cử ở lại miền Nam hoạt động sau Hiệp định Giơnevơ năm 1954 đối với cán bộ, sỹ quan thuộc lực lượng vũ trang (công an, quân đội)"
     },
     {
+      "ma": "1.013978",
+      "ten": "Đăng ký đất đai, tài sản gắn liền với đất, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất lần đầu đối với hộ gia đình, cá nhân, cộng đồng dân cư, người gốc Việt Nam định cư ở nước ngoài"
+    },
+    {
+      "ma": "1.013979",
+      "ten": "Tặng cho quyền sử dụng đất cho Nhà nước hoặc cộng đồng dân cư hoặc mở rộng đường giao thông đối với trường hợp thửa đất chưa được cấp Giấy chứng nhận"
+    },
+    {
+      "ma": "1.013967",
+      "ten": "Giải quyết tranh chấp đất đai thuộc thẩm quyền của Chủ tịch Ủy ban nhân dân cấp xã"
+    },
+    {
+      "ma": "1.012817",
+      "ten": "Xác định lại diện tích đất ở của hộ gia đình, cá nhân đã được cấp Giấy chứng nhận trước ngày 01 tháng 7 năm 2004"
+    },
+    {
+      "ma": "1.012818",
+      "ten": "Thu hồi Giấy chứng nhận đã cấp lần đầu không đúng quy định của pháp luật đất đai do người sử dụng đất, chủ sở hữu tài sản gắn liền với đất phát hiện và cấp lại Giấy chứng nhận sau khi thu hồi"
+    },
+    {
+      "ma": "1.012796",
+      "ten": "Đính chính Giấy chứng nhận đã cấp lần đầu có sai sót"
+    },
+    {
+      "ma": "1.012753",
+      "ten": "Đăng ký đất đai, tài sản gắn liền với đất, cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất lần đầu đối với tổ chức đang sử dụng đất"
+    },
+    {
       "ma": "3.000527",
       "ten": "Đăng ký cai nghiện ma  túy tự nguyện"
     },
@@ -2455,5 +2405,6 @@
       "ma": "1.012537",
       "ten": "Giải quyết chế độ, chính sách cho người tham gia lực lượng tham gia bảo vệ an ninh, trật tự ở cơ sở chưa tham gia bảo hiểm y tế mà bị ốm đau, bị tai nạn, bị thương khi thực hiện nhiệm vụ"
     }
-  ]
+  ],
+  "duplicateUuidItems": {}
 }
