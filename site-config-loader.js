@@ -1,7 +1,7 @@
 /* Đọc cấu hình giao diện từ API Vercel; nếu API chưa sẵn sàng thì dùng file GitHub dự phòng. */
 (async function(){
   try{
-    const api='https://tthc-coral.vercel.app/api/admin';
+    const api='https://tthc-anhtuansdml-9137.vercel.app/api/admin';
     let r=await fetch(api+'?v='+Date.now(),{cache:'no-store'});
     if(!r.ok) r=await fetch('data/site-config.json?v='+Date.now(),{cache:'no-store'});
     if(!r.ok)return;
