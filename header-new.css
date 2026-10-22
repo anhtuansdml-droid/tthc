@@ -2,12 +2,13 @@
 .header{position:relative;min-height:185px;height:clamp(133px,9.92vw,190px);overflow:hidden;background:#fff;border-bottom:0;box-shadow:none}
 .header-pano{position:absolute;inset:0;background-image:url("https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457");background-size:cover;background-position:center 45%;filter:saturate(1.08) contrast(1.03)}
 .header-inner{position:relative;z-index:2;height:100%;min-height:0;max-width:none;padding:0 2.2%;display:flex;align-items:center;justify-content:space-between}
-.header-title{display:flex;align-items:center;gap:14px;padding:8px 20px 8px 10px;background:rgba(255,255,255,.93);border-radius:0;box-shadow:0 2px 12px rgba(0,0,0,.10);border:0}
+/* Không phủ nền trắng lên ảnh: tiêu đề nằm trực tiếp trên pano */
+.header-title{display:flex;align-items:center;gap:14px;padding:8px 20px 8px 10px;background:transparent;border-radius:0;box-shadow:none;border:0}
 .logo{width:82px;height:82px;flex:0 0 82px;border:0;padding:0;border-radius:0;background:transparent;box-shadow:none}
 .logo img{width:100%;height:100%;border-radius:0;object-fit:contain}
-.header-title h1{margin:0;color:#c5161d;font-size:clamp(21px,2.15vw,34px);font-weight:900;line-height:1.05;white-space:nowrap}
-.header-title p{margin:6px 0 0;color:#152a49;font-size:clamp(12px,1.25vw,20px);font-weight:800;line-height:1.1;white-space:nowrap}
-.header-slogan{margin-top:7px;color:#c5161d;font-size:clamp(11px,1.05vw,17px);font-weight:900;letter-spacing:2px;text-align:center}
+.header-title h1{margin:0;color:#c5161d;font-size:clamp(21px,2.15vw,34px);font-weight:900;line-height:1.05;white-space:nowrap;text-shadow:0 1px 2px rgba(255,255,255,.75),0 2px 4px rgba(0,0,0,.28)}
+.header-title p{margin:6px 0 0;color:#152a49;font-size:clamp(12px,1.25vw,20px);font-weight:800;line-height:1.1;white-space:nowrap;text-shadow:0 1px 2px rgba(255,255,255,.85),0 2px 3px rgba(0,0,0,.25)}
+.header-slogan{margin-top:7px;color:#c5161d;font-size:clamp(11px,1.05vw,17px);font-weight:900;letter-spacing:2px;text-align:center;text-shadow:0 1px 2px rgba(255,255,255,.8),0 1px 3px rgba(0,0,0,.22)}
 .header-tools{align-self:flex-start;margin-top:35px;display:flex;gap:7px;z-index:3}
 .clock{font-size:clamp(11px,1vw,16px);font-weight:800;color:#fff;white-space:nowrap;background:#b51018;padding:10px 15px;border-radius:9px;box-shadow:0 3px 10px rgba(100,0,0,.25)}
 .theme-btn{border:0;background:#fff8df;color:#172033;border-radius:9px;padding:9px 13px;cursor:pointer;font-size:20px;box-shadow:0 3px 10px rgba(0,0,0,.16)}
