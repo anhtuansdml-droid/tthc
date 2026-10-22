@@ -7,6 +7,7 @@
   <title>Bảng niêm yết thủ tục hành chính - Mường Lay</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="detail.css">
+  <link rel="stylesheet" href="stats.css">
 </head>
 <body>
   <header class="header">
@@ -23,21 +24,22 @@
         </div>
       </div>
       <div class="header-tools">
-        <div id="clock" class="clock">00:00:00</div>
-        <button id="themeBtn" class="theme-btn" title="Đổi giao diện">🌙</button>
+        <div id="clock" class="clock">00/00/0000 00:00:00</div>
+        <button id="themeBtn" class="theme-btn" title="Đổi giao diện">☾</button>
       </div>
     </div>
   </header>
 
   <nav class="nav">
     <div class="nav-inner">
-      <button class="home-btn" onclick="location.reload()">⌂ TRANG CHỦ</button>
+      <button class="home-btn" onclick="location.reload()">⌂ &nbsp;TRANG CHỦ</button>
       <div class="search-box">
-        <span>🔎</span>
+        <span>⌕</span>
         <input id="searchInput" type="text" placeholder="Nhập mã thủ tục, tên thủ tục, hoặc từ khóa cần tìm..." autocomplete="off">
       </div>
-      <button id="configBtn" class="config-btn" title="Cấu hình lĩnh vực hiển thị">⚙ CẤU HÌNH</button>
-      <button class="pakn-btn" onclick="window.open('https://dichvucong.gov.vn/', '_blank')">☑ HƯỚNG DẪN TRA CỨU</button>
+      <button id="configBtn" class="config-btn" title="Cấu hình lĩnh vực hiển thị">⚙ &nbsp;CẤU HÌNH</button>
+      <button class="pakn-btn" onclick="window.open('https://dichvucong.gov.vn/', '_blank')">☑ &nbsp;HƯỚNG DẪN TRA CỨU</button>
+      <button id="statsBtn" class="stats-btn" title="Xem thống kê TTHC">▥ &nbsp;THỐNG KÊ</button>
     </div>
   </nav>
 
@@ -77,6 +79,16 @@
     </div>
   </div>
 
+  <div id="statsModal" class="stats-modal" aria-hidden="true">
+    <div class="stats-dialog">
+      <div class="stats-header">
+        <div><div class="stats-kicker">TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY</div><h2>THỐNG KÊ THỦ TỤC HÀNH CHÍNH</h2></div>
+        <button id="statsClose" class="stats-close" title="Đóng">×</button>
+      </div>
+      <div id="statsBody" class="stats-body"></div>
+    </div>
+  </div>
+
   <footer class="footer">
     <div>TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY</div>
     <div style="margin-top:6px;">Bảng niêm yết thủ tục hành chính điện tử</div>
@@ -85,5 +97,6 @@
 
   <script src="app.js"></script>
   <script src="detail.js"></script>
+  <script src="stats.js"></script>
 </body>
 </html>
