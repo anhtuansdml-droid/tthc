@@ -15,16 +15,31 @@ body {
   min-height: 100vh;
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER / PANO MƯỜNG LAY ===== */
 
 .header {
+  position: relative;
+  overflow: hidden;
   background: #c40000;
   color: white;
   padding: 18px 28px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
+.header-pano {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, rgba(196, 0, 0, 0.98) 0%, rgba(196, 0, 0, 0.92) 42%, rgba(196, 0, 0, 0.68) 68%, rgba(120, 0, 0, 0.78) 100%),
+    url("https://images.baodantoc.vn/uploads/2024/Thang-10/Ngay-21/Anh/image-20240925102054-3.jpg");
+  background-size: cover;
+  background-position: center 48%;
+  opacity: 0.95;
+}
+
 .header-inner {
+  position: relative;
+  z-index: 1;
   max-width: 1600px;
   margin: 0 auto;
   display: flex;
@@ -40,16 +55,24 @@ body {
 }
 
 .logo {
-  width: 58px;
-  height: 58px;
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
   border-radius: 50%;
   background: white;
-  color: #c40000;
+  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 900;
-  font-size: 20px;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.22);
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
 }
 
 .header-title h1 {
@@ -57,12 +80,21 @@ body {
   font-size: 28px;
   font-weight: 800;
   letter-spacing: 0.3px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .header-title p {
   margin: 7px 0 0;
   font-size: 17px;
   font-weight: 600;
+}
+
+.header-slogan {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  opacity: 0.95;
 }
 
 .header-tools {
@@ -467,6 +499,10 @@ body.dark .detail-value {
     font-size: 14px;
   }
 
+  .header-slogan {
+    font-size: 10px;
+  }
+
   .clock {
     display: none;
   }
@@ -499,9 +535,9 @@ body.dark .detail-value {
   }
 
   .logo {
-    width: 45px;
-    height: 45px;
-    font-size: 15px;
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
   }
 
   .header-title h1 {
@@ -510,6 +546,11 @@ body.dark .detail-value {
 
   .header-title p {
     font-size: 12px;
+  }
+
+  .header-slogan {
+    font-size: 9px;
+    letter-spacing: 1px;
   }
 
   .field-grid {
