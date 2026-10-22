@@ -2,6 +2,9 @@
 (function () {
   const DVCQG_BASE = "https://ndc.dichvucong.gov.vn/thu-tuc-hanh-chinh/";
   const DVCQG_SEARCH_BASE = "https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
+  const DVCQG_PROVINCE_CODE = "11";   // Tỉnh Điện Biên
+  const DVCQG_WARD_CODE = "03151";    // Phường Mường Lay
+  const DVCQG_COMMUNE = "WARD";
   const QR_BASE = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=";
   let detailIndex = new Map();
   let detailReady = null;
@@ -49,6 +52,23 @@
   }
   detailReady = loadDetails();
 
+  // Link nộp hồ sơ: mở đúng TTHC trên DVCQG và truyền sẵn tỉnh/xã để hệ thống tự lọc cơ quan thực hiện.
+  function buildSubmitUrl(item) {
+    const uuid = String(item?.dvcqgId || "").trim();
+    if (!uuid) return "";
+    const params = new URLSearchParams({
+      formalityId: uuid,
+      searchType: "PROVINCE",
+      provinceCode: DVCQG_PROVINCE_CODE,
+      wardCode: DVCQG_WARD_CODE,
+      commune: DVCQG_COMMUNE,
+      showAdvanced: "false",
+      isProvince: "0",
+      isMinistry: "0"
+    });
+    return `${DVCQG_SEARCH_BASE}?${params.toString()}`;
+  }
+
   async function showDetailFull(baseItem) {
     await detailReady;
     const modal = document.getElementById("detailModal");
@@ -60,6 +80,7 @@
     const noOnline = typeof window.isNoOnlineService === "function" ? window.isNoOnlineService(item) : String(item.mucDo || "").includes("Chưa cung cấp");
     const uuid = String(item.dvcqgId || "").trim();
     const url = !noOnline && uuid ? DVCQG_BASE + encodeURIComponent(uuid) : "";
+    const submitUrl = !noOnline && uuid ? buildSubmitUrl(item) : "";
     const searchUrl = item.ma ? `${DVCQG_SEARCH_BASE}?keyword=${encodeURIComponent(item.ma)}` : "";
 
     const decision = value(item, ["soQuyetDinh", "quyetDinh", "decision_no", "soQuyetDinhBanHanh"]);
@@ -78,9 +99,9 @@
 
     body.innerHTML = `
       <div class="dvc-detail-shell">
-        <div class="dvc-detail-head"><div class="dvc-head-title"><span>●</span> THÔNG TIN CHI TIẾT THỦ TỤC HÀNH CHÍNH</div><div class="dvc-head-actions">${url ? `<a class="dvc-submit-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">➤ Nộp hồ sơ trực tuyến</a>` : ""}<button type="button" class="dvc-close-btn" aria-label="Đóng" title="Đóng" onclick="document.getElementById('detailModal')?.classList.remove('show')">×</button></div></div>
+        <div class="dvc-detail-head"><div class="dvc-head-title"><span>●</span> THÔNG TIN CHI TIẾT THỦ TỤC HÀNH CHÍNH</div><div class="dvc-head-actions">${submitUrl ? `<a class="dvc-submit-btn" href="${esc(submitUrl)}" target="_blank" rel="noopener noreferrer">➤ Nộp hồ sơ trực tuyến</a>` : ""}<button type="button" class="dvc-close-btn" aria-label="Đóng" title="Đóng" onclick="document.getElementById('detailModal')?.classList.remove('show')">×</button></div></div>
         <div class="dvc-detail-scroll">
-          <div class="dvc-summary"><div class="dvc-summary-main"><h1>${esc(item.ten || "")}</h1><div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div></div>${url ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(url)}" alt="QR nộp hồ sơ trực tuyến"><strong>QUÉT ĐỂ NỘP<br>TRỰC TUYẾN</strong></div>` : ""}</div>
+          <div class="dvc-summary"><div class="dvc-summary-main"><h1>${esc(item.ten || "")}</h1><div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div></div>${submitUrl ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(submitUrl)}" alt="QR nộp hồ sơ trực tuyến"><strong>QUÉT ĐỂ NỘP<br>TRỰC TUYẾN</strong></div>` : ""}</div>
           <div class="dvc-info-grid">
             ${info("Mã TTHC:", item.ma)}${info("Số Quyết định:", decision)}${info("Kết quả thực hiện:", result, true)}${info("Cơ quan ban hành:", item.coQuanChuTri)}${info("Cơ quan thực hiện:", agencies, true)}${info("Cấp thực hiện:", item.cap)}${info("Loại thủ tục:", item.loai)}${info("Nguồn/Quy định:", value(item, ["nguonQuyDinh", "nguon", "source"]))}${info("Trạng thái:", item.trangThai)}${info("Thời hạn:", time)}${info("Đối tượng thực hiện:", target, true)}${info("Cơ quan phối hợp:", coordinating, true)}${info("Địa chỉ tiếp nhận:", receive, true)}
           </div>
