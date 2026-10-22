@@ -91,6 +91,7 @@ async function loadData() {
       };
     });
 
+    window.procedures = procedures;
     loadVisibleFields();
     filteredProcedures = [...procedures];
     updateStatistics();
@@ -261,38 +262,48 @@ function setupSearch() {
     }
 
     filteredProcedures = procedures.filter(item => {
-      const text = [item.ma, item.ten, item.linhVuc, item.coQuanChuTri, item.coQuanThucHien, item.maThucHien].filter(Boolean).join(" ");
-      return normalize(text).includes(keyword);
+      const haystack = normalize(`${item.ma || ""} ${item.ten || ""} ${item.linhVuc || ""} ${item.coQuanChuTri || ""}`);
+      return haystack.includes(keyword);
     });
-
+    updateStatistics();
     renderFields(filteredProcedures);
     const title = document.getElementById("contentTitle");
-    if (title) title.textContent = `KẾT QUẢ TÌM KIẾM — ${getFieldsForDisplay(filteredProcedures).length} TTHC`;
+    if (title) title.textContent = `KẾT QUẢ TÌM KIẾM — ${filteredProcedures.length} thủ tục`;
   });
 }
 
 function setupModal() {
-  if (!modal) return;
   const close = document.getElementById("modalClose");
-  if (close) close.addEventListener("click", () => modal.classList.remove("show"));
-  modal.addEventListener("click", event => {
-    if (event.target === modal) modal.classList.remove("show");
-  });
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-      modal.classList.remove("show");
-      if (configModal) configModal.classList.remove("show");
-    }
-  });
+  if (close) close.addEventListener("click", () => modal?.classList.remove("show"));
+  if (modal) modal.addEventListener("click", event => { if (event.target === modal) modal.classList.remove("show"); });
+  document.addEventListener("keydown", event => { if (event.key === "Escape") modal?.classList.remove("show"); });
 }
 
 function setupTheme() {
   const button = document.getElementById("themeBtn");
+  const saved = localStorage.getItem("tthc_theme");
+  if (saved === "dark") document.body.classList.add("dark");
   if (!button) return;
   button.addEventListener("click", () => {
     document.body.classList.toggle("dark");
-    button.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    localStorage.setItem("tthc_theme", document.body.classList.contains("dark") ? "dark" : "light");
   });
+}
+
+function loadVisibleFields() {
+  const saved = localStorage.getItem(CONFIG_STORAGE_KEY);
+  const all = getFieldNames(procedures);
+  if (!saved) {
+    visibleFields = new Set(all);
+    return;
+  }
+  try {
+    const parsed = JSON.parse(saved);
+    visibleFields = new Set(all.filter(field => parsed.includes(field)));
+    if (!visibleFields.size) visibleFields = new Set(all);
+  } catch {
+    visibleFields = new Set(all);
+  }
 }
 
 function setupConfig() {
@@ -300,158 +311,57 @@ function setupConfig() {
   const close = document.getElementById("configClose");
   const cancel = document.getElementById("configCancel");
   const save = document.getElementById("configSave");
-
-  if (open) open.addEventListener("click", openConfigModal);
-  if (close) close.addEventListener("click", closeConfigModal);
-  if (cancel) cancel.addEventListener("click", closeConfigModal);
-  if (save) save.addEventListener("click", saveConfig);
-  if (configSearch) configSearch.addEventListener("input", renderConfigFields);
-  if (configAgency) configAgency.addEventListener("change", renderConfigFields);
-  if (configSelectAll) configSelectAll.addEventListener("change", toggleAllConfigFields);
-  if (configModal) configModal.addEventListener("click", event => {
-    if (event.target === configModal) closeConfigModal();
+  if (open) open.addEventListener("click", () => { renderConfigFieldList(); configModal?.classList.add("show"); });
+  if (close) close.addEventListener("click", () => configModal?.classList.remove("show"));
+  if (cancel) cancel.addEventListener("click", () => configModal?.classList.remove("show"));
+  if (save) save.addEventListener("click", () => {
+    const checked = [...document.querySelectorAll(".config-field-checkbox:checked")].map(input => input.value);
+    visibleFields = new Set(checked);
+    localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify([...visibleFields]));
+    configModal?.classList.remove("show");
+    renderFields(filteredProcedures);
   });
+  if (configSearch) configSearch.addEventListener("input", renderConfigFieldList);
+  if (configAgency) configAgency.addEventListener("change", renderConfigFieldList);
+  if (configSelectAll) configSelectAll.addEventListener("change", () => {
+    document.querySelectorAll(".config-field-checkbox").forEach(input => input.checked = configSelectAll.checked);
+  });
+  if (configModal) configModal.addEventListener("click", event => { if (event.target === configModal) configModal.classList.remove("show"); });
 }
 
 function setupConfigOptions() {
   if (!configAgency) return;
-  const agencies = [...new Set(procedures.map(item => item.coQuanChuTri).filter(Boolean))]
-    .sort((a, b) => a.localeCompare(b, "vi"));
-  configAgency.innerHTML = `<option value="">-- Tất cả Cơ quan chủ trì --</option>` + agencies
-    .map(agency => `<option value="${escapeAttribute(agency)}">${escapeHtml(agency)}</option>`)
-    .join("");
+  const agencies = [...new Set(procedures.map(item => item.coQuanChuTri || "Chưa cập nhật"))].sort((a,b)=>a.localeCompare(b,"vi"));
+  configAgency.innerHTML = `<option value="">-- Tất cả Cơ quan chủ trì --</option>` + agencies.map(a => `<option value="${escapeAttribute(a)}">${escapeHtml(a)}</option>`).join("");
 }
 
-function loadVisibleFields() {
-  const allFields = getFieldNames(procedures);
-  visibleFields = new Set(allFields);
-
-  try {
-    const saved = JSON.parse(localStorage.getItem(CONFIG_STORAGE_KEY) || "null");
-    if (Array.isArray(saved)) {
-      const valid = saved.filter(field => allFields.includes(field));
-      if (valid.length) visibleFields = new Set(valid);
-    }
-  } catch (error) {
-    console.warn("Không đọc được cấu hình hiển thị:", error);
-  }
-}
-
-function openConfigModal() {
-  if (!configModal) return;
-  if (configSearch) configSearch.value = "";
-  if (configAgency) configAgency.value = "";
-  renderConfigFields();
-  configModal.classList.add("show");
-}
-
-function closeConfigModal() {
-  if (configModal) configModal.classList.remove("show");
-}
-
-function getConfigFieldNames() {
-  const agency = configAgency ? normalize(configAgency.value) : "";
-  const keyword = configSearch ? normalize(configSearch.value) : "";
-
-  const candidates = procedures.filter(item => {
-    const agencyOk = !agency || normalize(item.coQuanChuTri) === agency;
-    const fieldText = normalize(item.linhVuc || "Chưa xác định");
-    const keywordOk = !keyword || fieldText.includes(keyword);
-    return agencyOk && keywordOk;
-  });
-
-  return getFieldNames(candidates);
-}
-
-function renderConfigFields() {
+function renderConfigFieldList() {
   if (!configFieldList) return;
-  const fields = getConfigFieldNames();
-
-  if (!fields.length) {
-    configFieldList.innerHTML = `<div class="config-empty">Không tìm thấy lĩnh vực phù hợp.</div>`;
-    if (configSelectAll) configSelectAll.checked = false;
-    return;
-  }
-
+  const keyword = normalize(configSearch?.value || "");
+  const agency = configAgency?.value || "";
+  const fields = getFieldNames(procedures).filter(field => {
+    if (keyword && !normalize(field).includes(keyword)) return false;
+    if (agency) {
+      return procedures.some(item => (item.linhVuc || "Chưa xác định") === field && (item.coQuanChuTri || "Chưa cập nhật") === agency);
+    }
+    return true;
+  });
+  if (!fields.length) { configFieldList.innerHTML = `<div class="config-empty">Không tìm thấy lĩnh vực phù hợp.</div>`; return; }
   configFieldList.innerHTML = fields.map(field => {
-    const items = procedures.filter(item => (item.linhVuc || "Chưa xác định") === field);
-    const agencyText = getMainAgency(items);
+    const count = procedures.filter(item => (item.linhVuc || "Chưa xác định") === field).length;
     const checked = visibleFields.has(field) ? "checked" : "";
-    return `
-      <label class="config-field-item">
-        <input class="config-field-checkbox" type="checkbox" value="${escapeAttribute(field)}" ${checked}>
-        <span class="config-checkmark"></span>
-        <span class="config-field-text">
-          <strong>${escapeHtml(field)}</strong>
-          <small>🏛 ${escapeHtml(agencyText)}</small>
-        </span>
-      </label>`;
+    return `<label class="config-field-item"><input class="config-field-checkbox" type="checkbox" value="${escapeAttribute(field)}" ${checked}><span class="config-field-text"><strong>${escapeHtml(field)}</strong><small>${count} thủ tục</small></span></label>`;
   }).join("");
-
-  configFieldList.querySelectorAll(".config-field-checkbox").forEach(input => {
-    input.addEventListener("change", updateConfigSelectAllState);
-  });
-  updateConfigSelectAllState();
-}
-
-function updateConfigSelectAllState() {
-  if (!configSelectAll) return;
-  const boxes = [...document.querySelectorAll(".config-field-checkbox")];
-  const checked = boxes.filter(box => box.checked).length;
-  configSelectAll.checked = boxes.length > 0 && checked === boxes.length;
-  configSelectAll.indeterminate = checked > 0 && checked < boxes.length;
-}
-
-function toggleAllConfigFields() {
-  const checked = !!configSelectAll.checked;
-  document.querySelectorAll(".config-field-checkbox").forEach(input => {
-    input.checked = checked;
-  });
-}
-
-function saveConfig() {
-  const currentBoxes = [...document.querySelectorAll(".config-field-checkbox")];
-  const currentVisible = new Set(visibleFields);
-  const currentFields = getConfigFieldNames();
-
-  currentFields.forEach(field => currentVisible.delete(field));
-  currentBoxes.filter(input => input.checked).forEach(input => currentVisible.add(input.value));
-
-  visibleFields = currentVisible;
-
-  try {
-    localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify([...visibleFields]));
-  } catch (error) {
-    console.warn("Không lưu được cấu hình hiển thị:", error);
-  }
-
-  filteredProcedures = [...procedures];
-  if (searchInput) searchInput.value = "";
-  const title = document.getElementById("contentTitle");
-  if (title) title.textContent = "DANH SÁCH LĨNH VỰC";
-  renderFields();
-  closeConfigModal();
 }
 
 function normalize(value) {
-  return String(value || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/Đ/g, "D")
-    .toLowerCase()
-    .trim();
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().trim();
 }
 
 function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  return String(value ?? "").replace(/[&<>\"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
 }
 
 function escapeAttribute(value) {
-  return escapeHtml(value).replace(/`/g, "&#096;");
+  return escapeHtml(value).replace(/'/g, "&#39;");
 }
