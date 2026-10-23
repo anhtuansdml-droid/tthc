@@ -130,4 +130,15 @@
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initStats, {once:true}); else initStats();
+
+  // Load the extension status checker after the page UI is ready.
+  const loadExtensionChecker = () => {
+    if (document.getElementById('tthc-extension-checker-script')) return;
+    const s = document.createElement('script');
+    s.id = 'tthc-extension-checker-script';
+    s.src = `/extension-check.js?v=20261023-01`;
+    s.defer = true;
+    document.head.appendChild(s);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadExtensionChecker, {once:true}); else loadExtensionChecker();
 })();
