@@ -13,6 +13,22 @@
     return s.includes(OLD_SOURCE) || s.includes(STATIC_SOURCE) || s.includes('data/tthc_428_');
   };
 
+  // Giao diện card lĩnh vực: chữ lớn hơn, chừa đủ khoảng cho cơ quan và nút Xem thủ tục.
+  const cardStyle = document.createElement('style');
+  cardStyle.textContent = `
+    .field-card{min-height:245px;padding:18px 16px 66px}
+    .field-card:before{width:54px;height:54px;font-size:29px;margin-bottom:13px}
+    .field-name{font-size:20px;line-height:1.28;min-height:52px;font-weight:900}
+    .field-count{font-size:16px;padding:6px 10px;right:12px;top:16px}
+    .field-agency{margin-top:10px;min-height:44px;font-size:15px;line-height:1.35;color:#3f4f63;font-weight:800;display:block}
+    .field-agency:before{content:'Thuộc: ';color:#a90000;font-weight:900}
+    .field-card:after{left:16px;right:16px;bottom:13px;height:42px;font-size:16px}
+    @media(max-width:1000px){.field-card{min-height:235px}.field-name{font-size:19px}.field-agency{font-size:14px}}
+    @media(max-width:700px){.field-card{min-height:225px;padding-bottom:62px}.field-name{font-size:18px}.field-agency{font-size:14px}}
+    @media(max-width:480px){.field-card{min-height:210px}.field-name{font-size:18px}}
+  `;
+  document.head.appendChild(cardStyle);
+
   async function loadLiveData(force = false) {
     if (!force && livePromise) return livePromise;
     const endpoint = LIVE_API + '?refresh=' + (force ? 'true' : 'false') + '&v=' + Date.now();
