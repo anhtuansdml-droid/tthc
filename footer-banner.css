@@ -49,6 +49,38 @@
 .footer-banner-ribbon{display:none}
 
 .footer{margin-top:0}
+.footer-visit-stats{
+  width:min(1000px,calc(100% - 30px));
+  margin:0 auto;
+  padding:10px 16px 11px;
+  box-sizing:border-box;
+  border-top:1px solid rgba(255,255,255,.18);
+  color:#fff;
+  text-align:center;
+}
+.footer-visit-title{
+  margin-bottom:7px;
+  color:#ffd84a;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.7px;
+}
+.footer-visit-items{
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+  gap:0;
+  flex-wrap:wrap;
+}
+.footer-visit-items>div{
+  min-width:145px;
+  padding:2px 18px;
+  box-sizing:border-box;
+  border-right:1px solid rgba(255,255,255,.2);
+}
+.footer-visit-items>div:last-child{border-right:0}
+.footer-visit-items span{display:block;color:rgba(255,255,255,.78);font-size:11px;font-weight:700}
+.footer-visit-items strong{display:block;margin-top:2px;color:#ffd84a;font-size:16px;font-weight:900}
 
 @media(max-width:800px){
   .footer-banner{width:calc(100% - 20px);min-height:330px;margin-top:24px;border-radius:12px 12px 0 0}
@@ -57,4 +89,7 @@
   .footer-banner-author{text-align:center}
   .footer-banner-title{font-size:16px}
   .footer-banner-sub,.footer-banner-author{font-size:13px}
+  .footer-visit-stats{width:calc(100% - 20px);padding:10px 6px 12px}
+  .footer-visit-items>div{min-width:50%;padding:4px 8px;border-right:0}
+  .footer-visit-items strong{font-size:14px}
 }
