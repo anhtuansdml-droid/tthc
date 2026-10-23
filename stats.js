@@ -20,14 +20,50 @@
       return body;
     }
 
+    async function fetchVisits() {
+      const r = await fetch(`/api/visits?v=${Date.now()}`, { cache: 'no-store' });
+      let body = {};
+      try { body = await r.json(); } catch (_) {}
+      if (!r.ok || body.ok === false) throw new Error(body.message || `Thống kê truy cập HTTP ${r.status}`);
+      return body;
+    }
+
     function card(icon, title, value, cls, sub = '') {
       const display = typeof value === 'number' ? fmt(value) : value;
       return `<div class="source-stat-card ${cls || ''}"><div class="source-stat-head"><span class="source-dot"></span><span>${title}</span></div><div class="source-stat-number">${display}</div>${sub ? `<div class="source-stat-sub">${sub}</div>` : ''}<span class="source-stat-watermark">${icon}</span></div>`;
     }
 
-    function render(data) {
+    function renderVisits(visits) {
+      const daily = Array.isArray(visits?.daily) ? visits.daily : [];
+      const rows = daily.slice().reverse().map(item => `
+        <div class="visit-day-row"><span>${esc(item.date)}</span><strong>${fmt(item.count)}</strong></div>
+      `).join('');
+      return `
+        <div class="visit-stats-panel">
+          <div class="visit-stats-head">
+            <div><span class="visit-icon">◉</span><strong>THỐNG KÊ LƯỢT TRUY CẬP</strong><small>Số lượt truy cập theo phiên trình duyệt · múi giờ Việt Nam</small></div>
+            <span class="visit-updated">Cập nhật: ${esc(visits?.updatedAt ? new Date(visits.updatedAt).toLocaleString('vi-VN') : 'vừa xong')}</span>
+          </div>
+          <div class="visit-summary-grid">
+            ${card('◷','HÔM NAY',visits?.today,'visit-today')}
+            ${card('↶','HÔM QUA',visits?.yesterday,'visit-yesterday')}
+            ${card('7','7 NGÀY GẦN NHẤT',visits?.last7,'visit-7d')}
+            ${card('∑','TỔNG LƯỢT TRUY CẬP',visits?.total,'visit-total')}
+          </div>
+          <div class="visit-history">
+            <div class="visit-history-title">LƯỢT TRUY CẬP 30 NGÀY GẦN NHẤT</div>
+            <div class="visit-day-list">${rows || '<div class="visit-empty">Chưa có dữ liệu truy cập.</div>'}</div>
+          </div>
+        </div>`;
+    }
+
+    async function render(data) {
       const updated = data.fetchedAt ? new Date(data.fetchedAt) : new Date();
       const updatedText = Number.isNaN(updated.getTime()) ? 'Đang cập nhật' : updated.toLocaleString('vi-VN');
+      let visitsHtml = '<div class="visit-stats-panel visit-loading-inline">Đang tải thống kê lượt truy cập...</div>';
+      try { visitsHtml = renderVisits(await fetchVisits()); }
+      catch (err) { visitsHtml = `<div class="visit-stats-panel visit-error-inline">Không tải được thống kê lượt truy cập: ${esc(err?.message || 'Lỗi không xác định')}</div>`; }
+
       statsBody.innerHTML = `
         <div class="source-stats-toolbar">
           <div class="source-stats-title"><span class="source-red-icon">▰</span><div><strong>THỐNG KÊ TTHC MƯỜNG LAY</strong><small>(Đồng bộ lúc ${esc(updatedText)})</small></div></div>
@@ -50,6 +86,7 @@
           </div>
         </div>
 
+        ${visitsHtml}
         <div class="source-data-note"><strong>Nguồn:</strong> Điều phối DVC Siêu tốc · <b>${fmt(data.total)} TTHC Mường Lay</b> · <span>Nhấn “Đồng bộ” để lấy dữ liệu mới nhất</span></div>`;
 
       document.getElementById('statsSyncBtn')?.addEventListener('click', async () => {
@@ -58,7 +95,7 @@
         showLoading('Đang lấy dữ liệu mới nhất từ Điều phối Siêu tốc...');
         try {
           const data = await fetchStats(true);
-          render(data);
+          await render(data);
           if (typeof window.syncTthcFromDieuPhoi === 'function') {
             await window.syncTthcFromDieuPhoi().catch(() => {});
             setTimeout(() => location.reload(), 150);
@@ -82,7 +119,7 @@
       statsModal.setAttribute('aria-hidden','false');
       document.body.classList.add('stats-open');
       showLoading();
-      try { render(await fetchStats(false)); } catch (err) { showError(err); }
+      try { await render(await fetchStats(false)); } catch (err) { showError(err); }
     }
     function closeStats() { statsModal.classList.remove('show'); statsModal.setAttribute('aria-hidden','true'); document.body.classList.remove('stats-open'); }
 
