@@ -39,7 +39,6 @@ function updateClock() {
   const date = now.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
   const time = now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
   const weekday = now.toLocaleDateString("vi-VN", { weekday: "long" });
-  // Dùng một lớp hiển thị ổn định, không thay toàn bộ giao diện đồng hồ mỗi giây.
   const display = `${weekday.charAt(0).toUpperCase() + weekday.slice(1)}, ${date}\n${time}`;
   if (clock.dataset.clockDisplay !== display) clock.dataset.clockDisplay = display;
 }
@@ -75,7 +74,15 @@ async function loadData() {
       const oldItem = oldByCode.get(code) || {};
       const noOnlineService = isNoOnlineService(item);
       const dvcqgId = noOnlineService ? "" : String(item.dvcqgId || item.dvcqg_id || oldItem.dvcqgId || "").trim();
-      return {...oldItem, ...item, ma:code, dvcqgId, url:buildDvcqgUrl(dvcqgId), noOnlineService};
+      const sourceUrl = String(item.url || oldItem.url || "").trim();
+      return {
+        ...oldItem,
+        ...item,
+        ma: code,
+        dvcqgId,
+        url: sourceUrl || buildDvcqgUrl(dvcqgId),
+        noOnlineService
+      };
     }).filter(item => item.ma);
 
     window.procedures = procedures;
@@ -140,7 +147,7 @@ function procedureHtml(item,index){const noOnlineService=isNoOnlineService(item)
 
 function showDetail(item){
   if(!modal||!modalBody||!item)return;
-  const noOnlineService=isNoOnlineService(item), onlineUrl=noOnlineService?"":buildDvcqgUrl(item.dvcqgId), searchUrl=noOnlineService?"":buildDvcqgSearchUrl(item);
+  const noOnlineService=isNoOnlineService(item), onlineUrl=noOnlineService?"":String(item.url||"").trim() || buildDvcqgUrl(item.dvcqgId), searchUrl=noOnlineService?"":buildDvcqgSearchUrl(item);
   modalBody.innerHTML=`<div class="detail-title">${escapeHtml(item.ten||"")}</div><div class="detail-grid">${detailRow("Mã TTHC",item.ma)}${detailRow("Lĩnh vực",item.linhVuc)}${detailRow("Cơ quan chủ trì",item.coQuanChuTri)}${detailRow("Cơ quan thực hiện",item.coQuanThucHien)}${detailRow("Mã cơ quan",item.maCoQuan)}${detailRow("Mức dịch vụ",noOnlineService?"CHƯA CUNG CẤP DỊCH VỤ CÔNG":item.mucDichVu)}${detailRow("Cấp thực hiện",item.cap)}${detailRow("Loại TTHC",item.loai)}${detailRow("Mức độ",item.mucDo)}${detailRow("Trạng thái",item.trangThai)}${detailRow("Nguồn dữ liệu",item.nguon||"Danh sách TTHC")}${detailRow("Mã thực hiện",item.maThucHien)}</div>${noOnlineService?'<div class="detail-note">CHƯA CUNG CẤP DỊCH VỤ CÔNG</div>':onlineUrl?`<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>`:`<div class="detail-note">Chưa xác định được mã liên kết chi tiết trên Cổng DVCQG.</div>`}${!noOnlineService?`<a class="online-btn" style="margin-top:10px;background:#444" href="${escapeAttribute(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU TRÊN CỔNG DVC QUỐC GIA</a>`:""}`;
   modal.classList.add("show");
 }
