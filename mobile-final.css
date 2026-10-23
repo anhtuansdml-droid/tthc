@@ -1,0 +1,256 @@
+/* =========================================================
+   MOBILE FINAL UI - chỉ áp dụng cho điện thoại
+   Desktop / laptop giữ nguyên giao diện hiện tại.
+   ========================================================= */
+
+@media (max-width: 600px){
+  /* ===== HEADER: dành riêng vùng cho ngày giờ ===== */
+  .header{
+    height:215px !important;
+    min-height:215px !important;
+  }
+  .header-inner{
+    min-height:215px !important;
+    height:215px !important;
+    padding:10px 9px !important;
+    display:block !important;
+    position:relative !important;
+  }
+  .header-title{
+    position:relative !important;
+    width:100% !important;
+    min-height:112px !important;
+    margin-top:0 !important;
+    padding:10px 138px 10px 8px !important;
+    display:flex !important;
+    align-items:flex-start !important;
+    gap:8px !important;
+    box-sizing:border-box !important;
+    background:rgba(255,255,255,.62) !important;
+    border-radius:10px !important;
+    overflow:hidden !important;
+  }
+  .logo{
+    width:52px !important;
+    height:52px !important;
+    flex:0 0 52px !important;
+    margin-top:3px !important;
+  }
+  .header-title>div:last-child{
+    min-width:0 !important;
+    margin:0 !important;
+    padding:3px 0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    border-radius:0 !important;
+  }
+  .header-title h1{
+    font-size:18px !important;
+    line-height:1.08 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+  .header-title p{
+    margin-top:6px !important;
+    font-size:11.5px !important;
+    line-height:1.15 !important;
+    white-space:normal !important;
+  }
+  .header-slogan{
+    margin-top:5px !important;
+    padding:0 12px !important;
+    font-size:10px !important;
+    line-height:1.1 !important;
+  }
+  .header-slogan::before,.header-slogan::after{width:10px !important}
+
+  /* Đồng hồ nằm độc lập góc phải, không đè lên tiêu đề */
+  .header-tools{
+    position:absolute !important;
+    z-index:20 !important;
+    top:9px !important;
+    right:8px !important;
+    margin:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:4px !important;
+  }
+  .clock{
+    display:flex !important;
+    width:126px !important;
+    min-width:126px !important;
+    height:62px !important;
+    padding:5px 4px !important;
+    border-radius:10px !important;
+    border-left-width:3px !important;
+  }
+  .clock::after{
+    font-size:9.5px !important;
+    line-height:1.28 !important;
+    inset:3px 0 0 !important;
+    padding:4px 3px !important;
+  }
+  .clock::before{height:3px !important}
+  .theme-btn{
+    width:31px !important;
+    height:31px !important;
+    min-width:31px !important;
+    font-size:14px !important;
+  }
+
+  /* ===== MENU MOBILE: không chồng chữ / không tràn ===== */
+  .nav{
+    position:relative !important;
+    padding:8px 9px !important;
+  }
+  .nav-inner{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:7px !important;
+  }
+  .home-btn{
+    grid-column:1/-1 !important;
+    width:100% !important;
+    min-height:48px !important;
+    font-size:16px !important;
+  }
+  .search-box{
+    grid-column:1/-1 !important;
+    width:100% !important;
+    order:0 !important;
+  }
+  .search-box input{
+    height:48px !important;
+    font-size:15px !important;
+    border-width:2px !important;
+  }
+  .config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn,.support-btn,.admin-link{
+    width:100% !important;
+    min-width:0 !important;
+    min-height:48px !important;
+    padding:9px 5px !important;
+    margin:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    text-overflow:ellipsis !important;
+    font-size:13px !important;
+    line-height:1.05 !important;
+    box-sizing:border-box !important;
+  }
+  .support-btn{font-size:12px !important}
+  .admin-link{font-size:13px !important}
+
+  /* ===== THỐNG KÊ ===== */
+  .statistics{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:7px !important;
+    padding:0 9px !important;
+    margin:12px auto !important;
+  }
+  .stat-card{
+    min-height:112px !important;
+    padding:10px 4px !important;
+    border-radius:9px !important;
+  }
+  .stat-number{font-size:25px !important}
+  .stat-label{font-size:11px !important;line-height:1.15 !important}
+
+  /* ===== TIÊU ĐỀ LĨNH VỰC ===== */
+  .main{padding:0 9px 30px !important}
+  .section-title{margin:17px 2px 11px !important}
+  .section-title h2{
+    font-size:24px !important;
+    line-height:1.1 !important;
+    letter-spacing:.2px !important;
+  }
+
+  /* ===== CARD LĨNH VỰC: chữ to, đậm, nổi bật ===== */
+  .field-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:10px !important;
+  }
+  .field-card{
+    min-height:225px !important;
+    padding:13px 12px 48px !important;
+    border-radius:11px !important;
+    border-width:1px !important;
+    box-shadow:0 3px 12px rgba(18,32,51,.10) !important;
+  }
+  .field-card:before{
+    width:50px !important;
+    height:50px !important;
+    margin-bottom:11px !important;
+    border-radius:10px !important;
+    font-size:25px !important;
+    box-shadow:0 3px 8px rgba(0,0,0,.16) !important;
+  }
+  .field-name{
+    font-size:19px !important;
+    line-height:1.18 !important;
+    min-height:0 !important;
+    padding-right:2px !important;
+    font-weight:900 !important;
+    color:#101c31 !important;
+    text-shadow:0 .3px 0 rgba(0,0,0,.15) !important;
+  }
+  .field-count{
+    top:10px !important;
+    right:9px !important;
+    padding:5px 7px !important;
+    font-size:12px !important;
+    border-radius:9px !important;
+  }
+  .field-count:after{content:"" !important}
+  .field-agency{
+    margin-top:8px !important;
+    font-size:13.5px !important;
+    line-height:1.2 !important;
+    min-height:34px !important;
+    color:#4a5870 !important;
+    font-weight:700 !important;
+  }
+  .field-agency::first-line{font-weight:900 !important}
+  .field-card:after{
+    left:10px !important;
+    right:10px !important;
+    bottom:9px !important;
+    height:40px !important;
+    font-size:15px !important;
+    border-radius:8px !important;
+    font-weight:900 !important;
+  }
+
+  /* Trợ lý không che nội dung */
+  .tthc-chat-launcher{
+    max-width:155px !important;
+    min-height:46px !important;
+    padding:10px 14px !important;
+    font-size:13px !important;
+    right:10px !important;
+    bottom:76px !important;
+  }
+}
+
+@media (max-width:380px){
+  .header{height:205px !important;min-height:205px !important}
+  .header-inner{height:205px !important;min-height:205px !important}
+  .header-title{padding-right:128px !important}
+  .clock{width:116px !important;min-width:116px !important;height:58px !important}
+  .clock::after{font-size:8.8px !important}
+  .header-title h1{font-size:16px !important}
+  .header-title p{font-size:10.5px !important}
+  .field-name{font-size:18px !important}
+  .field-card{min-height:215px !important}
+}
+
+/* Chỉ landscape trên điện thoại */
+@media (max-width:900px) and (orientation:landscape){
+  .header{height:170px !important;min-height:170px !important}
+  .header-inner{height:170px !important;min-height:170px !important}
+  .field-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+  .field-card{min-height:210px !important}
+}
