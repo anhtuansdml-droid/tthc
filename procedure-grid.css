@@ -1,3 +1,5 @@
+@import url("./responsive.css");
+
 /* ===== DANH SÁCH THỦ TỤC: DẠNG VỈ RUỒI / Ô CARD ===== */
 /* procedure-list nằm trong field-grid nên phải chiếm toàn bộ chiều ngang */
 .field-grid > .procedure-list{
