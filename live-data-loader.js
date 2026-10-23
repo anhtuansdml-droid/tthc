@@ -1,41 +1,82 @@
 (() => {
-  // Luôn ưu tiên dữ liệu đồng bộ từ Điều phối DVC trên chính tên miền TTHC Mường Lay.
-  // Sau khi bấm "ĐỒNG BỘ ĐIỀU PHỐI SIÊU TỐC", danh mục mới nhất (hiện 428 TTHC) sẽ được dùng ngay.
-  const LIVE_API = '/api/sync?action=data';
-  const STATUS_API = '/api/sync?action=status';
+  // Danh mục chuẩn Mường Lay ngày 23/10/2026: 428 TTHC.
+  // File catalog-428-levels.txt được tạo trực tiếp từ Excel danh mục mới.
+  const STATIC_SOURCE = 'data/tthc_430_2026-10-20.json';
+  const OLD_SOURCE = 'data/tthc.json';
+  const CATALOG_SOURCE = 'data/catalog-428-levels.txt';
   const originalFetch = window.fetch.bind(window);
   let livePromise = null;
   let liveData = null;
+
   const isTthcStatic = url => {
     const s = String(url || '');
-    return s.includes('data/tthc.json') || s.includes('data/tthc_430_2026-10-20.json') || s.includes('data/tthc_428_');
+    return s.includes(OLD_SOURCE) || s.includes(STATIC_SOURCE) || s.includes('data/tthc_428_');
   };
-  async function loadLive() {
+
+  async function loadMaster428() {
     if (livePromise) return livePromise;
     livePromise = Promise.all([
-      originalFetch(LIVE_API + '&v=' + Date.now(), { cache:'no-store' }).then(r => { if (!r.ok) throw new Error('LIVE TTHC HTTP ' + r.status); return r.json(); }),
-      originalFetch(STATUS_API + '&v=' + Date.now(), { cache:'no-store' }).then(r => { if (!r.ok) throw new Error('LIVE STATUS HTTP ' + r.status); return r.json(); })
-    ])
-      .then(([x,status]) => {
-        if (!x || !Array.isArray(x.procedures)) throw new Error('LIVE TTHC không đúng định dạng');
-        // Chỉ dùng dữ liệu live khi trạng thái đã đồng bộ thành công từ Điều phối DVC.
-        if (status?.mode !== 'dieuphoi' || status?.source !== 'https://dieuphoi.netlify.app/niemyet') {
-          throw new Error('Chưa có dữ liệu Điều phối hợp lệ; chờ đồng bộ Điều phối.');
-        }
-        liveData = x.procedures;
-        window.tthcLiveData = liveData;
-        return liveData;
-      })
-      .catch(e => { console.warn('Không dùng dữ liệu TTHC live:', e); livePromise = null; throw e; });
+      originalFetch(STATIC_SOURCE + '?v=' + Date.now(), {cache:'no-store'}),
+      originalFetch(CATALOG_SOURCE + '?v=' + Date.now(), {cache:'no-store'})
+    ]).then(async ([dataResponse, catalogResponse]) => {
+      if (!dataResponse.ok) throw new Error('TTHC nguồn HTTP ' + dataResponse.status);
+      if (!catalogResponse.ok) throw new Error('Danh mục chuẩn HTTP ' + catalogResponse.status);
+      const source = await dataResponse.json();
+      const text = await catalogResponse.text();
+      if (!Array.isArray(source)) throw new Error('Nguồn TTHC không đúng định dạng');
+
+      const catalog = new Map();
+      text.split(';').forEach(pair => {
+        const p = pair.indexOf('=');
+        if (p > 0) catalog.set(pair.slice(0,p).trim(), pair.slice(p+1).trim());
+      });
+      if (catalog.size !== 428) throw new Error('Danh mục chuẩn phải có 428 mã, hiện có ' + catalog.size);
+
+      const sourceByCode = new Map();
+      source.forEach(item => {
+        if (item && item.ma) sourceByCode.set(String(item.ma).trim(), item);
+      });
+
+      liveData = [...catalog.entries()].map(([code, level]) => {
+        const item = sourceByCode.get(code) || {ma: code};
+        const noOnline = level === 'Chưa cung cấp DVC';
+        return {
+          ...item,
+          ma: code,
+          mucDichVu: level,
+          noOnlineService: noOnline,
+          dvcqgId: noOnline ? '' : String(item.dvcqgId || item.dvcqg_id || '').trim(),
+          url: noOnline ? '' : item.url
+        };
+      });
+
+      window.tthcMaster428 = liveData;
+      window.tthcLiveData = liveData;
+      console.info('TTHC Mường Lay: đã nạp danh mục chuẩn 428 ngày 23/10/2026', {
+        total: liveData.length,
+        toanTrinh: liveData.filter(x => x.mucDichVu === 'Toàn trình').length,
+        motPhan: liveData.filter(x => x.mucDichVu === 'Một phần').length,
+        chuaCungCap: liveData.filter(x => x.mucDichVu === 'Chưa cung cấp DVC').length
+      });
+      return liveData;
+    }).catch(e => {
+      console.error('Không nạp được danh mục chuẩn 428:', e);
+      livePromise = null;
+      throw e;
+    });
     return livePromise;
   }
+
   window.fetch = async function(input, init) {
     const url = typeof input === 'string' ? input : input?.url || '';
     if (isTthcStatic(url)) {
       try {
-        const data = liveData || await loadLive();
-        return new Response(JSON.stringify(data), { status:200, headers:{'Content-Type':'application/json'} });
-      } catch (_) {
+        const data = liveData || await loadMaster428();
+        return new Response(JSON.stringify(data), {
+          status: 200,
+          headers: {'Content-Type':'application/json','X-TTHC-Master':'428-2026-10-23'}
+        });
+      } catch (e) {
         return originalFetch(input, init);
       }
     }
