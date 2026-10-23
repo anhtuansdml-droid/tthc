@@ -21,4 +21,9 @@
     const ft=q('.footer-banner');if(ft&&f.background)ft.style.backgroundImage='linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.12)),url("'+f.background.replace(/"/g,'\\"')+'")';
     const clock=q('#clock'),stats=q('#statsBtn');if(clock)clock.style.display=d.showClock===false?'none':'';if(stats)stats.style.display=d.showStats===false?'none':'';document.documentElement.style.setProperty('--admin-columns',String(d.columns||4));
   }catch(e){console.warn('Không tải được cấu hình giao diện',e)}
+  try{
+    if(!document.querySelector('script[data-visit-tracker]')){
+      const s=document.createElement('script');s.src='/visit-tracker.js?v=20261023-01';s.async=true;s.dataset.visitTracker='1';document.head.appendChild(s);
+    }
+  }catch(e){console.warn('Không khởi tạo được bộ thống kê truy cập',e)}
 })();
