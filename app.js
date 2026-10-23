@@ -36,7 +36,12 @@ function updateClock() {
   const clock = document.getElementById("clock");
   if (!clock) return;
   const now = new Date();
-  clock.textContent = `${now.toLocaleDateString("vi-VN")} ${now.toLocaleTimeString("vi-VN")}`;
+  const date = now.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const time = now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+  const weekday = now.toLocaleDateString("vi-VN", { weekday: "long" });
+  // Dùng một lớp hiển thị ổn định, không thay toàn bộ giao diện đồng hồ mỗi giây.
+  const display = `${weekday.charAt(0).toUpperCase() + weekday.slice(1)}, ${date}\n${time}`;
+  if (clock.dataset.clockDisplay !== display) clock.dataset.clockDisplay = display;
 }
 
 function setupSourceLink() {
