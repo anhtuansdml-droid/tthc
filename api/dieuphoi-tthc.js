@@ -49,6 +49,7 @@ function normalizeSheet(rows) {
   const codeKey = findHeader(headers, ['MaTTHC', 'Mã TTHC', 'ma thu tuc']);
   const nameKey = findHeader(headers, ['Tên TTHC', 'TenTTHC', 'Tên thủ tục hành chính']);
   const agencyKey = findHeader(headers, ['TenCQTH', 'TênCQTH', 'Tên cơ quan thực hiện']);
+  const publisherKey = findHeader(headers, ['Cơ quan công bố', 'CoQuanCongBo', 'TenCQCB', 'Tên cơ quan công bố', 'Cơ quan chủ trì', 'CoQuanChuTri']);
   const levelKey = findHeader(headers, ['MucDo', 'Mức độ']);
   const statusKey = findHeader(headers, ['Trạng thái', 'TrangThai']);
   const fieldKey = findHeader(headers, ['LinhVuc', 'Lĩnh vực']);
@@ -65,12 +66,15 @@ function normalizeSheet(rows) {
   for (const r of selected) {
     const code = String(r[codeKey] || '').trim();
     if (!code || unique.has(code)) continue;
+    const publishedBy = publisherKey ? String(r[publisherKey] || '').trim() : '';
+    const implementingAgency = String(r[agencyKey] || '').trim();
+    const managingAgency = publishedBy || implementingAgency;
     unique.set(code, {
       ma: code,
       ten: String(r[nameKey] || '').trim(),
       linhVuc: fieldKey ? String(r[fieldKey] || '').trim() : '',
-      coQuanChuTri: String(r[agencyKey] || '').trim(),
-      coQuanThucHien: String(r[agencyKey] || '').trim(),
+      coQuanChuTri: managingAgency,
+      coQuanThucHien: implementingAgency,
       maCoQuan: agencyCodeKey ? String(r[agencyCodeKey] || '').trim() : '',
       cap: capKey ? String(r[capKey] || '').trim() : '',
       mucDichVu: String(r[levelKey] || '').trim(),
@@ -90,7 +94,7 @@ async function getSource(url) {
   const r = await fetch(url + '&_t=' + Date.now(), {
     redirect: 'follow',
     cache: 'no-store',
-    headers: { 'user-agent': 'TTHC-Muong-Lay-Sync/2.0' }
+    headers: { 'user-agent': 'TTHC-Muong-Lay-Sync/2.1' }
   });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return parseCSV(await r.text());
