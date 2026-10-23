@@ -1,12 +1,14 @@
 (() => {
-  const LIVE_API = 'https://tthc-anhtuansdml-9137.vercel.app/api/sync?action=data';
-  const STATUS_API = 'https://tthc-anhtuansdml-9137.vercel.app/api/sync?action=status';
+  // Luôn ưu tiên dữ liệu đồng bộ từ Điều phối DVC trên chính tên miền TTHC Mường Lay.
+  // Sau khi bấm "ĐỒNG BỘ ĐIỀU PHỐI SIÊU TỐC", danh mục mới nhất (hiện 428 TTHC) sẽ được dùng ngay.
+  const LIVE_API = '/api/sync?action=data';
+  const STATUS_API = '/api/sync?action=status';
   const originalFetch = window.fetch.bind(window);
   let livePromise = null;
   let liveData = null;
   const isTthcStatic = url => {
     const s = String(url || '');
-    return s.includes('data/tthc.json') || s.includes('data/tthc_430_2026-10-20.json');
+    return s.includes('data/tthc.json') || s.includes('data/tthc_430_2026-10-20.json') || s.includes('data/tthc_428_');
   };
   async function loadLive() {
     if (livePromise) return livePromise;
@@ -16,10 +18,9 @@
     ])
       .then(([x,status]) => {
         if (!x || !Array.isArray(x.procedures)) throw new Error('LIVE TTHC không đúng định dạng');
-        // Chỉ dùng dữ liệu live khi đã đồng bộ thành công từ Điều phối DVC.
-        // Nếu trạng thái còn là DVCQG cũ hoặc chưa đồng bộ được, giữ danh mục 430 hiện hành.
+        // Chỉ dùng dữ liệu live khi trạng thái đã đồng bộ thành công từ Điều phối DVC.
         if (status?.mode !== 'dieuphoi' || status?.source !== 'https://dieuphoi.netlify.app/niemyet') {
-          throw new Error('Chưa có dữ liệu Điều phối hợp lệ; dùng danh mục 430 hiện hành.');
+          throw new Error('Chưa có dữ liệu Điều phối hợp lệ; chờ đồng bộ Điều phối.');
         }
         liveData = x.procedures;
         window.tthcLiveData = liveData;
