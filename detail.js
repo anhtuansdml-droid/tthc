@@ -59,6 +59,26 @@
   detailReady = loadDetails();
 
   function buildSubmitUrl(item) {
+    // Ưu tiên URL gốc từ dữ liệu Điều phối. Nguồn này thường chứa cả
+    // formalityId và formalityCaseId nên DVCQG có thể mở đúng hồ sơ thủ tục,
+    // thay vì chỉ mở trang danh sách chung.
+    const sourceUrl = String(item?.url || "").trim();
+    if (sourceUrl) {
+      try {
+        const u = new URL(sourceUrl);
+        if (/dichvucong\.gov\.vn$/i.test(u.hostname) || /(^|\.)dichvucong\.gov\.vn$/i.test(u.hostname)) {
+          u.searchParams.set("searchType", "PROVINCE");
+          u.searchParams.set("provinceCode", DVCQG_PROVINCE_CODE);
+          u.searchParams.set("wardCode", DVCQG_WARD_CODE);
+          u.searchParams.set("commune", DVCQG_COMMUNE);
+          u.searchParams.set("showAdvanced", "false");
+          u.searchParams.set("isProvince", "0");
+          u.searchParams.set("isMinistry", "0");
+          return u.toString();
+        }
+      } catch (_) {}
+    }
+
     const uuid = String(item?.dvcqgId || "").trim();
     if (!uuid) return "";
     const params = new URLSearchParams({
@@ -69,9 +89,17 @@
       commune: DVCQG_COMMUNE,
       showAdvanced: "false",
       isProvince: "0",
-      isMinistry: "0"
+      isMinistry: "0",
+      keyword: String(item?.ma || "").trim()
     });
     return `${DVCQG_SEARCH_BASE}?${params.toString()}`;
+  }
+
+  function buildSourceUrl(item) {
+    const sourceUrl = String(item?.url || "").trim();
+    if (sourceUrl) return sourceUrl;
+    const uuid = String(item?.dvcqgId || "").trim();
+    return uuid ? DVCQG_BASE + encodeURIComponent(uuid) : "";
   }
 
   async function showDetailFull(baseItem) {
@@ -84,9 +112,9 @@
     window.__dvcCurrentItem = item;
     const noOnline = typeof window.isNoOnlineService === "function" ? window.isNoOnlineService(item) : String(item.mucDo || "").includes("Chưa cung cấp");
     const uuid = String(item.dvcqgId || "").trim();
-    const url = !noOnline && uuid ? DVCQG_BASE + encodeURIComponent(uuid) : "";
-    const submitUrl = !noOnline && uuid ? buildSubmitUrl(item) : "";
-    const searchUrl = item.ma ? `${DVCQG_SEARCH_BASE}?keyword=${encodeURIComponent(item.ma)}` : "";
+    const url = !noOnline ? buildSourceUrl(item) : "";
+    const submitUrl = !noOnline ? buildSubmitUrl(item) : "";
+    const searchUrl = item.ma ? `${DVCQG_SEARCH_BASE}?keyword=${encodeURIComponent(item.ma)}&searchType=PROVINCE&provinceCode=${DVCQG_PROVINCE_CODE}&wardCode=${DVCQG_WARD_CODE}&commune=${DVCQG_COMMUNE}&showAdvanced=false&isProvince=0&isMinistry=0` : "";
 
     const decision = value(item, ["soQuyetDinh", "quyetDinh", "decision_no", "soQuyetDinhBanHanh"]);
     const result = value(item, ["ketQua", "results", "sanPham"]);
