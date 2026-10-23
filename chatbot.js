@@ -1,7 +1,7 @@
 (() => {
   const panel=document.getElementById('tthcChatPanel'),launcher=document.getElementById('tthcChatLauncher'),close=document.getElementById('tthcChatClose'),messages=document.getElementById('tthcChatMessages'),input=document.getElementById('tthcChatInput'),send=document.getElementById('tthcChatSend');
   if(!panel||!launcher||!messages||!input||!send)return;
-  const API='https://tthc-anhtuansdml-9137.vercel.app/api/chat';
+  const API='/api/chat';
   let procedures=[],history=[];
   const groups=[
     {words:['khai sinh','mới sinh','sinh con','đẻ','trẻ sơ sinh'],terms:['khai sinh','trẻ em']},
