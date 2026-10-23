@@ -1,8 +1,8 @@
-/* Đọc cấu hình giao diện từ API Vercel; nếu API chưa sẵn sàng thì dùng file GitHub dự phòng. */
+/* Đọc cấu hình giao diện từ API cùng tên miền; tránh phụ thuộc deployment/domain cũ. */
 (async function(){
   try{
-    const api='https://tthc-anhtuansdml-9137.vercel.app/api/admin';
-    let r=await fetch(api+'?v='+Date.now(),{cache:'no-store'});
+    const api='/api/admin';
+    let r=await fetch(api+'?v='+Date.now(),{cache:'no-store',credentials:'same-origin'});
     if(!r.ok) r=await fetch('data/site-config.json?v='+Date.now(),{cache:'no-store'});
     if(!r.ok)return;
     const c=await r.json(),h=c.header||{},f=c.footer||{},d=c.display||{};
