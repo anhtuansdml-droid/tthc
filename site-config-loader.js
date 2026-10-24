@@ -7,6 +7,14 @@
     if(!r.ok)return;
     const c=await r.json(),h=c.header||{},f=c.footer||{},d=c.display||{};
     const q=s=>document.querySelector(s);
+    const root=document.documentElement;
+    const num=(v,fallback)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:fallback};
+    root.style.setProperty('--admin-header-width',num(h.backgroundWidth,100)+'%');
+    root.style.setProperty('--admin-header-height',num(h.backgroundHeight,250)+'px');
+    root.style.setProperty('--admin-header-mobile-height',num(h.backgroundMobileHeight,165)+'px');
+    root.style.setProperty('--admin-footer-width',num(f.backgroundWidth,100)+'%');
+    root.style.setProperty('--admin-footer-height',num(f.backgroundHeight,300)+'px');
+    root.style.setProperty('--admin-footer-mobile-height',num(f.backgroundMobileHeight,330)+'px');
     const logo=q('.logo img'),pano=q('.header-pano'),h1=q('.header-title h1'),sub=q('.header-title p'),slogan=q('.header-slogan');
     if(logo&&h.logo)logo.src=h.logo;
     if(pano&&h.background)pano.style.backgroundImage='linear-gradient(90deg,rgba(255,255,255,.88) 0%,rgba(255,255,255,.68) 18%,rgba(255,255,255,.30) 38%,rgba(255,255,255,.03) 60%,rgba(255,255,255,0) 75%),url("'+h.background.replace(/"/g,'\\"')+'")';
