@@ -1,16 +1,67 @@
-/* ===== THẺ LĨNH VỰC / THỦ TỤC - ĐỒNG BỘ NHẬN DIỆN LOGO CẢI CÁCH HÀNH CHÍNH ===== */
-.field-card{position:relative;min-height:235px;padding:18px 17px 62px;border:1px solid #d8e0ea;border-radius:18px;background:linear-gradient(145deg,#fff 0%,#fff 72%,#fff8f8 100%);box-shadow:0 5px 16px rgba(23,32,51,.08);overflow:hidden;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
-.field-card:hover{transform:translateY(-5px);border-color:#e1b936;box-shadow:0 12px 28px rgba(180,18,27,.14)}
-.field-card:before,.field-card:nth-child(7n+1):before,.field-card:nth-child(7n+2):before,.field-card:nth-child(7n+3):before,.field-card:nth-child(7n+4):before,.field-card:nth-child(7n+5):before,.field-card:nth-child(7n+6):before,.field-card:nth-child(7n+7):before{content:"";display:block;position:relative;width:68px;height:68px;margin:0 0 16px;border:2px solid #e3bb43;border-radius:17px;background-color:#fff!important;background-image:url("https://binhphuoc.gov.vn/uploads/binhphuoc/news/2022_05/image_7.png?v=20261024-01")!important;background-repeat:no-repeat!important;background-position:center!important;background-size:54px 54px!important;box-shadow:0 5px 10px rgba(23,32,51,.12),inset 0 -5px 0 #c9151e}
-.field-count{position:absolute;top:16px;right:15px;z-index:2;min-width:78px;padding:9px 12px;border-radius:14px;background:#fff0f1!important;color:#c4121c!important;font-size:17px!important;line-height:1.05;font-weight:900!important;text-align:center}
-.field-name{position:relative;z-index:1;color:#172033!important;font-size:20px!important;line-height:1.22!important;font-weight:900!important;min-height:72px;padding-right:2px;letter-spacing:-.15px}
-.field-agency{position:relative;z-index:1;margin-top:7px!important;min-height:0!important;padding:8px 10px 8px 34px;border-radius:11px;background:#fff3f3;color:#4a586d!important;font-size:13px!important;line-height:1.25!important;font-weight:700!important}
-.field-agency:before{content:"▣";position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#c4121c;font-size:17px;font-weight:900}
-.field-card:after{content:"→  XEM THỦ TỤC"!important;position:absolute!important;left:17px!important;right:17px!important;bottom:15px!important;height:43px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:12px!important;background:linear-gradient(135deg,#c4121c 0%,#e21b23 100%)!important;color:#fff!important;font-size:15px!important;font-weight:900!important;letter-spacing:.15px;box-shadow:0 5px 12px rgba(196,18,28,.2);border:0!important;transition:filter .18s ease,transform .18s ease}
+/* ===== THẺ LĨNH VỰC - ĐỒNG BỘ LOGO CẢI CÁCH HÀNH CHÍNH ===== */
+.field-card{position:relative;min-height:235px;padding:18px 17px 62px;border:2px solid #d8e0ea;border-radius:18px;background:linear-gradient(145deg,#fff 0%,#fff 74%,#fff8f8 100%);box-shadow:0 6px 18px rgba(23,32,51,.09);overflow:hidden;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;box-sizing:border-box}
+.field-card:hover{transform:translateY(-5px);border-color:#e1b936;box-shadow:0 14px 30px rgba(180,18,27,.15)}
+
+/* Logo: dùng ảnh logo đã có trong giao diện cũ, tránh ô logo trắng */
+.field-card:before{content:"";display:block;position:relative;width:78px;height:78px;margin:0 0 17px;border:3px solid #e3bb43;border-radius:22px;background-color:#fff!important;background-image:url("https://degi.gialai.gov.vn/upload/105741/20250710/410369872_747078237462919_5911013010256606941_n_a5b4e.jpg")!important;background-repeat:no-repeat!important;background-position:center!important;background-size:68px 68px!important;box-shadow:0 7px 12px rgba(23,32,51,.13),inset 0 -7px 0 #c9151e;box-sizing:border-box}
+
+.field-count{position:absolute;top:17px;right:15px;z-index:2;min-width:116px;padding:10px 13px;border-radius:17px;background:#fff0f1!important;color:#c4121c!important;font-size:22px!important;line-height:1.05;font-weight:900!important;text-align:center;box-sizing:border-box}
+.field-count span{display:inline;font-size:.72em;font-weight:800}
+
+.field-name{position:relative;z-index:1;display:block!important;margin:0!important;padding:0!important;color:#172033!important;font-size:25px!important;line-height:1.18!important;font-weight:950!important;min-height:0!important;letter-spacing:-.25px;overflow-wrap:anywhere;text-shadow:0 .4px 0 rgba(0,0,0,.12)}
+
+/* Tách nhãn Thuộc và tên cơ quan thành 2 phần riêng, tuyệt đối không đè nhau */
+.field-agency{position:relative;z-index:1;display:flex!important;align-items:flex-start!important;gap:7px!important;margin:14px 0 0!important;padding:10px 12px!important;min-height:0!important;border-radius:12px;background:#fff0f1!important;color:#4a586d!important;font-size:16px!important;line-height:1.3!important;font-weight:700!important;box-sizing:border-box}
+.field-agency:before{display:none!important;content:none!important}
+.field-agency-label{flex:0 0 auto;color:#b5121b!important;font-size:17px!important;font-weight:950!important}
+.field-agency-value{min-width:0;color:#45546a!important;font-weight:800!important;overflow-wrap:anywhere}
+
+.field-card:after{content:"→  XEM THỦ TỤC"!important;position:absolute!important;left:17px!important;right:17px!important;bottom:15px!important;height:45px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:13px!important;background:linear-gradient(135deg,#c4121c 0%,#e21b23 100%)!important;color:#fff!important;font-size:17px!important;font-weight:950!important;letter-spacing:.15px;box-shadow:0 6px 14px rgba(196,18,28,.22);border:0!important;transition:filter .18s ease,transform .18s ease}
 .field-card:hover:after{filter:brightness(1.05);transform:translateY(-1px)}
-.field-card:nth-child(7n+2):after,.field-card:nth-child(7n+3):after,.field-card:nth-child(7n+4):after,.field-card:nth-child(7n+5):after,.field-card:nth-child(7n+6):after,.field-card:nth-child(7n+7):after{background:linear-gradient(135deg,#c4121c 0%,#e21b23 100%)!important;color:#fff!important}
-body.dark .field-card{background:linear-gradient(145deg,#292f39 0%,#252a33 100%);border-color:#454d59}body.dark .field-name{color:#fff!important}body.dark .field-agency{background:#3b2023;color:#dce3ec!important}
-@media(max-width:1099px){.field-card{min-height:225px;padding:16px 15px 59px}.field-card:before,.field-card:nth-child(7n+1):before,.field-card:nth-child(7n+2):before,.field-card:nth-child(7n+3):before,.field-card:nth-child(7n+4):before,.field-card:nth-child(7n+5):before,.field-card:nth-child(7n+6):before,.field-card:nth-child(7n+7):before{width:60px;height:60px;background-size:48px 48px!important;margin-bottom:13px}.field-name{font-size:18px!important;min-height:62px}.field-count{top:14px;right:13px;font-size:15px!important;min-width:68px;padding:8px 9px}.field-card:after{left:15px!important;right:15px!important;bottom:13px!important}}
-@media(max-width:760px){.field-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}.field-card{min-height:215px;padding:13px 12px 56px;border-radius:15px}.field-card:before,.field-card:nth-child(7n+1):before,.field-card:nth-child(7n+2):before,.field-card:nth-child(7n+3):before,.field-card:nth-child(7n+4):before,.field-card:nth-child(7n+5):before,.field-card:nth-child(7n+6):before,.field-card:nth-child(7n+7):before{width:53px;height:53px;background-size:43px 43px!important;border-radius:14px;margin-bottom:11px}.field-count{top:12px;right:10px;min-width:58px;padding:7px;border-radius:11px;font-size:13px!important}.field-name{font-size:17px!important;line-height:1.2!important;min-height:59px}.field-agency{font-size:11.5px!important;padding:7px 7px 7px 28px}.field-agency:before{left:9px;font-size:14px}.field-card:after{left:12px!important;right:12px!important;bottom:11px!important;height:39px!important;border-radius:11px!important;font-size:12px!important}}
-@media(max-width:480px){.field-grid{grid-template-columns:1fr 1fr!important;gap:9px!important}.field-card{min-height:202px;padding:11px 10px 53px;border-radius:14px}.field-card:before,.field-card:nth-child(7n+1):before,.field-card:nth-child(7n+2):before,.field-card:nth-child(7n+3):before,.field-card:nth-child(7n+4):before,.field-card:nth-child(7n+5):before,.field-card:nth-child(7n+6):before,.field-card:nth-child(7n+7):before{width:47px;height:47px;background-size:38px 38px!important;margin-bottom:9px}.field-count{top:10px;right:8px;min-width:52px;padding:6px 5px;font-size:12px!important}.field-name{font-size:15.5px!important;min-height:52px}.field-agency{font-size:10.5px!important;padding:6px 6px 6px 25px}.field-agency:before{left:8px;font-size:12px}.field-card:after{left:10px!important;right:10px!important;bottom:9px!important;height:36px!important;font-size:11px!important}}
-@media(max-width:380px){.field-card{min-height:190px}.field-name{font-size:14px!important}.field-agency{font-size:10px!important}.field-card:after{font-size:10.5px!important}}
+
+body.dark .field-card{background:linear-gradient(145deg,#292f39 0%,#252a33 100%);border-color:#454d59}
+body.dark .field-name{color:#fff!important}
+body.dark .field-agency{background:#3b2023!important;color:#dce3ec!important}
+body.dark .field-agency-value{color:#dce3ec!important}
+
+@media(max-width:1099px){
+  .field-card{min-height:225px;padding:16px 15px 59px}
+  .field-card:before{width:68px;height:68px;background-size:59px 59px!important;margin-bottom:14px}
+  .field-name{font-size:22px!important}
+  .field-count{top:14px;right:13px;min-width:92px;font-size:19px!important;padding:9px 10px}
+  .field-agency{font-size:14px!important;padding:9px 10px!important}
+  .field-agency-label{font-size:15px!important}
+  .field-card:after{left:15px!important;right:15px!important;bottom:13px!important}
+}
+
+@media(max-width:760px){
+  .field-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}
+  .field-card{min-height:235px!important;padding:14px 13px 59px!important;border-radius:16px!important;border-width:2px!important}
+  .field-card:before{width:64px!important;height:64px!important;background-size:56px 56px!important;border-radius:18px!important;margin-bottom:15px!important}
+  .field-count{top:12px!important;right:10px!important;min-width:88px!important;padding:8px 8px!important;border-radius:15px!important;font-size:18px!important}
+  .field-name{font-size:21px!important;line-height:1.18!important;min-height:0!important}
+  .field-agency{margin-top:13px!important;padding:9px 10px!important;gap:6px!important;font-size:14px!important;line-height:1.28!important;border-radius:11px!important}
+  .field-agency-label{font-size:15px!important}
+  .field-card:after{left:13px!important;right:13px!important;bottom:11px!important;height:43px!important;border-radius:12px!important;font-size:16px!important}
+}
+
+@media(max-width:480px){
+  .field-grid{grid-template-columns:1fr!important;gap:12px!important}
+  .field-card{min-height:300px!important;padding:17px 18px 70px!important;border-radius:18px!important}
+  .field-card:before{width:82px!important;height:82px!important;background-size:70px 70px!important;border-radius:23px!important;margin-bottom:18px!important}
+  .field-count{top:16px!important;right:15px!important;min-width:122px!important;padding:10px 12px!important;font-size:22px!important;border-radius:17px!important}
+  .field-name{font-size:29px!important;line-height:1.16!important;letter-spacing:-.35px!important}
+  .field-agency{margin-top:18px!important;padding:12px 14px!important;gap:8px!important;font-size:17px!important;line-height:1.32!important;border-radius:13px!important}
+  .field-agency-label{font-size:18px!important}
+  .field-card:after{left:18px!important;right:18px!important;bottom:14px!important;height:51px!important;border-radius:14px!important;font-size:19px!important}
+}
+
+@media(max-width:380px){
+  .field-card{min-height:280px!important;padding:15px 15px 66px!important}
+  .field-card:before{width:72px!important;height:72px!important;background-size:62px 62px!important}
+  .field-count{min-width:108px!important;font-size:19px!important}
+  .field-name{font-size:26px!important}
+  .field-agency{font-size:15px!important}
+  .field-agency-label{font-size:16px!important}
+  .field-card:after{font-size:17px!important}
+}
