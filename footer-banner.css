@@ -1,8 +1,9 @@
 /* ===== BANNER MƯỜNG LAY + THÔNG TIN TÁC GIẢ ===== */
 .footer-banner{
   position:relative;
-  width:min(1600px,calc(100% - 40px));
-  min-height:300px;
+  width:min(var(--admin-footer-width,100%),1600px);
+  min-height:var(--admin-footer-height,300px);
+  height:var(--admin-footer-height,300px);
   margin:34px auto 0;
   overflow:hidden;
   border-radius:16px 16px 0 0;
@@ -83,7 +84,7 @@
 .footer-visit-items strong{display:block;margin-top:2px;color:#ffd84a;font-size:16px;font-weight:900}
 
 @media(max-width:800px){
-  .footer-banner{width:calc(100% - 20px);min-height:330px;margin-top:24px;border-radius:12px 12px 0 0}
+  .footer-banner{width:min(var(--admin-footer-width,calc(100% - 20px)),100%);height:min(var(--admin-footer-height,330px),var(--admin-footer-mobile-height,330px));min-height:min(var(--admin-footer-height,330px),var(--admin-footer-mobile-height,330px));margin-top:24px;border-radius:12px 12px 0 0}
   .footer-banner-info{bottom:48px;width:calc(100% - 30px);grid-template-columns:1fr;gap:8px}
   .footer-banner-divider{width:100%;height:1px}
   .footer-banner-author{text-align:center}
