@@ -48,10 +48,20 @@
     document.head.appendChild(script);
   }
 
+  function loadTthcUpdater() {
+    if (document.getElementById('updateTthcScript')) return;
+    const script = document.createElement('script');
+    script.id = 'updateTthcScript';
+    script.src = 'update-tthc.js?v=20261026-02';
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     loadDesignV2();
     const btn = document.getElementById('deepRefreshBtn');
     if (btn) btn.addEventListener('click', deepRefresh);
     loadLunarClock();
+    loadTthcUpdater();
   });
 })();
