@@ -28,3 +28,27 @@ body.dark .field-agency-value{color:#dce3ec!important}
 .field-grid{grid-template-columns:1fr!important;gap:12px!important}.field-card{min-height:300px!important;padding:17px 18px 70px!important;border-radius:18px!important;background-size:115px 115px!important;background-position:right 10px bottom 12px!important}.field-card:before{width:82px!important;height:82px!important;background-size:70px 70px!important;border-radius:23px!important;margin-bottom:18px!important}.field-count{top:16px!important;right:15px!important;min-width:122px!important;padding:10px 12px!important;font-size:22px!important;border-radius:17px!important}.field-name{font-size:29px!important;line-height:1.16!important;letter-spacing:-.35px!important}.field-agency{margin-top:18px!important;padding:12px 14px!important;gap:8px!important;font-size:17px!important;line-height:1.32!important;border-radius:13px!important}.field-agency:before{font-size:18px!important}.field-card:after{left:18px!important;right:18px!important;bottom:14px!important;height:51px!important;border-radius:14px!important;font-size:19px!important}}
 @media(max-width:380px){
 .field-card{min-height:280px!important;padding:15px 15px 66px!important;background-size:100px 100px!important}.field-card:before{width:72px!important;height:72px!important;background-size:62px 62px!important}.field-count{min-width:108px!important;font-size:19px!important}.field-name{font-size:26px!important}.field-agency{font-size:15px!important}.field-agency:before{font-size:16px!important}.field-card:after{font-size:17px!important}}
+
+/* ===== HEADER MOBILE TYPOGRAPHY FIX ===== */
+@media (max-width:600px){
+  .header-title h1{
+    font-size:clamp(10.5px,3.1vw,14px) !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+    word-break:keep-all !important;
+    overflow:visible !important;
+    letter-spacing:-.35px !important;
+  }
+  .header-title p{
+    font-size:clamp(6.5px,1.9vw,8.5px) !important;
+    line-height:1.05 !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+    letter-spacing:-.15px !important;
+  }
+  .header-title>div:last-child{min-width:0 !important;overflow:visible !important}
+}
+@media (max-width:380px){
+  .header-title h1{font-size:10px !important;letter-spacing:-.4px !important}
+  .header-title p{font-size:6.2px !important}
+}
