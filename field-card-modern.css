@@ -34,3 +34,47 @@ body.dark .field-agency-value{color:#dce3ec!important}
   .header-title h1{font-size:10px!important;letter-spacing:-.4px!important}
   .header-title p{font-size:6.2px!important}
 }
+
+/* MOBILE NAV OVERFLOW FIX 2026-10-26 */
+@media (max-width:600px){
+  .nav-inner{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+    width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  .nav-inner > button,
+  .nav-inner > a{
+    min-width:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+  }
+  .config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn{
+    width:100%!important;
+    min-width:0!important;
+    padding-left:4px!important;
+    padding-right:4px!important;
+    font-size:11.5px!important;
+    letter-spacing:-.15px!important;
+  }
+  .support-btn,
+  .admin-link{
+    grid-column:1/-1!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    justify-content:center!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+    font-size:12px!important;
+  }
+  .support-btn{font-size:11.5px!important}
+}
+@media (max-width:380px){
+  .config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn{font-size:10.5px!important}
+  .support-btn,.admin-link{font-size:11px!important}
+}
