@@ -35,3 +35,12 @@
     }
   }catch(e){console.warn('Không khởi tạo được bộ thống kê truy cập',e)}
 })();
+
+/* Hướng dẫn tra cứu: chuyển thẳng tới trang hướng dẫn chung của Cổng DVC Quốc gia. */
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('.pakn-btn');
+  if(!btn)return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  window.open('https://ndc.dichvucong.gov.vn/huong-dan-su-dung/huong-dan-chung','_blank','noopener,noreferrer');
+},true);
