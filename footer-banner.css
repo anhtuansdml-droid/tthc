@@ -94,3 +94,33 @@
   .footer-visit-items>div{min-width:50%;padding:4px 8px;border-right:0}
   .footer-visit-items strong{font-size:14px}
 }
+
+/* ===== QUẢN TRỊ ẨN TRONG LOGO TRANG BÌA ===== */
+.nav{position:relative;overflow:visible}
+.admin-link{
+  position:absolute!important;
+  z-index:100!important;
+  margin:0!important;
+  padding:0!important;
+  width:88px!important;
+  height:88px!important;
+  left:max(28px,calc((100% - 1650px)/2 + 28px))!important;
+  top:-170px!important;
+  display:block!important;
+  overflow:hidden!important;
+  opacity:0!important;
+  font-size:0!important;
+  line-height:0!important;
+  color:transparent!important;
+  background:transparent!important;
+  border:0!important;
+  text-decoration:none!important;
+  white-space:nowrap!important;
+  pointer-events:auto!important;
+}
+@media(min-width:761px) and (max-width:1099px){
+  .admin-link{width:72px!important;height:72px!important;left:25px!important;top:-158px!important}
+}
+@media(max-width:760px){
+  .admin-link{width:54px!important;height:54px!important;left:17px!important;top:-161px!important}
+}
