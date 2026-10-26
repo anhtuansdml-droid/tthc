@@ -8,6 +8,7 @@ const SHEET_SOURCES = [
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQk2DNzNnpsDR4wTrzBjoy7aKtDKDeubqvnyBdlJstAzxobagxsvSo8kJX2TI9dXHlBMbUjO2htStuw/pub?gid=226385689&single=true&output=csv'
 ];
 const FALLBACK_SOURCE = 'data/tthc_430_2026-10-20.json';
+const NEW_CODE_SOURCE = 'data/tthc_426_2026-10-25.json';
 let cache = { at: 0, value: null };
 const norm = v => String(v ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase().trim();
 
@@ -86,7 +87,7 @@ function normalizeSheet(rows) {
 async function getSource(url) {
   const r = await fetch(url + '&_t=' + Date.now(), {
     redirect: 'follow', cache: 'no-store',
-    headers: { 'user-agent': 'TTHC-Muong-Lay-Sync/2.3' }
+    headers: { 'user-agent': 'TTHC-Muong-Lay-Sync/2.4' }
   });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return parseCSV(await r.text());
@@ -99,8 +100,55 @@ async function loadFallback() {
   return Array.isArray(data) ? data : (Array.isArray(data?.rows) ? data.rows : []);
 }
 
+async function loadNewCodeList() {
+  const r = await fetch(new URL(`../${NEW_CODE_SOURCE}`, import.meta.url));
+  if (!r.ok) throw new Error(`New code list HTTP ${r.status}`);
+  const data = await r.json();
+  if (!Array.isArray(data) || !data.length) throw new Error('Danh sách mã TTHC mới rỗng');
+  return data.map(x => String(x).trim()).filter(Boolean);
+}
+
 async function build(force = false) {
   if (!force && cache.value && Date.now() - cache.at < 60000) return cache.value;
+
+  // Bộ mã mới ngày 25/10/2026 là nguồn ưu tiên. Dùng dữ liệu chi tiết hiện có
+  // của bộ 20/10/2026 để giữ nguyên tên, lĩnh vực, liên kết DVCQG và thông tin chi tiết;
+  // chỉ loại bỏ các mã không còn nằm trong bộ mới.
+  try {
+    const [newCodes, fallbackRows] = await Promise.all([loadNewCodeList(), loadFallback()]);
+    const wanted = new Set(newCodes);
+    const filtered = fallbackRows.filter(x => wanted.has(String(x.ma || x.maThucHien || '').trim()));
+    if (filtered.length === newCodes.length) {
+      const full = filtered.filter(x => norm(x.mucDo || x.mucDichVu) === 'toan trinh').length;
+      const partial = filtered.filter(x => norm(x.mucDo || x.mucDichVu) === 'mot phan').length;
+      const result = {
+        ok: true,
+        source: NEW_CODE_SOURCE,
+        sourceData: 'Bộ thủ tục mới ngày 25/10/2026',
+        fetchedAt: new Date().toISOString(),
+        total: filtered.length,
+        province: 0,
+        commune: filtered.length,
+        dvcTotal: filtered.length,
+        dvcProvince: 0,
+        dvcCommune: filtered.length,
+        full,
+        partial,
+        newCount: 0,
+        changed: 0,
+        removed: fallbackRows.length - filtered.length,
+        sourceCount: 1,
+        sourceErrors: 0,
+        rows: filtered
+      };
+      cache = { at: Date.now(), value: result };
+      return result;
+    }
+  } catch (e) {
+    console.warn('Không áp dụng được bộ mã TTHC mới:', e?.message || e);
+  }
+
+  // Nếu bộ mới không đọc được thì quay lại cơ chế đồng bộ Google Sheets.
   const live = [];
   const errors = [];
   for (const source of SHEET_SOURCES) {
@@ -112,12 +160,9 @@ async function build(force = false) {
     }
   }
 
-  // Luôn ưu tiên bộ TTHC mới nhất từ Điều phối DVC Siêu tốc.
   live.sort((a, b) => b.rows.length - a.rows.length);
   let rows = live[0]?.rows || [];
   let source = 'Điều phối DVC Siêu tốc';
-
-  // Chỉ dùng dữ liệu tĩnh khi tất cả nguồn Google Sheets đều lỗi.
   if (!rows.length) {
     rows = await loadFallback();
     source = FALLBACK_SOURCE;
