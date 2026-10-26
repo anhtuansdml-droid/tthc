@@ -36,24 +36,24 @@ body{background:linear-gradient(180deg,#f8fafc 0%,#f3f5f8 100%);-webkit-font-smo
 .field-card:before,.field-card:nth-child(7n+1):before,.field-card:nth-child(7n+2):before,.field-card:nth-child(7n+3):before,.field-card:nth-child(7n+4):before,.field-card:nth-child(7n+5):before,.field-card:nth-child(7n+6):before,.field-card:nth-child(7n+7):before{content:"";display:flex;width:50px;height:50px;margin-bottom:10px;border-radius:10px;background-color:#fff!important;background-image:url("https://degi.gialai.gov.vn/upload/105741/20250710/410369872_747078237462919_5911013010256606941_n_a5b4e.jpg")!important;background-repeat:no-repeat!important;background-position:center!important;background-size:38px 38px!important;color:transparent!important;border:1px solid #e2c46a;box-shadow:0 2px 7px rgba(20,35,55,.12),inset 0 -3px 0 #c9151e}
 .field-name{color:#172033;font-size:18px;line-height:1.18;font-weight:900;min-height:43px;padding-right:3px}.field-count{top:14px;right:12px;padding:4px 8px;border-radius:9px;background:#ffeded;color:#d01820;font-size:14px}.field-agency{margin-top:7px;color:#64748b;font-size:13px;line-height:1.18;min-height:30px}.field-card:after{left:14px;right:14px;bottom:12px;height:38px;border-radius:7px;background:#fde6e7;color:#b20f18;font-size:15px;font-weight:900}.field-card:nth-child(7n+2):after{background:#e4efff;color:#1453a4}.field-card:nth-child(7n+3):after,.field-card:nth-child(7n+7):after{background:#e2f7e9;color:#08743e}.field-card:nth-child(7n+4):after{background:#fff4d7;color:#a46b00}.field-card:nth-child(7n+6):after{background:#eee5ff;color:#5b20aa}.footer{margin-top:0}
 
-/* ===== DESKTOP NAV KHÔNG TRÀN CHỮ ===== */
+/* ===== DESKTOP NAV: KHÔNG CẮT CHỮ ===== */
 @media(min-width:1400px){
-  .nav-inner{gap:8px}
-  .home-btn,.pakn-btn,.config-btn,.stats-btn,.deep-refresh-btn,.support-btn{height:44px;font-size:13px;padding:0 10px;white-space:nowrap;flex:0 0 auto}
-  .home-btn{min-width:132px}.config-btn{min-width:108px}.pakn-btn{min-width:178px}.stats-btn{min-width:108px}
-  .deep-refresh-btn{min-width:102px}.support-btn{min-width:168px}
-  .admin-link{font-size:13px;white-space:nowrap;flex:0 0 auto}
-  .search-box{min-width:260px}
+  .nav-inner{gap:7px}
+  .home-btn,.pakn-btn,.config-btn,.stats-btn,.deep-refresh-btn,.support-btn{height:42px;font-size:12px;padding:0 8px;white-space:nowrap;flex:0 0 auto;line-height:1}
+  .home-btn{min-width:128px}.config-btn{min-width:104px}.pakn-btn{min-width:170px}.stats-btn{min-width:100px}
+  .deep-refresh-btn{min-width:92px}.support-btn{min-width:184px;width:184px;gap:4px}
+  .admin-link{font-size:12px;white-space:nowrap;flex:0 0 auto}
+  .search-box{min-width:250px}
 }
 @media(min-width:1100px) and (max-width:1399px){
-  .nav{padding-left:14px;padding-right:14px}
-  .nav-inner{gap:6px}
-  .home-btn,.pakn-btn,.config-btn,.stats-btn,.deep-refresh-btn,.support-btn{height:40px;font-size:12px;padding:0 7px;white-space:nowrap;flex:0 0 auto}
-  .home-btn{min-width:118px}.config-btn{min-width:98px}.pakn-btn{min-width:160px}.stats-btn{min-width:96px}
-  .deep-refresh-btn{min-width:90px}.support-btn{min-width:156px}
-  .admin-link{font-size:12px;white-space:nowrap;flex:0 0 auto}
-  .search-box{min-width:170px}
-  .search-box input{height:48px;font-size:15px;padding-left:40px}
+  .nav{padding-left:10px;padding-right:10px}
+  .nav-inner{gap:5px}
+  .home-btn,.pakn-btn,.config-btn,.stats-btn,.deep-refresh-btn,.support-btn{height:39px;font-size:11px;padding:0 5px;white-space:nowrap;flex:0 0 auto;line-height:1}
+  .home-btn{min-width:112px}.config-btn{min-width:92px}.pakn-btn{min-width:154px}.stats-btn{min-width:88px}
+  .deep-refresh-btn{min-width:84px}.support-btn{min-width:176px;width:176px;gap:3px}
+  .admin-link{font-size:11px;white-space:nowrap;flex:0 0 auto}
+  .search-box{min-width:155px}
+  .search-box input{height:46px;font-size:14px;padding-left:38px}
 }
 
 @media(min-width:761px) and (max-width:1099px){
