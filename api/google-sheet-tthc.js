@@ -48,8 +48,9 @@ function normalizeRows(rows) {
 
   const selected = agencyKey
     ? rows.filter(r => {
-        const a = norm(r[agencyKey]);
-        return !a || a.includes('muong lay') || a.includes('mường lay') || a.includes('cap xa') || a.includes('ubnd phuong');
+        const agency = norm(r[agencyKey]);
+        const agencyCode = agencyCodeKey ? norm(r[agencyCodeKey]) : '';
+        return agency.includes('muong lay') || agencyCode === 'h18.111';
       })
     : rows;
 
