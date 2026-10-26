@@ -1,9 +1,10 @@
 (() => {
-  // Dữ liệu TTHC Mường Lay được đồng bộ trực tiếp từ Điều phối DVC Siêu tốc.
-  // Nguồn hiện tại trả về 424 TTHC của Mường Lay; không khóa cứng 428 nữa.
+  // Dữ liệu TTHC Mường Lay có thể được cập nhật trực tiếp từ Google Sheets.
+  // Khi người dùng bấm CẬP NHẬT TTHC, bộ dữ liệu mới được lưu tại máy và ưu tiên dùng ở các lần tải sau.
   const LIVE_API = '/api/dieuphoi-tthc';
   const STATIC_SOURCE = 'data/tthc_430_2026-10-20.json';
   const OLD_SOURCE = 'data/tthc.json';
+  const LOCAL_KEY = 'tthc_sheet_data';
   const originalFetch = window.fetch.bind(window);
   let livePromise = null;
   let liveData = null;
@@ -13,7 +14,18 @@
     return s.includes(OLD_SOURCE) || s.includes(STATIC_SOURCE) || s.includes('data/tthc_428_');
   };
 
-  // Giao diện card lĩnh vực: chữ lớn hơn, chừa đủ khoảng cho cơ quan và nút Xem thủ tục.
+  function getLocalSheetData() {
+    try {
+      const raw = localStorage.getItem(LOCAL_KEY);
+      if (!raw) return null;
+      const saved = JSON.parse(raw);
+      if (!saved || !Array.isArray(saved.rows) || !saved.rows.length) return null;
+      return saved;
+    } catch (_) {
+      return null;
+    }
+  }
+
   const cardStyle = document.createElement('style');
   cardStyle.textContent = `
     .field-card{min-height:245px;padding:18px 16px 66px}
@@ -31,6 +43,27 @@
 
   async function loadLiveData(force = false) {
     if (!force && livePromise) return livePromise;
+    if (!force) {
+      const local = getLocalSheetData();
+      if (local) {
+        liveData = local.rows;
+        window.tthcLiveData = liveData;
+        window.tthcMaster = liveData;
+        window.tthcSyncMeta = {
+          ok: true,
+          source: local.source,
+          sourceData: 'Google Sheets - Bộ thủ tục hành chính mới',
+          fetchedAt: local.fetchedAt,
+          total: local.total,
+          full: local.full,
+          partial: local.partial,
+          rows: liveData
+        };
+        console.info('TTHC Mường Lay: sử dụng bộ thủ tục đã cập nhật từ Google Sheets', window.tthcSyncMeta);
+        return liveData;
+      }
+    }
+
     const endpoint = LIVE_API + '?refresh=' + (force ? 'true' : 'false') + '&v=' + Date.now();
     livePromise = originalFetch(endpoint, { cache: 'no-store' }).then(async response => {
       let body = {};
@@ -41,7 +74,7 @@
       window.tthcLiveData = liveData;
       window.tthcMaster = liveData;
       window.tthcSyncMeta = body;
-      console.info('TTHC Mường Lay: đã đồng bộ trực tiếp từ Điều phối DVC Siêu tốc', {
+      console.info('TTHC Mường Lay: đã đồng bộ từ nguồn dữ liệu mặc định', {
         total: body.total,
         toanTrinh: body.full,
         motPhan: body.partial,
@@ -51,14 +84,12 @@
       return liveData;
     }).catch(error => {
       livePromise = null;
-      console.error('Không đồng bộ được TTHC từ Điều phối:', error);
+      console.error('Không đồng bộ được TTHC:', error);
       throw error;
     });
     return livePromise;
   }
 
-  // Cho phép trang hiện tại vẫn gọi data/tthc.json hoặc data/tthc_430... nhưng
-  // thực tế nhận dữ liệu live từ Điều phối.
   window.fetch = async function(input, init) {
     const url = typeof input === 'string' ? input : input?.url || '';
     if (isTthcStatic(url)) {
@@ -68,21 +99,17 @@
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'X-TTHC-Master': 'DieuPhoi-Live'
+            'X-TTHC-Master': getLocalSheetData() ? 'GoogleSheets-Updated' : 'DieuPhoi-Live'
           }
         });
       } catch (e) {
         console.error('Không có dữ liệu TTHC live:', e);
-        return new Response(JSON.stringify([]), {
-          status: 503,
-          headers: {'Content-Type':'application/json'}
-        });
+        return new Response(JSON.stringify([]), { status: 503, headers: {'Content-Type':'application/json'} });
       }
     }
     return originalFetch(input, init);
   };
 
-  // API công khai để nút Đồng bộ có thể yêu cầu lấy dữ liệu mới ngay lập tức.
   window.syncTthcFromDieuPhoi = async function() {
     livePromise = null;
     return loadLiveData(true);
