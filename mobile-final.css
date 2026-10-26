@@ -254,3 +254,59 @@
   .field-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
   .field-card{min-height:210px !important}
 }
+
+/* =========================================================
+   RESPONSIVE FIX 2026-10-26
+   Header không che chữ; bố cục tự co giữa điện thoại/tablet/desktop.
+   ========================================================= */
+
+@media (min-width:601px) and (max-width:900px){
+  .header{height:180px !important;min-height:180px !important}
+  .header-inner{padding:0 12px !important;min-height:180px !important}
+  .header-title{width:calc(100% - 180px) !important;max-width:calc(100% - 180px) !important;gap:8px !important;padding-top:14px !important}
+  .logo{width:72px !important;height:72px !important;flex-basis:72px !important}
+  .header-title>div:last-child{padding:5px 10px 7px !important}
+  .header-title h1{font-size:clamp(16px,2.7vw,24px) !important;line-height:1.04 !important;white-space:normal !important;overflow:visible !important}
+  .header-title p{font-size:clamp(9px,1.45vw,13px) !important;line-height:1.1 !important;white-space:normal !important}
+  .header-slogan{font-size:clamp(8px,1.25vw,12px) !important;margin-top:6px !important;padding:0 12px !important}
+  .header-slogan::before,.header-slogan::after{width:16px !important}
+  .header-tools{margin-top:20px !important;gap:5px !important}
+  .clock{width:125px !important;min-width:125px !important;height:52px !important}
+  .clock::after{font-size:9px !important}
+  .theme-btn{width:34px !important;height:34px !important;font-size:15px !important}
+}
+
+@media (max-width:600px){
+  .header{height:190px !important;min-height:190px !important}
+  .header-inner{height:190px !important;min-height:190px !important;padding:7px 9px !important;display:block !important;box-sizing:border-box !important}
+  .header-title{width:100% !important;max-width:none !important;min-height:116px !important;height:116px !important;margin:0 !important;padding:8px !important;display:flex !important;align-items:flex-start !important;gap:7px !important;box-sizing:border-box !important;background:rgba(255,255,255,.62) !important;border-radius:10px !important;overflow:hidden !important}
+  .logo{width:46px !important;height:46px !important;flex:0 0 46px !important;margin-top:3px !important}
+  .header-title>div:last-child{min-width:0 !important;flex:1 1 auto !important;margin:0 !important;padding:2px 2px 3px !important;background:transparent !important;box-shadow:none !important;border-radius:0 !important;overflow:visible !important}
+  .header-title h1{margin:0 !important;font-size:clamp(14px,4.7vw,19px) !important;line-height:1.03 !important;white-space:normal !important;overflow:visible !important;overflow-wrap:normal !important;word-break:normal !important}
+  .header-title p{margin:5px 0 0 !important;font-size:clamp(8px,2.55vw,11px) !important;line-height:1.08 !important;white-space:normal !important;overflow:visible !important}
+  .header-slogan{font-size:clamp(7.5px,2.3vw,10px) !important;line-height:1 !important;margin:5px auto 0 !important;padding:0 12px !important}
+  .header-slogan::before,.header-slogan::after{width:11px !important;height:1px !important}
+  .header-tools{position:absolute !important;z-index:20 !important;right:9px !important;top:auto !important;bottom:18px !important;margin:0 !important;gap:4px !important;display:flex !important;align-items:center !important}
+  .clock{width:112px !important;min-width:112px !important;height:47px !important;padding:4px !important;border-left-width:3px !important;border-radius:9px !important}
+  .clock::before{height:3px !important}
+  .clock::after{font-size:8px !important;line-height:1.2 !important;inset:3px 0 0 !important;padding:3px !important}
+  .theme-btn{width:31px !important;height:31px !important;min-width:31px !important;font-size:14px !important}
+  .nav-inner{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:7px !important}
+  .home-btn,.search-box{grid-column:1/-1 !important}
+  .config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn,.support-btn,.admin-link{font-size:12px !important;min-height:46px !important;padding:8px 5px !important}
+  .support-btn{font-size:11px !important}.admin-link{font-size:12px !important}
+  .tthc-chat-launcher{right:8px !important;bottom:68px !important;max-width:145px !important;min-height:42px !important;padding:8px 11px !important;font-size:12px !important;border-radius:22px !important}
+}
+
+@media (max-width:380px){
+  .header{height:182px !important;min-height:182px !important}
+  .header-inner{height:182px !important;min-height:182px !important}
+  .header-title{min-height:108px !important;height:108px !important;padding:7px !important}
+  .logo{width:40px !important;height:40px !important;flex-basis:40px !important}
+  .header-title h1{font-size:14px !important}
+  .header-title p{font-size:8px !important;margin-top:4px !important}
+  .header-slogan{font-size:7px !important;margin-top:4px !important}
+  .clock{width:102px !important;min-width:102px !important;height:43px !important}
+  .clock::after{font-size:7px !important}
+  .theme-btn{width:28px !important;height:28px !important;font-size:13px !important}
+}
