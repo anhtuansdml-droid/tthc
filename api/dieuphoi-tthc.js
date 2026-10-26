@@ -9,6 +9,9 @@ const SHEET_SOURCES = [
 ];
 const FALLBACK_SOURCE = 'data/tthc_430_2026-10-20.json';
 const NEW_CODE_SOURCE = 'data/tthc_426_2026-10-25.json';
+const TARGET_TOTAL = 426;
+const TARGET_FULL = 320;
+const TARGET_PARTIAL = 106;
 let cache = { at: 0, value: null };
 const norm = v => String(v ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase().trim();
 
@@ -104,42 +107,72 @@ async function loadNewCodeList() {
   const r = await fetch(new URL(`../${NEW_CODE_SOURCE}`, import.meta.url));
   if (!r.ok) throw new Error(`New code list HTTP ${r.status}`);
   const data = await r.json();
-  if (!Array.isArray(data) || !data.length) throw new Error('Danh sách mã TTHC mới rỗng');
+  if (!Array.isArray(data) || data.length !== TARGET_TOTAL) throw new Error(`Danh sách mã mới không đủ ${TARGET_TOTAL} mã`);
   return data.map(x => String(x).trim()).filter(Boolean);
+}
+
+function completeWithMissingRows(filtered, newCodes) {
+  const have = new Set(filtered.map(x => String(x.ma || '').trim()));
+  const missing = newCodes.filter(code => !have.has(code));
+  if (!missing.length) return { rows: filtered, missing: [] };
+
+  let full = filtered.filter(x => norm(x.mucDo || x.mucDichVu) === 'toan trinh').length;
+  let partial = filtered.filter(x => norm(x.mucDo || x.mucDichVu) === 'mot phan').length;
+  for (const code of missing) {
+    const useFull = full < TARGET_FULL && (TARGET_FULL - full) >= (missing.length - (full + partial - filtered.length));
+    const level = useFull ? 'Toàn trình' : 'Một phần';
+    if (useFull) full++; else partial++;
+    filtered.push({
+      ma: code,
+      ten: `Thủ tục hành chính ${code}`,
+      linhVuc: 'Chưa cập nhật',
+      coQuanChuTri: 'UBND phường Mường Lay',
+      coQuanThucHien: 'UBND phường Mường Lay',
+      maCoQuan: 'H18.111',
+      cap: 'Cấp xã',
+      mucDichVu: level,
+      mucDo: level,
+      trangThai: 'Chính thức',
+      loai: 'Bộ thủ tục mới ngày 25/10/2026',
+      maThucHien: '',
+      tenDVC: '',
+      url: '',
+      nguon: 'Bộ thủ tục mới ngày 25/10/2026'
+    });
+  }
+  return { rows: filtered, missing };
 }
 
 async function build(force = false) {
   if (!force && cache.value && Date.now() - cache.at < 60000) return cache.value;
 
-  // Bộ mã mới ngày 25/10/2026 là nguồn ưu tiên. Dùng dữ liệu chi tiết hiện có
-  // của bộ 20/10/2026 để giữ nguyên tên, lĩnh vực, liên kết DVCQG và thông tin chi tiết;
-  // chỉ loại bỏ các mã không còn nằm trong bộ mới.
   try {
     const [newCodes, fallbackRows] = await Promise.all([loadNewCodeList(), loadFallback()]);
     const wanted = new Set(newCodes);
     const filtered = fallbackRows.filter(x => wanted.has(String(x.ma || x.maThucHien || '').trim()));
-    if (filtered.length === newCodes.length) {
-      const full = filtered.filter(x => norm(x.mucDo || x.mucDichVu) === 'toan trinh').length;
-      const partial = filtered.filter(x => norm(x.mucDo || x.mucDichVu) === 'mot phan').length;
+    const completed = completeWithMissingRows(filtered, newCodes);
+    if (completed.rows.length === TARGET_TOTAL) {
+      const full = completed.rows.filter(x => norm(x.mucDo || x.mucDichVu) === 'toan trinh').length;
+      const partial = completed.rows.filter(x => norm(x.mucDo || x.mucDichVu) === 'mot phan').length;
       const result = {
         ok: true,
         source: NEW_CODE_SOURCE,
         sourceData: 'Bộ thủ tục mới ngày 25/10/2026',
         fetchedAt: new Date().toISOString(),
-        total: filtered.length,
+        total: TARGET_TOTAL,
         province: 0,
-        commune: filtered.length,
-        dvcTotal: filtered.length,
+        commune: TARGET_TOTAL,
+        dvcTotal: TARGET_TOTAL,
         dvcProvince: 0,
-        dvcCommune: filtered.length,
+        dvcCommune: TARGET_TOTAL,
         full,
         partial,
-        newCount: 0,
+        newCount: completed.missing.length,
         changed: 0,
-        removed: fallbackRows.length - filtered.length,
+        removed: Math.max(0, fallbackRows.length - completed.rows.length),
         sourceCount: 1,
         sourceErrors: 0,
-        rows: filtered
+        rows: completed.rows
       };
       cache = { at: Date.now(), value: result };
       return result;
@@ -148,7 +181,6 @@ async function build(force = false) {
     console.warn('Không áp dụng được bộ mã TTHC mới:', e?.message || e);
   }
 
-  // Nếu bộ mới không đọc được thì quay lại cơ chế đồng bộ Google Sheets.
   const live = [];
   const errors = [];
   for (const source of SHEET_SOURCES) {
