@@ -1,5 +1,3 @@
-import { GoogleGenAI } from '@google/genai';
-
 const DATA_URL = 'https://raw.githubusercontent.com/anhtuansdml-droid/tthc/main/data/tthc_430_2026-10-20.json';
 const AI_MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 const MAX_QUERY_LENGTH = 2000;
@@ -67,37 +65,56 @@ function parseJson(text){
 function candidatePayload(candidates){
   return candidates.map((x,i)=>({index:i,ma:x.ma,ten:x.ten,linhVuc:x.linhVuc,mucDichVu:x.mucDichVu,cap:x.cap,coQuanChuTri:x.coQuanChuTri,coQuanThucHien:x.coQuanThucHien}));
 }
+
 async function askGemini(q,candidates,previousInteractionId){
   const key=process.env.GEMINI_API_KEY;
-  if(!key)return null;
-  const ai=new GoogleGenAI({apiKey:key});
-  const input=`Bạn là Trợ lý TTHC chính thức của Trung tâm Phục vụ hành chính công phường Mường Lay.\n\nNGUYÊN TẮC BẮT BUỘC:\n1. Chỉ được xác định thủ tục từ danh sách ứng viên được cung cấp trong lượt này. Không được bịa mã, tên, phí, thời hạn, thành phần hồ sơ hoặc cơ quan.\n2. Nếu người dân hỏi thông tin chi tiết nhưng ứng viên không chứa thông tin đó, hãy nói rõ dữ liệu hiện có chưa đủ và hướng họ mở “XEM CHI TIẾT” hoặc tra cứu trên Cổng DVC Quốc gia.\n3. Nếu nhu cầu chưa đủ rõ, hãy hỏi đúng 1 câu làm rõ và trả indices là [].\n4. Nếu có thủ tục phù hợp, chọn tối đa 3 ứng viên và giải thích ngắn gọn, dễ hiểu bằng tiếng Việt.\n5. Không đưa ra kết luận pháp lý ngoài dữ liệu được cung cấp.\n6. Ưu tiên thủ tục cấp xã/phường và bối cảnh Mường Lay khi dữ liệu ứng viên thể hiện.\n\nTrả về JSON đúng schema, không markdown.\n\nNhu cầu hiện tại của người dân:\n${q}\n\nDanh sách ứng viên TTHC của lượt này:\n${JSON.stringify(candidatePayload(candidates),null,2)}`;
-  const request={
+  if(!key) throw new Error('Thiếu biến môi trường GEMINI_API_KEY');
+
+  const systemInstruction='Bạn là Trợ lý TTHC chính thức của Trung tâm Phục vụ hành chính công phường Mường Lay. Chỉ được chọn thủ tục từ danh sách ứng viên của lượt hiện tại. Không được bịa mã, tên, phí, thời hạn, thành phần hồ sơ hoặc cơ quan. Nếu dữ liệu chưa đủ cho câu hỏi chi tiết, nói rõ dữ liệu hiện có chưa đủ và hướng người dân mở XEM CHI TIẾT hoặc tra cứu Cổng DVC Quốc gia. Nếu nhu cầu chưa rõ, hỏi đúng 1 câu làm rõ và trả indices là []. Nếu có thủ tục phù hợp, chọn tối đa 3 ứng viên và giải thích ngắn gọn, dễ hiểu bằng tiếng Việt. Không đưa ra kết luận pháp lý ngoài dữ liệu. Ưu tiên thủ tục cấp xã/phường khi dữ liệu thể hiện.';
+  const input='Nhu cầu hiện tại của người dân:\n'+q+'\n\nDanh sách ứng viên TTHC của lượt này:\n'+JSON.stringify(candidatePayload(candidates),null,2);
+  const body={
     model:AI_MODEL,
     input,
+    system_instruction:systemInstruction,
     generation_config:{thinking_level:'medium'},
     response_format:{
       type:'text',
       mime_type:'application/json',
       schema:{
         type:'object',
-        properties:{message:{type:'string'},indices:{type:'array',items:{type:'integer'}}},
+        properties:{
+          message:{type:'string'},
+          indices:{type:'array',items:{type:'integer'}}
+        },
         required:['message','indices']
       }
     }
   };
-  if(previousInteractionId)request.previous_interaction_id=previousInteractionId;
-  let interaction;
-  try { interaction=await ai.interactions.create(request); }
-  catch(err) {
-    if(previousInteractionId){ delete request.previous_interaction_id; interaction=await ai.interactions.create(request); }
-    else throw err;
+  if(previousInteractionId) body.previous_interaction_id=previousInteractionId;
+
+  let response=await fetch('https://generativelanguage.googleapis.com/v1beta/interactions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-goog-api-key':key},
+    body:JSON.stringify(body)
+  });
+  let raw=await response.text();
+  if(!response.ok){
+    if(previousInteractionId){
+      delete body.previous_interaction_id;
+      response=await fetch('https://generativelanguage.googleapis.com/v1beta/interactions',{
+        method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)
+      });
+      raw=await response.text();
+    }
   }
+  if(!response.ok) throw new Error('Gemini API '+response.status+': '+raw.slice(0,500));
+  const interaction=JSON.parse(raw);
   const parsed=parseJson(interaction?.output_text);
-  if(!parsed||!Array.isArray(parsed.indices)||typeof parsed.message!=='string')return null;
+  if(!parsed||!Array.isArray(parsed.indices)||typeof parsed.message!=='string') throw new Error('Gemini trả về dữ liệu không đúng định dạng');
   const selected=parsed.indices.filter(i=>Number.isInteger(i)&&i>=0&&i<candidates.length).slice(0,3).map(i=>candidates[i]);
   return {mode:'gemini',message:parsed.message,results:selected.map(resultOf),interactionId:interaction.id||''};
 }
+
 export default async function handler(req,res){
   if(req.method!=='POST') return res.status(405).json({ok:false,message:'Method not allowed'});
   try{
@@ -107,7 +124,9 @@ export default async function handler(req,res){
     const data=await loadData();
     const ranked=data.map(x=>({...x,_score:score(x,q)})).sort((a,b)=>b._score-a._score).slice(0,12);
     const previousInteractionId=String(req.body?.previousInteractionId||'').trim();
-    let answer=await askGemini(q,ranked,previousInteractionId).catch(err=>{console.warn('Gemini unavailable:',err?.message||err);return null});
+    let answer;
+    try { answer=await askGemini(q,ranked,previousInteractionId); }
+    catch(err){ console.error('GEMINI_API_ERROR',err?.message||err); answer=null; }
     if(!answer)answer=fallback(q,data);
     return res.status(200).json({ok:true,...answer});
   }catch(e){
