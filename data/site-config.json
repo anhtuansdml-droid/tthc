@@ -2,12 +2,12 @@
   "header": {
     "title": "BẢNG NIÊM YẾT THỦ TỤC HÀNH CHÍNH",
     "subtitle": "TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY",
-    "slogan": "HÀNH CHÍNH PHỤC VỤ",
+    "slogan": "hành chính phục vụ",
     "logo": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793084294405-4d2124e7-logo-removebg-preview.png",
     "background": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793084987639-5202142a-Le-ho-i-ua-thuye-n-Mu-o-ng-Lay-ru-c-ro-.png",
     "titleColor": "#c5161d",
     "subtitleColor": "#c5161d",
-    "sloganColor": "#c5161d"
+    "sloganColor": "#000000"
   },
   "footer": {
     "title": "TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY",
