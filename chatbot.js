@@ -7,8 +7,8 @@
   const send=document.getElementById('tthcChatSend');
   if(!panel||!launcher||!messages||!input||!send)return;
 
-  const API='/api/chat';
-  let procedures=[],history=[],dragMoved=false;
+  const API='/api/chat-gemini';
+  let procedures=[],history=[],previousInteractionId='',dragMoved=false;
   const groups=[
     {words:['khai sinh','mới sinh','sinh con','đẻ','trẻ sơ sinh'],terms:['khai sinh','trẻ em']},
     {words:['khai tử','người mất','qua đời','tử vong'],terms:['khai tử','tử']},
@@ -74,11 +74,12 @@
 
   async function askServer(q){
     const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),12000);
+    const timer=setTimeout(()=>controller.abort(),20000);
     try{
-      const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,history:history.slice(-6)}),signal:controller.signal});
+      const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,history:history.slice(-6),previousInteractionId}),signal:controller.signal});
       if(!r.ok)throw new Error('HTTP '+r.status);
       const d=await r.json();
+      if(d.interactionId)previousInteractionId=d.interactionId;
       return{text:d.message||d.answer||'',results:Array.isArray(d.results)?d.results:[]};
     }finally{clearTimeout(timer)}
   }
