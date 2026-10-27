@@ -1,13 +1,4 @@
 (() => {
-  function loadDesignV2() {
-    if (document.getElementById('designV2Css')) return;
-    const link = document.createElement('link');
-    link.id = 'designV2Css';
-    link.rel = 'stylesheet';
-    link.href = 'design-v2.css?v=20261026-01';
-    document.head.appendChild(link);
-  }
-
   function deepRefresh() {
     const btn = document.getElementById('deepRefreshBtn');
     if (btn) {
@@ -58,7 +49,6 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    loadDesignV2();
     const btn = document.getElementById('deepRefreshBtn');
     if (btn) btn.addEventListener('click', deepRefresh);
     loadLunarClock();
