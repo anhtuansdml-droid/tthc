@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 
-const DATA_URL = '/data/tthc_430_2026-10-20.json';
+const DATA_URL = 'https://raw.githubusercontent.com/anhtuansdml-droid/tthc/main/data/tthc_430_2026-10-20.json';
 const AI_MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 const MAX_QUERY_LENGTH = 2000;
 
