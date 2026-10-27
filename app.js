@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupConfig();
   await loadData();
   setupSearch();
+  applySiteConfig();
 });
 
 function updateClock() {
@@ -165,3 +166,34 @@ function escapeAttribute(value){return escapeHtml(value);}
 window.procedures=procedures;
 window.updateStatistics=updateStatistics;
 window.renderFields=renderFields;
+
+async function applySiteConfig(){
+  try{
+    const r=await fetch('/api/admin?public=1',{cache:'no-store'});
+    if(!r.ok)return;
+    const c=await r.json();
+    const h=c.header||{},f=c.footer||{},d=c.display||{};
+    const logo=document.querySelector('.header-title .logo img');
+    if(logo&&h.logo)logo.src=h.logo;
+    const promoLogo=document.querySelector('.tthc-promo-logo');
+    if(promoLogo&&h.logo)promoLogo.src=h.logo;
+    const miniLogo=document.querySelector('.tthc-promo-mini-logo');
+    if(miniLogo&&h.logo)miniLogo.src=h.logo;
+    const pano=document.querySelector('.header-pano');
+    if(pano&&h.background)pano.style.backgroundImage=`url("${String(h.background).replace(/"/g,'\\"')}")`;
+    const title=document.querySelector('.header-title h1');if(title&&h.title)title.textContent=h.title;
+    const subtitle=document.querySelector('.header-title p');if(subtitle&&h.subtitle)subtitle.textContent=h.subtitle;
+    const slogan=document.querySelector('.header-slogan');if(slogan&&h.slogan)slogan.textContent=h.slogan;
+    if(title&&h.titleColor)title.style.color=h.titleColor;
+    if(subtitle&&h.subtitleColor)subtitle.style.color=h.subtitleColor;
+    if(slogan&&h.sloganColor)slogan.style.color=h.sloganColor;
+    const footerTitle=document.querySelector('.footer-banner-title');if(footerTitle&&f.title)footerTitle.textContent=f.title;
+    const footerSubs=document.querySelectorAll('.footer-banner-sub');if(footerSubs[0]&&f.subtitle)footerSubs[0].textContent=f.subtitle;
+    const footerSource=document.querySelector('.footer-banner-source');if(footerSource){if(f.sourceText)footerSource.textContent=f.sourceText;if(f.sourceUrl)footerSource.href=f.sourceUrl;}
+    const author=document.querySelector('.footer-banner-author');if(author&&f.author)author.innerHTML=`Tác giả: <strong>${escapeHtml(f.author)}</strong><br>${escapeHtml(f.unit||'')}`;
+    const footer=document.querySelector('.footer-banner');if(footer&&f.background)footer.style.backgroundImage=`url("${String(f.background).replace(/"/g,'\\"')}")`;
+    const stats=document.querySelector('.statistics');if(stats)stats.style.display=d.showStats===false?'none':'';
+    const clock=document.getElementById('clock');if(clock)clock.style.display=d.showClock===false?'none':'';
+    const grid=document.querySelector('.field-grid');if(grid&&Number(d.columns)>=2&&Number(d.columns)<=4)grid.style.gridTemplateColumns=`repeat(${Number(d.columns)},minmax(0,1fr))`;
+  }catch(e){console.warn('Không áp dụng được site config:',e)}
+}
