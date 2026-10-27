@@ -3,8 +3,8 @@
     "title": "BẢNG NIÊM YẾT THỦ TỤC HÀNH CHÍNH",
     "subtitle": "TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY",
     "slogan": "HÀNH CHÍNH PHỤC VỤ",
-    "logo": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793085281101-ba6e0cf6-logo-removebg-preview.png",
-    "background": "https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457",
+    "logo": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793084294405-4d2124e7-logo-removebg-preview.png",
+    "background": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793084987639-5202142a-Le-ho-i-ua-thuye-n-Mu-o-ng-Lay-ru-c-ro-.png",
     "titleColor": "#c5161d",
     "subtitleColor": "#c5161d",
     "sloganColor": "#c5161d"
@@ -15,7 +15,8 @@
     "sourceText": "Cổng Dịch vụ công Quốc gia",
     "sourceUrl": "https://dichvucong.gov.vn/",
     "author": "Trần Anh Tuấn",
-    "unit": "Trung tâm Phục vụ hành chính công phường Mường Lay"
+    "unit": "Trung tâm Phục vụ hành chính công phường Mường Lay",
+    "background": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793085028155-680b9500-Le-ho-i-mu-a-nu-o-c-no-i-Mu-o-ng-Lay.png"
   },
   "display": {
     "columns": 4,
