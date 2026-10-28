@@ -1,12 +1,16 @@
 @import url("https://raw.githubusercontent.com/anhtuansdml-droid/tthc/a84bb1fe2d4fb6b89872ee499e3abbecc671f3da/toolbar-responsive.css");
 
-/* Lớp cuối cùng: màu và kích thước nút được áp trực tiếp */
+/* Lớp cuối cùng: màu, kích thước và khoảng cách nút */
 @media (min-width:1151px){
+  .nav-inner{
+    column-gap:12px!important;
+    row-gap:8px!important;
+  }
   .nav-inner>.config-btn,.nav-inner>.pakn-btn,.nav-inner>.stats-btn,.nav-inner>.deep-refresh-btn,
   .nav-inner>button[id*="update" i],.nav-inner>a[id*="update" i],
   .nav-inner>button[class*="update" i],.nav-inner>a[class*="update" i]{
     flex:1 1 0!important;width:auto!important;min-width:145px!important;max-width:none!important;height:42px!important;
-    margin-right:0!important;box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    margin:0!important;box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
   }
   .nav-inner>.config-btn{background:#6f42c1!important;color:#fff!important;border:1px solid #5b34a3!important;box-shadow:0 4px 12px rgba(111,66,193,.22)!important}
   .nav-inner>.config-btn:hover{background:#5b34a3!important;color:#fff!important}
@@ -20,10 +24,12 @@
   .nav-inner>button[id*="update" i]:hover,.nav-inner>a[id*="update" i]:hover,.nav-inner>button[class*="update" i]:hover,.nav-inner>a[class*="update" i]:hover{background:#0b6fc4!important;color:#fff!important}
 }
 @media (max-width:1150px) and (min-width:701px){
+  .nav-inner{column-gap:10px!important;row-gap:8px!important}
   .nav-inner>.config-btn,.nav-inner>.pakn-btn,.nav-inner>.stats-btn,.nav-inner>.deep-refresh-btn,
-  .nav-inner>button[id*="update" i],.nav-inner>a[id*="update" i],.nav-inner>button[class*="update" i],.nav-inner>a[class*="update" i]{flex:1 1 auto!important;min-width:0!important;margin-right:0!important}
+  .nav-inner>button[id*="update" i],.nav-inner>a[id*="update" i],.nav-inner>button[class*="update" i],.nav-inner>a[class*="update" i]{flex:1 1 auto!important;min-width:0!important;margin:0!important}
 }
 @media (max-width:700px){
+  .nav-inner{column-gap:6px!important;row-gap:6px!important}
   .nav-inner>.config-btn,.nav-inner>.pakn-btn,.nav-inner>.stats-btn,.nav-inner>.deep-refresh-btn,
-  .nav-inner>button[id*="update" i],.nav-inner>a[id*="update" i],.nav-inner>button[class*="update" i],.nav-inner>a[class*="update" i]{flex:1 1 auto!important;min-width:0!important;width:100%!important;margin-right:0!important}
+  .nav-inner>button[id*="update" i],.nav-inner>a[id*="update" i],.nav-inner>button[class*="update" i],.nav-inner>a[class*="update" i]{flex:1 1 auto!important;min-width:0!important;width:100%!important;margin:0!important}
 }
