@@ -1,5 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "python3 fix-logo-build.py",
+  "outputDirectory": ".",
+  "cleanUrls": false,
   "crons": [
     {
       "path": "/api/sync",
