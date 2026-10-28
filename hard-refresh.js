@@ -48,10 +48,42 @@
     document.head.appendChild(script);
   }
 
+  function loadPremiumTitleFix() {
+    if (document.getElementById('premiumTitleFix')) return;
+    const style = document.createElement('style');
+    style.id = 'premiumTitleFix';
+    style.textContent = `
+      .header-title{grid-template-columns:auto minmax(0,1fr)!important;gap:16px!important;align-items:center!important}
+      .header-title>div:last-child{padding:15px 22px 13px!important;min-width:0!important}
+      .header-title h1{font-size:clamp(24px,3vw,48px)!important;line-height:1.04!important;letter-spacing:-.8px!important;white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important;text-wrap:nowrap!important}
+      .header-title p{font-size:clamp(14px,1.45vw,25px)!important;line-height:1.08!important;white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important}
+      .header-slogan{font-size:clamp(14px,1.25vw,22px)!important;line-height:1.05!important;margin-top:7px!important;white-space:nowrap!important}
+      @media(max-width:1150px){
+        .header-title>div:last-child{padding:13px 18px 11px!important}
+        .header-title h1{font-size:clamp(22px,3.05vw,42px)!important}
+        .header-title p{font-size:clamp(13px,1.55vw,21px)!important}
+      }
+      @media(max-width:700px){
+        .header-title{gap:6px!important}
+        .header-title>div:last-child{padding:9px 8px 8px!important;border-radius:16px!important}
+        .header-title h1{font-size:clamp(17px,5.3vw,28px)!important;letter-spacing:-.35px!important}
+        .header-title p{font-size:clamp(11px,3.35vw,17px)!important}
+        .header-slogan{font-size:clamp(11px,3vw,16px)!important;letter-spacing:1.5px!important}
+      }
+      @media(max-width:420px){
+        .header-title h1{font-size:17px!important;letter-spacing:-.45px!important}
+        .header-title p{font-size:11px!important}
+        .header-slogan{font-size:11px!important;letter-spacing:1px!important}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('deepRefreshBtn');
     if (btn) btn.addEventListener('click', deepRefresh);
     loadLunarClock();
     loadTthcUpdater();
+    loadPremiumTitleFix();
   });
 })();
