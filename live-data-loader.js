@@ -116,4 +116,10 @@
   };
 
   loadLiveData(false).catch(() => {});
+
+  // Nạp mô-đun hướng dẫn nộp hồ sơ sau khi loader đã khởi tạo.
+  const guide = document.createElement('script');
+  guide.src = '/submit-guide.js?v=20261028-01';
+  guide.defer = true;
+  document.head.appendChild(guide);
 })();
