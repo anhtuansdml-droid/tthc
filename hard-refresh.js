@@ -53,30 +53,48 @@
     const style = document.createElement('style');
     style.id = 'premiumTitleFix';
     style.textContent = `
-      .header-title{grid-template-columns:auto minmax(0,1fr)!important;gap:16px!important;align-items:center!important}
-      .header-title>div:last-child{padding:15px 22px 13px!important;min-width:0!important}
-      .header-title h1{font-size:clamp(24px,3vw,48px)!important;line-height:1.04!important;letter-spacing:-.8px!important;white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important;text-wrap:nowrap!important}
-      .header-title p{font-size:clamp(14px,1.45vw,25px)!important;line-height:1.08!important;white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important}
-      .header-slogan{font-size:clamp(14px,1.25vw,22px)!important;line-height:1.05!important;margin-top:7px!important;white-space:nowrap!important}
+      .header-title{grid-template-columns:clamp(96px,10vw,150px) minmax(0,1fr)!important;gap:14px!important;align-items:center!important;width:100%!important;min-width:0!important}
+      .header-title>div:last-child{padding:11px 18px 10px!important;min-width:0!important;width:100%!important;box-sizing:border-box!important}
+      .header-title h1{font-size:clamp(22px,3.05vw,40px)!important;line-height:1.02!important;letter-spacing:-.55px!important;white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important;text-wrap:nowrap!important}
+      .header-title p{font-size:clamp(14px,1.72vw,22px)!important;line-height:1.06!important;white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important}
+      .header-slogan{font-size:clamp(13px,1.25vw,20px)!important;line-height:1.05!important;margin-top:6px!important;white-space:nowrap!important}
       @media(max-width:1150px){
-        .header-title>div:last-child{padding:13px 18px 11px!important}
-        .header-title h1{font-size:clamp(22px,3.05vw,42px)!important}
-        .header-title p{font-size:clamp(13px,1.55vw,21px)!important}
+        .header-title{grid-template-columns:112px minmax(0,1fr)!important;gap:10px!important}
+        .header-title>div:last-child{padding:10px 14px 9px!important}
+        .header-title h1{font-size:clamp(21px,3.15vw,36px)!important}
+        .header-title p{font-size:clamp(13px,1.75vw,20px)!important}
       }
       @media(max-width:700px){
-        .header-title{gap:6px!important}
-        .header-title>div:last-child{padding:9px 8px 8px!important;border-radius:16px!important}
-        .header-title h1{font-size:clamp(17px,5.3vw,28px)!important;letter-spacing:-.35px!important}
-        .header-title p{font-size:clamp(11px,3.35vw,17px)!important}
-        .header-slogan{font-size:clamp(11px,3vw,16px)!important;letter-spacing:1.5px!important}
+        .header-title{grid-template-columns:1fr!important;gap:8px!important}
+        .header-title>div:last-child{width:100%!important;padding:9px 7px 8px!important;border-radius:16px!important}
+        .header-title h1{font-size:clamp(17px,5vw,27px)!important;letter-spacing:-.35px!important}
+        .header-title p{font-size:clamp(11px,3.15vw,16px)!important}
+        .header-slogan{font-size:clamp(11px,2.9vw,15px)!important;letter-spacing:1.5px!important}
       }
       @media(max-width:420px){
-        .header-title h1{font-size:17px!important;letter-spacing:-.45px!important}
+        .header-title h1{font-size:17px!important;letter-spacing:-.4px!important}
         .header-title p{font-size:11px!important}
         .header-slogan{font-size:11px!important;letter-spacing:1px!important}
       }
     `;
     document.head.appendChild(style);
+  }
+
+  function loadNewLogo() {
+    const logoUrl = '/uploads/site/logo-muong-lay-20261028.webp?v=20261028-01';
+    const apply = () => {
+      document.querySelectorAll('.logo img,.tthc-promo-logo,.tthc-promo-mini-logo').forEach((img) => {
+        img.src = logoUrl;
+        img.removeAttribute('srcset');
+      });
+      const style = document.getElementById('newLogoStyle') || document.createElement('style');
+      style.id = 'newLogoStyle';
+      style.textContent = `.logo img{content:url("${logoUrl}")!important}`;
+      if (!style.parentNode) document.head.appendChild(style);
+    };
+    apply();
+    setTimeout(apply, 100);
+    setTimeout(apply, 500);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -85,5 +103,6 @@
     loadLunarClock();
     loadTthcUpdater();
     loadPremiumTitleFix();
+    loadNewLogo();
   });
 })();
