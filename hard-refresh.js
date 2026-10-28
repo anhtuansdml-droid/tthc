@@ -81,7 +81,7 @@
   }
 
   function loadNewLogo() {
-    const logoUrl = '/uploads/site/logo-muong-lay-20261028.webp?v=20261028-01';
+    const logoUrl = 'https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793084294405-4d2124e7-logo-removebg-preview.png?v=20261028-02';
     const apply = () => {
       document.querySelectorAll('.logo img,.tthc-promo-logo,.tthc-promo-mini-logo').forEach((img) => {
         img.src = logoUrl;
