@@ -6,14 +6,14 @@ if p.exists():
     s = p.read_text(encoding='utf-8')
     pattern = r"function loadNewLogo\(\) \{.*?\n  \}"
     replacement = '''function loadNewLogo() {
-    const logoUrl = 'data:image/webp;base64,UklGRi4kAABXRUJQVlA4ICIkAABQqgCdASoQABAAUDU8DqgADQAAQU5JTQYAAADQAAABAAEAAAAAAA==';
+    const logoUrl = 'https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793084294405-4d2124e7-logo-removebg-preview.png?v=20261028-04';
     if (!document.getElementById('cleanLogoCropStyle')) {
       const style = document.createElement('style');
       style.id = 'cleanLogoCropStyle';
       style.textContent = `
-        .logo{overflow:hidden!important;border-radius:50%!important;isolation:isolate!important}
-        .logo img{width:100%!important;height:100%!important;max-width:none!important;object-fit:contain!important;object-position:center!important;transform:none!important;border:0!important;border-radius:0!important;box-shadow:none!important}
-        .tthc-promo-logo,.tthc-promo-mini-logo{object-fit:contain!important;object-position:center!important;transform:none!important;border-radius:0!important;clip-path:none!important}
+        .logo{overflow:hidden!important;border-radius:50%!important;isolation:isolate!important;background:transparent!important}
+        .logo img{width:160%!important;height:160%!important;max-width:none!important;object-fit:cover!important;object-position:center!important;transform:translate(-18.75%,-18.75%)!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+        .tthc-promo-logo,.tthc-promo-mini-logo{width:160%!important;height:160%!important;object-fit:cover!important;object-position:center!important;transform:translate(-18.75%,-18.75%)!important;border-radius:0!important;clip-path:none!important}
       `;
       document.head.appendChild(style);
     }
