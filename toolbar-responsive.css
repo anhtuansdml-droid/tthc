@@ -60,3 +60,30 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overfl
 @media(max-width:1150px){.nav-inner{flex-wrap:wrap;gap:8px}.search-box{order:10;flex:1 1 100%!important;min-width:0}.nav-inner>button,.nav-inner>a{flex:1 1 145px;height:44px}.home-btn{flex:1 1 170px;width:auto!important}.config-btn,.stats-btn,.admin-link{width:auto!important}.pakn-btn,.deep-refresh-btn,.support-btn{width:auto!important}.support-btn,.admin-link{flex-basis:200px}}
 @media(max-width:700px){.nav-inner{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:calc(100% - 12px);padding:8px 0}.nav-inner>*{width:100%!important;min-width:0!important;flex:none!important;height:42px!important}.search-box{grid-column:1/-1;order:-1}.support-btn,.admin-link{grid-column:1/-1}.nav-inner>button,.nav-inner>a{font-size:11px!important;padding:0 8px!important}.home-btn{width:100%!important}.config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn,.support-btn,.admin-link{width:100%!important}}
 @media(prefers-reduced-motion:reduce){.nav-inner>button,.nav-inner>a{transition:none!important}.nav-inner>button:hover,.nav-inner>a:hover{transform:none!important}}
+
+/* HEADER LAYOUT FIX — giữ hiệu ứng Premium nhưng khóa tiêu đề trên một dòng */
+@media(min-width:1151px){
+  .header-inner{grid-template-columns:minmax(0,1fr) auto;gap:18px}
+  .header-title{grid-template-columns:auto minmax(0,1fr);gap:18px;min-width:0}
+  .header-title>div:last-child{min-width:0;max-width:none;padding:15px 22px 13px}
+  .header-title h1{font-size:clamp(30px,2.85vw,50px)!important;line-height:1.02!important;white-space:nowrap!important;text-wrap:nowrap!important;word-break:keep-all!important;overflow:visible!important;letter-spacing:-.8px!important}
+  .header-title p{font-size:clamp(16px,1.42vw,24px)!important;line-height:1.08!important;white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important;letter-spacing:-.2px!important}
+  .header-slogan{white-space:nowrap!important}
+}
+@media(min-width:1151px) and (max-width:1300px){
+  .header-inner{width:calc(100% - 22px);gap:12px;padding-left:0;padding-right:0}
+  .header-title{gap:14px}
+  .logo{width:118px;height:118px}
+  .header-title>div:last-child{padding:13px 18px 11px}
+  .header-title h1{font-size:clamp(29px,2.72vw,42px)!important;letter-spacing:-1px!important}
+  .header-title p{font-size:clamp(15px,1.34vw,21px)!important}
+  .header-tools{gap:6px}
+  .clock{min-width:190px;padding:9px 10px!important}
+}
+@media(min-width:761px) and (max-width:1150px){
+  .header-title h1{white-space:nowrap!important;text-wrap:nowrap!important;word-break:keep-all!important;overflow:visible!important;font-size:clamp(24px,3.1vw,38px)!important}
+  .header-title p{white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important;font-size:clamp(14px,1.8vw,21px)!important}
+}
+@media(max-width:760px){
+  .header-title h1,.header-title p{white-space:normal!important;text-wrap:balance;word-break:normal!important}
+}
