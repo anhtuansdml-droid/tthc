@@ -1,0 +1,55 @@
+name: Fix header logo once
+
+on:
+  push:
+    branches: [update-20261023]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-logo:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: update-20261023
+          fetch-depth: 0
+
+      - name: Replace broken embedded logo
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p = Path('hard-refresh.js')
+          s = p.read_text(encoding='utf-8')
+          pattern = r"function loadNewLogo\(\) \{.*?\n  \}"
+          replacement = '''function loadNewLogo() {
+    const logoUrl = 'https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793084294405-4d2124e7-logo-removebg-preview.png?v=20261028-02';
+    const apply = () => {
+      document.querySelectorAll('.logo img, .tthc-promo-logo, .tthc-promo-mini-logo').forEach(img => {
+        img.src = logoUrl;
+      });
+    };
+    apply();
+    const observer = new MutationObserver(apply);
+    observer.observe(document.body, {childList:true, subtree:true});
+  }'''
+          ns, n = re.subn(pattern, replacement, s, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit('Không tìm thấy hàm loadNewLogo để sửa')
+          p.write_text(ns, encoding='utf-8')
+
+      - name: Commit fix and remove one-time workflow
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hard-refresh.js
+          git commit -m 'fix: khôi phục đúng logo header người dùng gửi' || true
+          git push origin update-20261023
+          git rm .github/workflows/fix-logo-once.yml
+          git commit -m 'chore: remove one-time logo fix workflow' || true
+          git push origin update-20261023
