@@ -1,0 +1,23 @@
+/* LOGO CLEANUP — chỉ xử lý ảnh logo, không thay đổi bố cục khác */
+.logo{
+  border-radius:50% !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.logo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  border-radius:50% !important;
+  transform:scale(1.58) !important;
+  transform-origin:center center !important;
+  mix-blend-mode:normal !important;
+  filter:none !important;
+}
+@media(max-width:900px){
+  .logo img{transform:scale(1.58) !important}
+}
+@media(max-width:760px){
+  .logo img{transform:scale(1.58) !important}
+}
