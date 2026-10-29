@@ -1,0 +1,135 @@
+/* =========================================================
+   PRO INTERACTION SYSTEM — TTHC MƯỜNG LAY
+   Hiệu ứng mạnh nhưng không thay đổi bố cục/kích thước giao diện.
+   ========================================================= */
+
+:root{
+  --pro-red:#c5161d;
+  --pro-gold:#e6b928;
+  --pro-blue:#1683e8;
+  --pro-shadow:0 16px 38px rgba(22,32,48,.18);
+}
+
+html{scroll-behavior:smooth}
+body{cursor:default}
+button,a,input,.field-card,.procedure-item,.badge{cursor:pointer}
+input{cursor:text}
+
+/* ===== 01. BANNER ===== */
+.header{isolation:isolate}
+.header-pano{transition:filter 1.1s ease,transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.header:hover .header-pano{filter:saturate(1.12) contrast(1.04)!important;transform:scale(1.018)!important}
+.header-title>div:last-child{transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .55s ease,background .55s ease}
+.header:hover .header-title>div:last-child{transform:translateY(-3px);box-shadow:0 14px 34px rgba(62,34,18,.16)!important;background:linear-gradient(135deg,rgba(255,255,255,.84),rgba(255,255,255,.66),rgba(255,250,235,.58))!important}
+.header-title h1,.header-title p,.header-slogan{transition:letter-spacing .45s ease,transform .45s ease}
+.header:hover .header-title h1{letter-spacing:.7px!important}
+.header:hover .header-title p{letter-spacing:.35px}
+.header:hover .header-slogan{transform:translateX(3px)}
+.logo{transition:transform .6s cubic-bezier(.2,.9,.2,1),box-shadow .5s ease!important}
+.logo:hover{transform:translateY(-5px) rotate(3deg) scale(1.05)!important;box-shadow:0 15px 30px rgba(0,0,0,.25)!important}
+.clock,.theme-btn{transition:transform .3s ease,box-shadow .3s ease,filter .3s ease!important}
+.clock:hover,.theme-btn:hover{transform:translateY(-4px)!important;filter:saturate(1.12);box-shadow:0 12px 25px rgba(70,0,0,.25)!important}
+
+/* ===== 02. THANH ĐIỀU HƯỚNG ===== */
+.nav{position:relative;z-index:20}
+.nav:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--pro-red),var(--pro-gold),var(--pro-red),transparent);background-size:200% 100%;animation:proNavLine 3s linear infinite;pointer-events:none}
+.nav-inner>*{position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease,filter .28s ease!important}
+.nav-inner>button:after,.nav-inner>a:after{content:"";position:absolute;top:-80%;left:-45%;width:28%;height:260%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:rotate(18deg) translateX(-250%);transition:transform .6s ease;pointer-events:none}
+.nav-inner>button:hover,.nav-inner>a:hover{transform:translateY(-4px) scale(1.018)!important;filter:saturate(1.08);box-shadow:0 11px 25px rgba(20,30,45,.20)!important;z-index:2}
+.nav-inner>button:hover:after,.nav-inner>a:hover:after{transform:rotate(18deg) translateX(520%)}
+.nav-inner>button:active,.nav-inner>a:active{transform:translateY(-1px) scale(.975)!important}
+
+/* ===== 03. Ô TÌM KIẾM ===== */
+.search-box{transition:transform .35s ease,filter .35s ease}
+.search-box:focus-within{transform:translateY(-3px)}
+.search-box input{transition:border-color .3s ease,box-shadow .35s ease,transform .3s ease!important}
+.search-box input:hover{box-shadow:0 8px 20px rgba(196,0,0,.15)!important}
+.search-box input:focus{transform:scale(1.008);box-shadow:0 0 0 4px rgba(196,0,0,.10),0 12px 28px rgba(196,0,0,.17)!important}
+.search-box span{transition:transform .35s ease,color .35s ease}
+.search-box:focus-within span{transform:translateY(-50%) scale(1.18) rotate(-8deg);color:var(--pro-red)}
+
+/* ===== 04. TIÊU ĐỀ CÁC KHU VỰC ===== */
+.section-title{position:relative}
+.section-title h2{transition:transform .35s ease,letter-spacing .35s ease}
+.section-title:hover h2{transform:translateX(8px);letter-spacing:.8px}
+.section-title:after{content:"";display:block;width:0;height:3px;margin-top:6px;border-radius:99px;background:linear-gradient(90deg,var(--pro-red),var(--pro-gold));transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.section-title:hover:after{width:145px}
+
+/* ===== 05. THẺ LĨNH VỰC ===== */
+.field-card{position:relative;isolation:isolate;overflow:hidden;transition:transform .42s cubic-bezier(.2,.85,.2,1),box-shadow .42s ease,border-color .35s ease!important}
+.field-card:before{transition:transform .45s cubic-bezier(.2,.85,.2,1),box-shadow .4s ease!important}
+.field-card:after{transition:transform .4s ease,filter .4s ease,box-shadow .4s ease!important}
+.field-card:global{isolation:isolate}
+.field-card:global:before{pointer-events:none}
+.field-card:after{z-index:1}
+.field-card .field-name,.field-card .field-agency,.field-card .field-count{position:relative;z-index:3;transition:transform .35s ease,color .35s ease}
+.field-card:hover{transform:translateY(-10px) scale(1.025)!important;border-color:rgba(197,22,29,.42)!important;box-shadow:0 20px 42px rgba(24,38,58,.22),0 0 0 1px rgba(197,22,29,.06)!important;z-index:5}
+.field-card:hover:before{transform:translateY(-4px) rotate(5deg) scale(1.09);box-shadow:0 10px 24px rgba(20,35,55,.22),inset 0 -4px 0 var(--pro-red)!important}
+.field-card:hover:after{transform:translateY(-3px);filter:saturate(1.18);box-shadow:0 7px 16px rgba(20,35,55,.10)}
+.field-card:hover .field-name{transform:translateX(4px);color:var(--pro-red)}
+.field-card:hover .field-agency{transform:translateX(4px)}
+.field-card:hover .field-count{transform:scale(1.08)}
+.field-card:global:focus-within{outline:3px solid rgba(22,131,232,.18)}
+
+/* Ánh sáng chạy qua card */
+.field-card{--shine-x:-120%}
+.field-card:hover:global{--shine-x:120%}
+.field-card::marker{display:none}
+
+/* ===== 06. DANH SÁCH THỦ TỤC ===== */
+.procedure-list{perspective:1200px}
+.procedure-item{position:relative;overflow:hidden;transform-origin:center;transition:transform .4s cubic-bezier(.2,.85,.2,1),box-shadow .4s ease,border-color .35s ease!important}
+.procedure-item:before{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,.72) 50%,rgba(255,255,255,0) 62%,transparent 100%);transform:translateX(-120%);transition:transform .75s ease;pointer-events:none}
+.procedure-item:hover{transform:translateY(-7px) scale(1.012) rotateX(.7deg)!important;box-shadow:0 18px 38px rgba(22,32,48,.18)!important;border-color:rgba(197,22,29,.28)!important}
+.procedure-item:hover:before{transform:translateX(120%)}
+.procedure-name,.procedure-code,.procedure-meta{transition:transform .3s ease,color .3s ease}
+.procedure-item:hover .procedure-name{transform:translateX(5px);color:var(--pro-red)}
+.procedure-item:hover .procedure-code{transform:translateX(3px)}
+.badge{transition:transform .25s ease,box-shadow .25s ease,filter .25s ease}
+.badge:hover{transform:translateY(-3px) scale(1.06);filter:saturate(1.2);box-shadow:0 7px 15px rgba(20,30,45,.15)}
+
+/* ===== 07. POPUP THỦ TỤC ===== */
+.modal{backdrop-filter:blur(9px) saturate(1.15);-webkit-backdrop-filter:blur(9px) saturate(1.15);background:rgba(10,18,30,.52)!important}
+.modal.show{animation:proOverlayIn .35s ease both}
+.modal-content{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.55)!important;box-shadow:0 35px 90px rgba(0,0,0,.34)!important;transform-origin:center;animation:proModalIn .52s cubic-bezier(.16,1,.3,1) both!important}
+.modal-content:before{content:"";position:absolute;left:-30%;top:-70%;width:65%;height:220%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.20),transparent);transform:rotate(18deg);animation:proModalShine 2.2s ease .35s both;pointer-events:none;z-index:0}
+.modal-header,.modal-body{position:relative;z-index:1}
+.modal-header{box-shadow:0 5px 20px rgba(20,30,45,.12);position:relative}
+.modal-header:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--pro-red),var(--pro-gold),var(--pro-red));background-size:200% 100%;animation:proNavLine 2.5s linear infinite}
+.modal-close{transition:transform .3s ease,background .3s ease,box-shadow .3s ease!important}
+.modal-close:hover{transform:rotate(90deg) scale(1.12)!important;box-shadow:0 8px 18px rgba(0,0,0,.18)!important}
+.detail-grid>*{transition:transform .28s ease,box-shadow .28s ease,background .28s ease}
+.detail-grid>*:hover{transform:translateX(5px);box-shadow:0 6px 15px rgba(20,30,45,.08)}
+.online-btn{transition:transform .3s ease,box-shadow .3s ease,filter .3s ease!important;position:relative;overflow:hidden}
+.online-btn:hover{transform:translateY(-4px) scale(1.02);filter:saturate(1.1);box-shadow:0 12px 24px rgba(22,131,232,.25)!important}
+
+/* ===== 08. THỐNG KÊ / CẤU HÌNH POPUP ===== */
+.config-content,.stats-content{position:relative;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.30)!important}
+.config-content:before,.stats-content:before{content:"";position:absolute;inset:-2px;background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.16) 50%,transparent 80%);transform:translateX(-100%);animation:proPanelSweep 2.8s ease-in-out infinite;pointer-events:none}
+.config-header,.stats-header{position:relative;z-index:1}
+.config-header,.stats-header{background-image:linear-gradient(90deg,rgba(197,22,29,.98),rgba(197,22,29,.88),rgba(230,185,40,.85))!important;background-size:180% 100%;animation:proHeaderGradient 6s ease infinite}
+
+/* ===== 09. FOCUS + ACCESSIBILITY ===== */
+button:focus-visible,a:focus-visible,input:focus-visible,.field-card:focus-visible,.procedure-item:focus-visible{outline:3px solid rgba(22,131,232,.38);outline-offset:3px}
+
+/* ===== 10. FOOTER ===== */
+.footer,.footer-banner{transition:filter .5s ease}
+.footer-banner:hover{filter:saturate(1.08) contrast(1.03)}
+
+@keyframes proNavLine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes proOverlayIn{from{opacity:0}to{opacity:1}}
+@keyframes proModalIn{from{opacity:0;transform:translateY(34px) scale(.91) rotateX(4deg)}to{opacity:1;transform:none}}
+@keyframes proModalShine{from{transform:translateX(-140%) rotate(18deg)}to{transform:translateX(260%) rotate(18deg)}}
+@keyframes proPanelSweep{0%,25%{transform:translateX(-110%)}70%,100%{transform:translateX(110%)}}
+@keyframes proHeaderGradient{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+
+@media(max-width:760px){
+  .header:hover .header-pano{transform:none!important}
+  .field-card:hover{transform:translateY(-6px) scale(1.015)!important}
+  .procedure-item:hover{transform:translateY(-4px)!important}
+  .nav-inner>button:hover,.nav-inner>a:hover{transform:translateY(-2px)!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
