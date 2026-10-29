@@ -83,8 +83,8 @@
   .header-title{width:calc(100% - 108px);max-width:calc(100% - 108px);gap:6px;padding:0;background:transparent;align-items:flex-start}
   .logo{width:58px;height:58px;flex-basis:58px;margin-top:8px;border-radius:50%;padding:3px;border:2px solid #e0b52b;background:rgba(255,255,255,.9)}
   .header-title>div:last-child{margin-top:8px;padding:6px 8px 8px;border-radius:9px;background:rgba(255,255,255,.76)}
-  .header-title h1{font-size:clamp(16px,4.8vw,22px);line-height:1.06;white-space:normal}
-  .header-title p{font-size:clamp(9px,2.7vw,13px);margin-top:5px;line-height:1.1;white-space:normal}
+  .header-title h1{font-size:clamp(16px,4.8vw,22px);line-height:1.06;white-space:nowrap;overflow:visible}
+  .header-title p{font-size:clamp(9px,2.7vw,13px);margin-top:5px;line-height:1.1;white-space:nowrap;overflow:visible}
   .header-slogan{font-size:clamp(9px,2.4vw,12px);margin-top:5px;padding:0 12px}
   .header-tools{margin-top:10px;gap:5px}
   .clock{width:104px;min-width:104px;height:48px;font-size:11px}
