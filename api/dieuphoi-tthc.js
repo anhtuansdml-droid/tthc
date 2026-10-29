@@ -7,232 +7,47 @@ const SHEET_SOURCES = [
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlBaBQWrwlVYTKY0zr2t7M-xnplWarLHSWjdDznpg32V1aZUrnxyirY-HNGo11jozXX7ZnUhsoBBoS/pub?gid=1982128869&single=true&output=csv',
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQk2DNzNnpsDR4wTrzBjoy7aKtDKDeubqvnyBdlJstAzxobagxsvSo8kJX2TI9dXHlBMbUjO2htStuw/pub?gid=226385689&single=true&output=csv'
 ];
+const NEW_CODE_SOURCE = 'data/tthc_401_codes_2026-10-29.json';
 const FALLBACK_SOURCE = 'data/tthc_430_2026-10-20.json';
-const NEW_CODE_SOURCE = 'data/tthc_426_2026-10-25.json';
-const TARGET_TOTAL = 426;
-const TARGET_FULL = 320;
-const TARGET_PARTIAL = 106;
+const TARGET_TOTAL = 401;
+const TARGET_FULL = 311;
+const TARGET_PARTIAL = 90;
 let cache = { at: 0, value: null };
 const norm = v => String(v ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase().trim();
 
 function parseCSV(text) {
-  const rows = []; let row = [], cell = '', quoted = false;
-  const s = String(text || '').replace(/^\uFEFF/, '');
-  for (let i = 0; i < s.length; i++) {
-    const ch = s[i];
-    if (quoted) {
-      if (ch === '"') { if (s[i + 1] === '"') { cell += '"'; i++; } else quoted = false; }
-      else cell += ch;
-    } else if (ch === '"') quoted = true;
-    else if (ch === ',') { row.push(cell); cell = ''; }
-    else if (ch === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
-    else if (ch !== '\r') cell += ch;
-  }
-  row.push(cell);
-  if (row.some(x => String(x).trim() !== '')) rows.push(row);
-  if (!rows.length) return [];
-  const headers = rows[0].map(x => String(x).trim());
-  return rows.slice(1).map(values => Object.fromEntries(headers.map((h, i) => [h, values[i] ?? ''])));
+  const rows=[]; let row=[], cell='', quoted=false; const s=String(text||'').replace(/^\uFEFF/,'');
+  for(let i=0;i<s.length;i++){const ch=s[i]; if(quoted){if(ch==='"'){if(s[i+1]==='"'){cell+='"';i++;}else quoted=false;}else cell+=ch;} else if(ch==='"') quoted=true; else if(ch===','){row.push(cell);cell='';} else if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell='';} else if(ch!=='\r') cell+=ch;}
+  row.push(cell); if(row.some(x=>String(x).trim()!=='')) rows.push(row); if(!rows.length)return [];
+  const headers=rows[0].map(x=>String(x).trim()); return rows.slice(1).map(v=>Object.fromEntries(headers.map((h,i)=>[h,v[i]??''])));
 }
-
-function findHeader(headers, names) {
-  const map = new Map(headers.map(h => [norm(h), h]));
-  for (const name of names) { const hit = map.get(norm(name)); if (hit) return hit; }
-  return '';
+function findHeader(headers,names){const m=new Map(headers.map(h=>[norm(h),h]));for(const n of names){const k=m.get(norm(n));if(k)return k;}return '';}
+function normalizeSheet(rows,wanted){
+  if(!rows.length)return [];
+  const headers=Object.keys(rows[0]);
+  const codeKey=findHeader(headers,['MaTTHC','Mã TTHC','ma thu tuc']);
+  const nameKey=findHeader(headers,['Tên TTHC','TenTTHC','Tên thủ tục hành chính']);
+  const agencyKey=findHeader(headers,['TenCQTH','TênCQTH','Tên cơ quan thực hiện']);
+  const publisherKey=findHeader(headers,['Cơ quan công bố','CoQuanCongBo','TenCQCB','Tên cơ quan công bố','Cơ quan chủ trì','CoQuanChuTri']);
+  const levelKey=findHeader(headers,['MucDo','Mức độ']);
+  const statusKey=findHeader(headers,['Trạng thái','TrangThai']);
+  const fieldKey=findHeader(headers,['LinhVuc','Lĩnh vực']);
+  const capKey=findHeader(headers,['CapThucHien','Cấp thực hiện']);
+  const agencyCodeKey=findHeader(headers,['MaCQTH','Mã cơ quan thực hiện']);
+  const serviceCodeKey=findHeader(headers,['MaDVC','Mã DVC']);
+  const serviceNameKey=findHeader(headers,['TenDVC','Tên DVC']);
+  const typeKey=findHeader(headers,['LoaiHeThong','Loại hệ thống']);
+  const urlKey=findHeader(headers,['Citizen URL','URL','url']);
+  if(!codeKey||!nameKey||!agencyKey||!levelKey)return [];
+  const out=new Map();
+  for(const r of rows){const code=String(r[codeKey]||'').trim();if(!wanted.has(code)||out.has(code))continue;const agency=String(r[agencyKey]||'').trim();if(!norm(agency).includes('muong lay'))continue;out.set(code,{ma:code,ten:String(r[nameKey]||'').trim(),linhVuc:fieldKey?String(r[fieldKey]||'').trim():'',coQuanChuTri:publisherKey?String(r[publisherKey]||'').trim()||agency:agency,coQuanThucHien:agency,maCoQuan:agencyCodeKey?String(r[agencyCodeKey]||'').trim():'',cap:capKey?String(r[capKey]||'').trim():'',mucDichVu:String(r[levelKey]||'').trim(),mucDo:String(r[levelKey]||'').trim(),trangThai:statusKey?String(r[statusKey]||'').trim():'',loai:typeKey?String(r[typeKey]||'').trim():'',maThucHien:serviceCodeKey?String(r[serviceCodeKey]||'').trim():'',tenDVC:serviceNameKey?String(r[serviceNameKey]||'').trim():'',url:urlKey?String(r[urlKey]||'').trim():'',nguon:'Bộ TTHC mới ngày 25/10/2026'});}return [...out.values()];
 }
-
-function normalizeSheet(rows) {
-  if (!rows.length) return null;
-  const headers = Object.keys(rows[0]);
-  const codeKey = findHeader(headers, ['MaTTHC', 'Mã TTHC', 'ma thu tuc']);
-  const nameKey = findHeader(headers, ['Tên TTHC', 'TenTTHC', 'Tên thủ tục hành chính']);
-  const agencyKey = findHeader(headers, ['TenCQTH', 'TênCQTH', 'Tên cơ quan thực hiện']);
-  const publisherKey = findHeader(headers, ['Cơ quan công bố', 'CoQuanCongBo', 'TenCQCB', 'Tên cơ quan công bố', 'Cơ quan chủ trì', 'CoQuanChuTri']);
-  const levelKey = findHeader(headers, ['MucDo', 'Mức độ']);
-  const statusKey = findHeader(headers, ['Trạng thái', 'TrangThai']);
-  const fieldKey = findHeader(headers, ['LinhVuc', 'Lĩnh vực']);
-  const capKey = findHeader(headers, ['CapThucHien', 'Cấp thực hiện']);
-  const agencyCodeKey = findHeader(headers, ['MaCQTH', 'Mã cơ quan thực hiện']);
-  const serviceCodeKey = findHeader(headers, ['MaDVC', 'Mã DVC']);
-  const serviceNameKey = findHeader(headers, ['TenDVC', 'Tên DVC']);
-  const typeKey = findHeader(headers, ['LoaiHeThong', 'Loại hệ thống']);
-  const urlKey = findHeader(headers, ['Citizen URL', 'URL', 'url']);
-  if (!codeKey || !nameKey || !agencyKey || !levelKey) return null;
-
-  const selected = rows.filter(r => norm(r[agencyKey]).includes('muong lay'));
-  const unique = new Map();
-  for (const r of selected) {
-    const code = String(r[codeKey] || '').trim();
-    if (!code || unique.has(code)) continue;
-    const publishedBy = publisherKey ? String(r[publisherKey] || '').trim() : '';
-    const implementingAgency = String(r[agencyKey] || '').trim();
-    unique.set(code, {
-      ma: code,
-      ten: String(r[nameKey] || '').trim(),
-      linhVuc: fieldKey ? String(r[fieldKey] || '').trim() : '',
-      coQuanChuTri: publishedBy || implementingAgency,
-      coQuanThucHien: implementingAgency,
-      maCoQuan: agencyCodeKey ? String(r[agencyCodeKey] || '').trim() : '',
-      cap: capKey ? String(r[capKey] || '').trim() : '',
-      mucDichVu: String(r[levelKey] || '').trim(),
-      mucDo: String(r[levelKey] || '').trim(),
-      trangThai: statusKey ? String(r[statusKey] || '').trim() : '',
-      loai: typeKey ? String(r[typeKey] || '').trim() : '',
-      maThucHien: serviceCodeKey ? String(r[serviceCodeKey] || '').trim() : '',
-      tenDVC: serviceNameKey ? String(r[serviceNameKey] || '').trim() : '',
-      url: urlKey ? String(r[urlKey] || '').trim() : '',
-      nguon: 'Điều phối DVC Siêu tốc'
-    });
-  }
-  return { rows: [...unique.values()], totalRows: rows.length };
-}
-
-async function getSource(url) {
-  const r = await fetch(url + '&_t=' + Date.now(), {
-    redirect: 'follow', cache: 'no-store',
-    headers: { 'user-agent': 'TTHC-Muong-Lay-Sync/2.4' }
-  });
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return parseCSV(await r.text());
-}
-
-async function loadFallback() {
-  const r = await fetch(new URL(`../${FALLBACK_SOURCE}`, import.meta.url));
-  if (!r.ok) throw new Error(`Fallback HTTP ${r.status}`);
-  const data = await r.json();
-  return Array.isArray(data) ? data : (Array.isArray(data?.rows) ? data.rows : []);
-}
-
-async function loadNewCodeList() {
-  const r = await fetch(new URL(`../${NEW_CODE_SOURCE}`, import.meta.url));
-  if (!r.ok) throw new Error(`New code list HTTP ${r.status}`);
-  const data = await r.json();
-  if (!Array.isArray(data) || data.length !== TARGET_TOTAL) throw new Error(`Danh sách mã mới không đủ ${TARGET_TOTAL} mã`);
-  return data.map(x => String(x).trim()).filter(Boolean);
-}
-
-function completeWithMissingRows(filtered, newCodes) {
-  const have = new Set(filtered.map(x => String(x.ma || '').trim()));
-  const missing = newCodes.filter(code => !have.has(code));
-  if (!missing.length) return { rows: filtered, missing: [] };
-
-  let full = filtered.filter(x => norm(x.mucDo || x.mucDichVu) === 'toan trinh').length;
-  let partial = filtered.filter(x => norm(x.mucDo || x.mucDichVu) === 'mot phan').length;
-  for (const code of missing) {
-    const useFull = full < TARGET_FULL && (TARGET_FULL - full) >= (missing.length - (full + partial - filtered.length));
-    const level = useFull ? 'Toàn trình' : 'Một phần';
-    if (useFull) full++; else partial++;
-    filtered.push({
-      ma: code,
-      ten: `Thủ tục hành chính ${code}`,
-      linhVuc: 'Chưa cập nhật',
-      coQuanChuTri: 'UBND phường Mường Lay',
-      coQuanThucHien: 'UBND phường Mường Lay',
-      maCoQuan: 'H18.111',
-      cap: 'Cấp xã',
-      mucDichVu: level,
-      mucDo: level,
-      trangThai: 'Chính thức',
-      loai: 'Bộ thủ tục mới ngày 25/10/2026',
-      maThucHien: '',
-      tenDVC: '',
-      url: '',
-      nguon: 'Bộ thủ tục mới ngày 25/10/2026'
-    });
-  }
-  return { rows: filtered, missing };
-}
-
-async function build(force = false) {
-  if (!force && cache.value && Date.now() - cache.at < 60000) return cache.value;
-
-  try {
-    const [newCodes, fallbackRows] = await Promise.all([loadNewCodeList(), loadFallback()]);
-    const wanted = new Set(newCodes);
-    const filtered = fallbackRows.filter(x => wanted.has(String(x.ma || x.maThucHien || '').trim()));
-    const completed = completeWithMissingRows(filtered, newCodes);
-    if (completed.rows.length === TARGET_TOTAL) {
-      const full = completed.rows.filter(x => norm(x.mucDo || x.mucDichVu) === 'toan trinh').length;
-      const partial = completed.rows.filter(x => norm(x.mucDo || x.mucDichVu) === 'mot phan').length;
-      const result = {
-        ok: true,
-        source: NEW_CODE_SOURCE,
-        sourceData: 'Bộ thủ tục mới ngày 25/10/2026',
-        fetchedAt: new Date().toISOString(),
-        total: TARGET_TOTAL,
-        province: 0,
-        commune: TARGET_TOTAL,
-        dvcTotal: TARGET_TOTAL,
-        dvcProvince: 0,
-        dvcCommune: TARGET_TOTAL,
-        full,
-        partial,
-        newCount: completed.missing.length,
-        changed: 0,
-        removed: Math.max(0, fallbackRows.length - completed.rows.length),
-        sourceCount: 1,
-        sourceErrors: 0,
-        rows: completed.rows
-      };
-      cache = { at: Date.now(), value: result };
-      return result;
-    }
-  } catch (e) {
-    console.warn('Không áp dụng được bộ mã TTHC mới:', e?.message || e);
-  }
-
-  const live = [];
-  const errors = [];
-  for (const source of SHEET_SOURCES) {
-    try {
-      const normalized = normalizeSheet(await getSource(source));
-      if (normalized?.rows?.length) live.push(normalized);
-    } catch (e) {
-      errors.push(e?.message || 'source error');
-    }
-  }
-
-  live.sort((a, b) => b.rows.length - a.rows.length);
-  let rows = live[0]?.rows || [];
-  let source = 'Điều phối DVC Siêu tốc';
-  if (!rows.length) {
-    rows = await loadFallback();
-    source = FALLBACK_SOURCE;
-  }
-
-  const full = rows.filter(x => norm(x.mucDo) === 'toan trinh').length;
-  const partial = rows.filter(x => norm(x.mucDo) === 'mot phan').length;
-  const result = {
-    ok: true,
-    source,
-    sourceData: source,
-    fetchedAt: new Date().toISOString(),
-    total: rows.length,
-    province: 0,
-    commune: rows.length,
-    dvcTotal: rows.length,
-    dvcProvince: 0,
-    dvcCommune: rows.length,
-    full,
-    partial,
-    newCount: 0,
-    changed: 0,
-    removed: 0,
-    sourceCount: live.length,
-    sourceErrors: errors.length,
-    rows
-  };
-  cache = { at: Date.now(), value: result };
-  return result;
-}
-
-export default async function handler(req, res) {
-  res.setHeader('Cache-Control', 'no-store, max-age=0');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  try {
-    return res.status(200).json(await build(String(req.query?.refresh || '') === 'true'));
-  } catch (e) {
-    return res.status(502).json({ ok: false, message: e?.message || 'Không lấy được dữ liệu DVC', source: 'Điều phối DVC Siêu tốc' });
-  }
-}
+async function getSource(url){const r=await fetch(url+'&_t='+Date.now(),{cache:'no-store',redirect:'follow',headers:{'user-agent':'TTHC-Muong-Lay-Sync/3.0'}});if(!r.ok)throw new Error('HTTP '+r.status);return parseCSV(await r.text());}
+async function loadFallback(){const r=await fetch(new URL(`../${FALLBACK_SOURCE}`,import.meta.url));if(!r.ok)throw new Error('Fallback HTTP '+r.status);const d=await r.json();return Array.isArray(d)?d:(Array.isArray(d?.rows)?d.rows:[]);}
+async function loadCodes(){const r=await fetch(new URL(`../${NEW_CODE_SOURCE}`,import.meta.url));if(!r.ok)throw new Error('Code list HTTP '+r.status);const d=await r.json();if(!Array.isArray(d)||d.length!==TARGET_TOTAL)throw new Error('Danh sách mã mới không đủ '+TARGET_TOTAL+' mã');return d.map(x=>String(x).trim()).filter(Boolean);}
+function stats(rows){return {full:rows.filter(x=>norm(x.mucDo||x.mucDichVu)==='toan trinh').length,partial:rows.filter(x=>norm(x.mucDo||x.mucDichVu)==='mot phan').length};}
+async function build(force=false){if(!force&&cache.value&&Date.now()-cache.at<60000)return cache.value;const codes=await loadCodes();const wanted=new Set(codes);let rows=[];let used=0;const errors=[];
+  for(const src of SHEET_SOURCES){try{const got=normalizeSheet(await getSource(src),wanted);if(got.length>rows.length){rows=got;used=1;}}catch(e){errors.push(e?.message||'source error');}}
+  if(rows.length!==TARGET_TOTAL){const fallback=await loadFallback();const by=new Map(fallback.map(x=>[String(x.ma||'').trim(),x]));rows=codes.map(code=>by.get(code)).filter(Boolean);}
+  const s=stats(rows);const result={ok:true,source:used?'Google Sheets - Bộ thủ tục hành chính mới':FALLBACK_SOURCE,sourceData:'Bộ TTHC mới ngày 25/10/2026',fetchedAt:new Date().toISOString(),total:rows.length,province:0,commune:rows.length,dvcTotal:rows.length,dvcProvince:0,dvcCommune:rows.length,full:s.full,partial:s.partial,newCount:0,changed:0,removed:Math.max(0,TARGET_TOTAL-rows.length),sourceCount:used,sourceErrors:errors.length,rows};cache={at:Date.now(),value:result};return result;}
+export default async function handler(req,res){res.setHeader('Cache-Control','no-store, max-age=0');res.setHeader('Access-Control-Allow-Origin','*');if(req.method==='OPTIONS')return res.status(204).end();try{return res.status(200).json(await build(String(req.query?.refresh||'')==='true'));}catch(e){return res.status(502).json({ok:false,message:e?.message||'Không lấy được dữ liệu TTHC mới',source:'Bộ TTHC mới ngày 25/10/2026'});}}
