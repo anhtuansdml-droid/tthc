@@ -51,3 +51,28 @@
   .header:before{display:block!important;z-index:6!important;left:0!important;right:0!important;bottom:13px!important;height:39px!important;background:#f0cc25!important;clip-path:polygon(0 0,18% 35%,38% 52%,61% 64%,82% 52%,100% 22%,100% 100%,0 100%)!important;animation:none!important}
   .header:after{display:block!important;z-index:7!important;left:0!important;right:0!important;bottom:-4px!important;height:44px!important;background:#d71920!important;clip-path:polygon(0 18%,17% 49%,37% 62%,58% 69%,79% 58%,100% 30%,100% 100%,0 100%)!important;animation:none!important}
 }
+
+/* ===== PRO FINAL OVERRIDES: hiệu ứng phải nằm SAU lớp khôi phục banner ===== */
+@media (hover:hover){
+  .header-pano{transition:filter .9s ease,transform 1s cubic-bezier(.2,.8,.2,1)!important}
+  .header:hover .header-pano{filter:saturate(1.14) contrast(1.06)!important;transform:scale(1.025)!important}
+  .header-title>div:last-child{transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease,background .45s ease!important}
+  .header:hover .header-title>div:last-child{transform:translateY(-5px)!important;box-shadow:0 18px 40px rgba(62,34,18,.22)!important;background:rgba(255,255,255,.80)!important}
+  .header:hover .header-title h1{letter-spacing:.9px!important;transform:translateX(3px)!important}
+  .header:hover .header-title p{letter-spacing:.45px!important;transform:translateX(3px)!important}
+  .header:hover .header-slogan{transform:translateX(5px)!important}
+  .logo{transition:transform .55s cubic-bezier(.2,.9,.2,1),box-shadow .45s ease!important}
+  .logo:hover{transform:translateY(-7px) rotate(4deg) scale(1.08)!important;box-shadow:0 18px 34px rgba(0,0,0,.30)!important}
+  .clock:hover,.theme-btn:hover{transform:translateY(-6px) scale(1.06)!important;box-shadow:0 16px 30px rgba(70,0,0,.30)!important;filter:saturate(1.15)!important}
+  .nav-inner>button:hover,.nav-inner>a:hover{transform:translateY(-5px) scale(1.025)!important;box-shadow:0 14px 30px rgba(20,30,45,.24)!important;filter:saturate(1.10)!important}
+  .search-box:focus-within{transform:translateY(-4px) scale(1.01)!important}
+  .field-card:hover{transform:translateY(-12px) scale(1.035)!important;box-shadow:0 24px 48px rgba(24,38,58,.26),0 0 0 2px rgba(197,22,29,.08)!important}
+  .procedure-item:hover{transform:translateY(-9px) scale(1.018) rotateX(1deg)!important;box-shadow:0 22px 44px rgba(22,32,48,.24)!important}
+  .badge:hover{transform:translateY(-4px) scale(1.10)!important}
+  .modal.show .modal-content{animation:proModalInStrong .48s cubic-bezier(.16,1,.3,1) both!important}
+  .modal.show{animation:proOverlayStrong .35s ease both!important}
+  .modal-close:hover{transform:rotate(180deg) scale(1.18)!important}
+}
+@keyframes proModalInStrong{0%{opacity:0;transform:translateY(45px) scale(.88) rotateX(5deg);filter:blur(3px)}100%{opacity:1;transform:none;filter:blur(0)}}
+@keyframes proOverlayStrong{0%{opacity:0}100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.header-pano,.header-title>div:last-child,.logo,.clock,.theme-btn,.field-card,.procedure-item{transition:none!important}.header:hover .header-pano,.header:hover .header-title>div:last-child,.header:hover .header-title h1,.header:hover .header-title p,.header:hover .header-slogan,.logo:hover,.clock:hover,.theme-btn:hover,.nav-inner>button:hover,.nav-inner>a:hover,.field-card:hover,.procedure-item:hover{transform:none!important}}
