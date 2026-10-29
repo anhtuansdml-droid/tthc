@@ -21,33 +21,49 @@
   .header::after{bottom:-4px!important;height:44px!important}
 
   /* ===== BẢN SẠCH: nền mờ chỉ ôm đến mép cuối chữ CHÍNH ===== */
-  html body .header-title>div:last-child{display:inline-block!important;width:max-content!important;max-width:calc(100vw - 250px)!important;margin-top:28px!important;margin-right:0!important;padding:15px 0 16px 18px!important;background:rgba(255,255,255,.64)!important;border:0!important;border-radius:10px!important;box-shadow:0 8px 24px rgba(72,38,20,.10)!important;overflow:hidden!important}
-  html body .header-title>div:last-child{position:relative!important}
+  html body .header-title>div:last-child{display:inline-block!important;width:max-content!important;max-width:calc(100vw - 250px)!important;margin-top:28px!important;margin-right:0!important;padding:15px 0 16px 18px!important;background:rgba(255,255,255,.64)!important;border:0!important;border-radius:10px!important;box-shadow:0 8px 24px rgba(72,38,20,.10)!important;overflow:hidden!important;position:relative!important}
   html body .header-title>div:last-child::before{content:""!important;position:absolute!important;inset:0!important;background:linear-gradient(105deg,rgba(255,255,255,.16),rgba(255,255,255,0))!important;pointer-events:none!important}
   html body .header-title h1,html body .header-title p{position:relative!important;z-index:1!important;text-shadow:none!important;-webkit-text-stroke:0 transparent!important;paint-order:normal!important;filter:none!important}
-  html body .header-title h1{padding-right:0!important}
-  html body .header-title p{padding-right:0!important}
+  html body .header-title h1,html body .header-title p{padding-right:0!important}
   html body .header-slogan{margin:10px 0 0!important;padding:0!important;color:#171717!important;text-align:left!important;text-shadow:none!important;-webkit-text-stroke:0 transparent!important;letter-spacing:1.5px!important}
   html body .header-slogan::before,html body .header-slogan::after{display:none!important}
 }
 
-/* ===== CHUYỂN ĐỘNG BANNER: nền sống nhẹ, nội dung đứng yên ===== */
-.header-pano{will-change:background-position,background-size;animation:muongLayPanoDrift 24s ease-in-out infinite alternate}
-.header-pano::after{content:"";position:absolute;inset:-18%;pointer-events:none;background:radial-gradient(ellipse 22% 52% at 77% 31%,rgba(255,238,178,.26) 0%,rgba(255,224,128,.13) 35%,rgba(255,210,90,0) 72%);mix-blend-mode:screen;opacity:.72;transform:translate3d(0,0,0);animation:muongLaySunlight 18s ease-in-out infinite alternate;will-change:transform,opacity}
-@keyframes muongLayPanoDrift{
-  0%{background-position:47% 46%;background-size:100% auto}
-  50%{background-position:50% 46%;background-size:102% auto}
-  100%{background-position:53% 46%;background-size:100% auto}
+/* ===== NỀN BANNER CHUYỂN ĐỘNG RÕ NHƯNG CHUYÊN NGHIỆP ===== */
+.header-pano{
+  will-change:background-position,background-size!important;
+  animation:muongLayPanoDriftPro 16s ease-in-out infinite alternate!important;
+  transform:translateZ(0);
 }
-@keyframes muongLaySunlight{
-  0%{transform:translate3d(-4%,1%,0) scale(.96);opacity:.48}
-  50%{transform:translate3d(1%,-1%,0) scale(1.04);opacity:.78}
-  100%{transform:translate3d(5%,1%,0) scale(.98);opacity:.56}
+.header-pano::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:1!important;
+  inset:-20%!important;
+  pointer-events:none!important;
+  background:radial-gradient(ellipse 24% 58% at 76% 31%,rgba(255,247,190,.34) 0%,rgba(255,224,128,.20) 30%,rgba(255,210,90,.08) 52%,rgba(255,210,90,0) 75%)!important;
+  mix-blend-mode:screen!important;
+  opacity:.82!important;
+  transform:translate3d(-3%,0,0) scale(.96)!important;
+  animation:muongLaySunlightPro 11s ease-in-out infinite alternate!important;
+  will-change:transform,opacity!important;
 }
-@media (prefers-reduced-motion:reduce){.header-pano,.header-pano::after{animation:none!important}}
+@keyframes muongLayPanoDriftPro{
+  0%{background-position:44% 46%;background-size:104% auto}
+  50%{background-position:50% 46%;background-size:108% auto}
+  100%{background-position:56% 46%;background-size:104% auto}
+}
+@keyframes muongLaySunlightPro{
+  0%{transform:translate3d(-6%,1%,0) scale(.92);opacity:.48}
+  50%{transform:translate3d(2%,-1%,0) scale(1.06);opacity:.88}
+  100%{transform:translate3d(7%,1%,0) scale(.96);opacity:.58}
+}
+@media (prefers-reduced-motion:reduce){
+  .header-pano,.header-pano::after{animation:none!important}
+}
 @media (max-width:760px){
-  .header-pano{animation-duration:32s}
-  .header-pano::after{animation-duration:24s;opacity:.48}
+  .header-pano{animation-duration:24s!important}
+  .header-pano::after{animation-duration:17s!important;opacity:.56!important}
 }
 
 /* Tablet/mobile: giữ nguyên giao diện hiện tại, chỉ giữ đủ 3 dòng tiêu đề. */
