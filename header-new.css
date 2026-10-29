@@ -1,16 +1,18 @@
 @import url("https://raw.githubusercontent.com/anhtuansdml-droid/tthc/5aaf113f645f0567235ee2c4c953aaa5e3aac780/header-new.css");
 
-/* FIX DESKTOP: giữ toàn bộ giao diện hiện tại, chỉ ép tiêu đề banner không xuống dòng */
+/* FIX: desktop/tablet - không cho các dòng tiêu đề banner tự xuống dòng */
 @media (min-width:761px) and (max-width:1199px){
   .header-title{max-width:none!important;min-width:0;flex:1 1 auto}
   .header-title>div:last-child{max-width:none!important;min-width:0;flex:1 1 auto}
   .header-title h1{font-size:clamp(24px,2.7vw,28px)!important;line-height:1.05!important;white-space:nowrap!important;overflow:visible!important}
   .header-title p{font-size:clamp(12px,1.45vw,16px)!important;line-height:1.1!important;white-space:nowrap!important;overflow:visible!important}
+  .header-slogan{display:block!important;visibility:visible!important;white-space:nowrap!important;overflow:visible!important;margin-top:8px!important}
 }
 
 @media (min-width:1200px){
   .header-title{max-width:none!important;min-width:0;flex:1 1 auto}
   .header-title>div:last-child{max-width:none!important;min-width:0;flex:1 1 auto}
-  .header-title h1{white-space:nowrap!important;overflow:visible!important}
-  .header-title p{white-space:nowrap!important;overflow:visible!important}
+  .header-title h1{font-size:clamp(38px,2.8vw,48px)!important;line-height:1.05!important;white-space:nowrap!important;overflow:visible!important}
+  .header-title p{font-size:clamp(18px,1.45vw,24px)!important;line-height:1.1!important;white-space:nowrap!important;overflow:visible!important}
+  .header-slogan{display:block!important;visibility:visible!important;white-space:nowrap!important;overflow:visible!important;margin-top:10px!important;font-size:clamp(18px,1.35vw,24px)!important;line-height:1.15!important}
 }
