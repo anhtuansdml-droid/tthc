@@ -31,7 +31,7 @@
 /* ===== HEADER DESKTOP: khôi phục đúng bố cục mẫu banner người dùng gửi ===== */
 @media (min-width:1201px){
   .header{height:315px!important;min-height:315px!important;overflow:hidden!important;background:#fff!important}
-  .header-pano{inset:0!important;transform:none!important;animation:none!important;background-image:url("https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793237984645-dc81a7c9-Toa-n-ca-nh-le-ho-i-so-ng-nu-o-c-Mu-o-ng-Lay.png")!important;background-size:cover!important;background-position:center center!important;filter:none!important}
+  .header-pano{inset:0!important;transform:none!important;animation:none!important;background-image:url("https://raw.githubusercontent.com/anhtuansdml-droid/tthc/3992de5efd1cf499a7a991dffbea049c05c4df9e/uploads/site/1793237984645-dc81a7c9-Toa-n-ca-nh-le-ho-i-so-ng-nu-o-c-Mu-o-ng-Lay.png")!important;background-size:cover!important;background-position:center center!important;filter:none!important}
   .header-pano:before,.header-pano:after{display:none!important}
   .header-inner{width:100%!important;max-width:none!important;min-height:315px!important;height:315px!important;margin:0!important;padding:18px 60px 48px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:start!important;gap:20px!important;box-sizing:border-box!important}
   .header-title{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:start!important;gap:20px!important;min-width:0!important;max-width:none!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
