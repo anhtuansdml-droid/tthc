@@ -1,18 +1,98 @@
-/* HEADER - phong cach pano hanh chinh Mường Lay */
-.header{position:relative;width:94.8%;height:150px;min-height:150px;margin:14px auto 0;overflow:hidden;background:#eef5f8;border:1px solid #d9e0e5;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.header-pano{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.80) 18%,rgba(255,255,255,.38) 36%,rgba(255,255,255,.05) 55%,rgba(255,255,255,0) 72%),url("https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457");background-size:cover;background-position:center 48%;filter:saturate(1.12) contrast(1.04)}
-.header-inner{position:relative;z-index:5;width:100%;height:100%;padding:0 1.8%;box-sizing:border-box;display:flex;align-items:flex-start;justify-content:space-between}
-.header-title{display:flex;align-items:flex-start;gap:12px;padding:8px 0 0;background:transparent;border:0;box-shadow:none}
-.logo{width:108px;height:108px;flex:0 0 108px;margin-top:1px;border:0;padding:0;border-radius:0;background:transparent;box-shadow:none}
-.logo img{width:100%;height:100%;border:0;border-radius:0;object-fit:contain}
-.header-title h1{margin:3px 0 0;color:#c5161d;font-family:"Times New Roman",Times,serif;font-size:clamp(23px,2.35vw,36px);font-weight:900;line-height:1.02;white-space:nowrap;text-shadow:0 1px 1px rgba(255,255,255,.9)}
-.header-title p{margin:8px 0 0;color:#142846;font-family:"Times New Roman",Times,serif;font-size:clamp(14px,1.35vw,21px);font-weight:900;line-height:1.05;white-space:nowrap;text-shadow:0 1px 1px rgba(255,255,255,.95)}
-.header-slogan{position:relative;width:max-content;margin:7px auto 0;padding:0 48px;color:#c5161d;font-family:"Times New Roman",Times,serif;font-size:clamp(14px,1.25vw,20px);font-weight:900;letter-spacing:1.5px;text-align:center;text-shadow:0 1px 1px rgba(255,255,255,.95)}
-.header-slogan::before,.header-slogan::after{content:"";position:absolute;top:50%;width:40px;height:2px;background:#d63838}.header-slogan::before{right:100%}.header-slogan::after{left:100%}
-.header-tools{position:relative;z-index:8;align-self:flex-start;margin:40px 0 0 auto;display:flex;align-items:center;gap:0}
-.clock{font-family:"Times New Roman",Times,serif;font-size:clamp(11px,1vw,15px);font-weight:800;color:#fff;white-space:nowrap;background:#ad171d;padding:12px 17px;border-radius:10px 0 0 10px;box-shadow:0 2px 7px rgba(90,0,0,.22)}
-.theme-btn{width:54px;height:43px;border:1px solid #d9b66d;border-left:0;background:#fff8df;color:#172033;border-radius:0 10px 10px 0;padding:0;cursor:pointer;font-size:22px;box-shadow:0 2px 7px rgba(0,0,0,.16)}
-.header::before{content:"";position:absolute;z-index:6;left:-3%;right:-3%;bottom:12px;height:28px;background:#f4cf22;clip-path:polygon(0 0,18% 44%,39% 58%,62% 68%,82% 60%,100% 28%,100% 100%,0 100%)}
-.header::after{content:"";position:absolute;z-index:7;left:-3%;right:-3%;bottom:-3px;height:34px;background:#df151c;clip-path:polygon(0 18%,16% 56%,36% 67%,58% 72%,78% 64%,100% 36%,100% 100%,0 100%)}
-@media(max-width:900px){.header{width:96%;height:140px;min-height:140px}.logo{width:88px;height:88px;flex-basis:88px}.header-title h1{font-size:25px}.header-title p{font-size:14px}.header-slogan{font-size:14px}.header-tools{margin-top:32px}}
-@media(max-width:760px){.header{width:100%;height:132px;min-height:132px;margin-top:8px;border-left:0;border-right:0}.header-inner{padding:0 8px}.header-title{gap:6px;padding-top:7px}.logo{width:66px;height:66px;flex-basis:66px}.header-title h1{font-size:18px;margin-top:1px}.header-title p{font-size:10px;margin-top:5px}.header-slogan{font-size:10px;margin-top:5px;padding:0 18px}.header-slogan::before,.header-slogan::after{width:14px}.header-tools{margin-top:16px}.clock{font-size:9px;padding:8px 8px}.theme-btn{width:35px;height:32px;font-size:16px}.header::before{bottom:9px;height:24px}.header::after{height:28px}}
+/* HEADER - pano Mường Lay: khôi phục ảnh hồ núi + logo CCHC nền trong suốt */
+.header{position:relative;width:min(var(--admin-header-width,100%),100%);height:var(--admin-header-height,205px);min-height:var(--admin-header-height,205px);margin:0 auto;overflow:hidden;background:#eef5f8;border:0;box-shadow:0 3px 12px rgba(0,0,0,.14)}
+.header-pano{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.58) 0%,rgba(255,255,255,.38) 20%,rgba(255,255,255,.12) 42%,rgba(255,255,255,.02) 68%,rgba(255,255,255,0) 100%),url("https://media.vietnamplus.vn/images/7255a701687d11cb8c6bbc58a6c80785b8e7bbcf3fc1ed306056f283ae722fa8c13fb99107c34b625601a46bc708dc7d1d175058d9a59d4e21100ddb41c54c45/song-da-7-8792.jpg");background-size:cover;background-position:center 48%;background-repeat:no-repeat;filter:saturate(1.12) contrast(1.04)}
+.header-inner{position:relative;z-index:5;width:100%;height:100%;padding:0 2.2%;box-sizing:border-box;display:flex;align-items:flex-start;justify-content:space-between}
+.header-title{display:flex;align-items:flex-start;gap:18px;padding:8px 0 0;background:transparent;border:0;box-shadow:none;min-width:0;max-width:calc(100% - 30px)}
+.logo{width:150px;height:150px;flex:0 0 150px;margin-top:2px;border:0;padding:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden}
+.logo img{width:100%;height:100%;border:0;border-radius:0;object-fit:contain;content:url("/logo-cchc-transparent.png?v=20261027-01");mix-blend-mode:normal;filter:none}
+.header-title>div:last-child{margin-top:0;padding:8px 24px 13px;border-radius:12px;background:rgba(255,255,255,.58);box-shadow:0 3px 12px rgba(0,0,0,.12);backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px);min-width:0;overflow:visible}
+.header-title h1{margin:0;color:#b90000;font-family:"Times New Roman",Times,serif;font-size:clamp(29px,3.05vw,45px);font-weight:900;line-height:1.16;white-space:nowrap;overflow:visible;text-overflow:clip;-webkit-text-stroke:.25px #7f0000;text-shadow:0 2px 0 rgba(255,255,255,.98),0 3px 6px rgba(70,0,0,.25)}
+.header-title p{margin:8px 0 0;color:#b90000;font-family:"Times New Roman",Times,serif;font-size:clamp(16px,1.55vw,24px);font-weight:900;line-height:1.18;white-space:nowrap;overflow:visible;text-overflow:clip;-webkit-text-stroke:.2px #7f0000;text-shadow:0 2px 0 rgba(255,255,255,.98),0 2px 5px rgba(70,0,0,.22)}
+.header-slogan{position:relative;width:max-content;margin:9px auto 0;padding:0 54px;color:#171717;font-family:"Times New Roman",Times,serif;font-size:clamp(16px,1.4vw,22px);font-weight:900;letter-spacing:1.5px;text-align:center;line-height:1.15;-webkit-text-stroke:.15px #111;text-shadow:0 2px 0 rgba(255,255,255,.95),0 2px 5px rgba(70,0,0,.16)}
+.header-slogan::before,.header-slogan::after{content:"";position:absolute;top:50%;width:46px;height:2px;background:#d63838;box-shadow:0 1px 2px rgba(255,255,255,.9)}.header-slogan::before{right:100%}.header-slogan::after{left:100%}
+.header-tools{position:relative!important;z-index:8;align-self:flex-start;margin:42px 0 0 auto;display:flex!important;align-items:center;gap:8px;flex:0 0 auto}
+.clock{position:relative;display:flex;align-items:center;justify-content:center;width:190px;min-width:190px;height:62px;box-sizing:border-box;font-family:"Times New Roman",Times,serif;font-weight:800;color:#8f1118!important;white-space:pre-line;text-align:center;line-height:1.2;background:rgba(255,255,255,.91);padding:7px 12px;border:1px solid rgba(181,18,27,.25);border-left:5px solid #b5121b;border-radius:12px;box-shadow:0 6px 16px rgba(70,0,0,.16);overflow:hidden;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.clock::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#b5121b 0%,#e4b52c 50%,#b5121b 100%);border-radius:12px 12px 0 0}
+.clock::after{content:none!important}.clock>*{visibility:visible}
+.theme-btn{width:42px;height:42px;border:1px solid rgba(181,18,27,.24);background:rgba(255,255,255,.94);color:#7d1118;border-radius:50%;padding:0;cursor:pointer;font-size:19px;box-shadow:0 5px 13px rgba(0,0,0,.14);transition:transform .18s ease,background .18s ease,box-shadow .18s ease;flex:0 0 auto}.theme-btn:hover{transform:translateY(-2px);background:#fff;box-shadow:0 7px 17px rgba(0,0,0,.19)}
+.header::before{content:"";position:absolute;z-index:6;left:-3%;right:-3%;bottom:12px;height:31px;background:#f4cf22;clip-path:polygon(0 0,18% 44%,39% 58%,62% 68%,82% 60%,100% 28%,100% 100%,0 100%)}
+.header::after{content:"";position:absolute;z-index:7;left:-3%;right:-3%;bottom:-3px;height:37px;background:#df151c;clip-path:polygon(0 18%,16% 56%,36% 67%,58% 72%,78% 64%,100% 36%,100% 100%,0 100%)}
+@media(max-width:1100px){.header{height:180px;min-height:180px}.header-title{max-width:calc(100% - 10px);gap:12px;padding-top:7px}.logo{width:125px;height:125px;flex-basis:125px}.header-title h1{font-size:clamp(22px,3.2vw,34px);line-height:1.16}.header-title p{font-size:clamp(13px,1.8vw,19px)}.header-slogan{font-size:clamp(13px,1.55vw,18px)}.header-tools{margin-top:34px}.clock{width:165px;min-width:165px;height:57px}.theme-btn{width:40px;height:40px}}
+@media(max-width:760px){.header{width:min(var(--admin-header-width,100%),100%);height:min(var(--admin-header-height,165px),var(--admin-header-mobile-height,165px));min-height:min(var(--admin-header-height,165px),var(--admin-header-mobile-height,165px));margin-top:0;border-left:0;border-right:0}.header-inner{padding:0 8px}.header-title{width:calc(100% - 155px);max-width:calc(100% - 155px);gap:7px;padding-top:7px}.logo{width:65px;height:65px;flex-basis:65px}.header-title>div:last-child{padding:5px 7px 6px;border-radius:7px;background:rgba(255,255,255,.56)}.header-title h1{font-size:clamp(12px,3.4vw,19px);line-height:1.12;white-space:nowrap;overflow:visible}.header-title p{font-size:clamp(7.5px,1.9vw,11px);margin-top:5px;line-height:1.12;white-space:nowrap;overflow:visible}.header-slogan{font-size:clamp(8px,1.8vw,11px);margin-top:5px;padding:0 15px;letter-spacing:1px}.header-slogan::before,.header-slogan::after{width:12px}.header-tools{margin-top:14px}.clock{width:110px;min-width:110px;height:49px}.clock::before{height:3px}.theme-btn{width:31px;height:31px;font-size:14px}.header::before{bottom:9px;height:24px}.header::after{height:28px}}
+@media(max-width:520px){.header-title{width:calc(100% - 125px);max-width:calc(100% - 125px);gap:4px}.logo{width:48px;height:48px;flex-basis:48px}.header-title>div:last-child{padding:3px 5px 4px}.header-title h1{font-size:clamp(9px,3.1vw,14px)}.header-title p{font-size:clamp(5.5px,1.55vw,8px);margin-top:3px}.header-slogan{font-size:7.5px;margin-top:3px;padding:0 11px}.header-tools{margin-top:11px}.clock{width:92px;min-width:92px;height:44px}.theme-btn{width:27px;height:27px;font-size:12px}}
+@media(max-width:400px){.logo{width:40px;height:40px;flex-basis:40px}.header-title h1{font-size:9px}.header-title p{font-size:5.5px}.header-slogan{font-size:7px}.clock{width:78px;min-width:78px;height:40px}.theme-btn{width:24px;height:24px;font-size:11px}}
+
+/* ===== MẪU DỰ THẢO MỚI: BANNER RỘNG, LOGO/CỤM TIÊU ĐỀ CÂN ĐỐI, THANH NÚT GỌN ===== */
+@media(min-width:1200px){
+  .header{height:340px;min-height:340px}
+  .header-pano{background-size:cover;background-position:center 46%;filter:saturate(1.08) contrast(1.03)}
+  .header-inner{max-width:1840px;padding:20px 3.2%;align-items:flex-start}
+  .header-title{gap:20px;padding:0;background:transparent;max-width:calc(100% - 250px);align-items:flex-start}
+  .logo{width:118px;height:118px;flex-basis:118px;margin-top:22px;border-radius:50%;background:rgba(255,255,255,.88);padding:5px;box-shadow:0 5px 15px rgba(0,0,0,.22);border:3px solid #e0b52b}
+  .logo img{border-radius:50%;object-fit:contain;content:none}
+  .header-title>div:last-child{margin-top:26px;padding:16px 28px 18px;border-radius:16px;background:rgba(255,255,255,.72);box-shadow:0 5px 18px rgba(0,0,0,.13);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);max-width:900px}
+  .header-title h1{font-size:clamp(36px,3vw,52px);line-height:1.04;letter-spacing:.3px;text-align:left}
+  .header-title p{font-size:clamp(20px,1.5vw,27px);line-height:1.15;margin-top:10px}
+  .header-slogan{font-size:clamp(18px,1.35vw,24px);margin-top:12px;letter-spacing:2px}
+  .header-tools{margin-top:30px;gap:10px}
+  .clock{width:190px;min-width:190px;height:64px;font-size:17px}
+  .theme-btn{width:48px;height:48px;font-size:21px}
+  .header::before{bottom:13px;height:39px}
+  .header::after{bottom:-4px;height:44px}
+}
+
+/* Thanh nút theo bố cục ảnh dự thảo; giữ nguyên các ID/chức năng hiện có. */
+.nav{padding:12px 22px;background:#fff;border-bottom:1px solid #e4e7ec;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.nav-inner{max-width:1840px;margin:0 auto;gap:9px;display:flex;align-items:center}
+.home-btn,.config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn,.support-btn,.admin-link{height:46px!important;border-radius:10px!important;font-size:14px!important;font-weight:900!important;letter-spacing:.1px;box-sizing:border-box;display:inline-flex!important;align-items:center;justify-content:center;white-space:nowrap;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+.home-btn{min-width:170px;background:#df1821!important;color:#fff!important;border:1px solid #df1821!important;box-shadow:0 4px 10px rgba(223,24,33,.18)}
+.config-btn{min-width:170px;background:#fff!important;color:#202938!important;border:1px solid #e0e4ea!important}
+.pakn-btn{min-width:145px;background:#fff!important;color:#202938!important;border:1px solid #e0e4ea!important}
+.stats-btn{min-width:115px;background:#fff!important;color:#202938!important;border:1px solid #e0e4ea!important}
+.deep-refresh-btn{min-width:105px;background:#fff7d9!important;color:#8b5a00!important;border:1px solid #edd27a!important}
+.support-btn{min-width:150px;background:#fff!important;color:#202938!important;border:1px solid #e0e4ea!important;text-decoration:none}
+.admin-link{min-width:85px;color:#b5121b!important;text-decoration:none}
+.home-btn:hover,.config-btn:hover,.pakn-btn:hover,.stats-btn:hover,.deep-refresh-btn:hover,.support-btn:hover,.admin-link:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(20,35,55,.12)}
+.search-box{flex:1 1 320px;min-width:240px;order:0}
+.search-box input{height:50px;border:2px solid #d71920;border-radius:12px;padding-left:48px;font-size:16px;font-weight:700;box-shadow:0 3px 10px rgba(215,25,32,.08)}
+.search-box span{left:16px;color:#b5121b}
+
+@media(min-width:1200px){
+  .nav-inner{display:grid;grid-template-columns:170px minmax(250px,1fr) 170px 145px 115px 105px 150px 85px;gap:9px}
+  .nav-inner>*{min-width:0!important;width:100%!important}
+}
+
+@media(min-width:761px) and (max-width:1199px){
+  .header{height:270px;min-height:270px}
+  .header-pano{background-position:center 46%}
+  .header-inner{padding:16px 18px}
+  .logo{width:92px;height:92px;flex-basis:92px;margin-top:18px}
+  .header-title>div:last-child{margin-top:18px;padding:12px 18px}
+  .header-title h1{font-size:clamp(27px,3.2vw,39px)}
+  .header-title p{font-size:clamp(15px,1.8vw,21px)}
+  .header-slogan{font-size:16px}
+  .header-tools{margin-top:20px}
+  .nav-inner{flex-wrap:wrap}
+  .search-box{order:-1;flex:1 1 100%;min-width:100%}
+}
+
+@media(max-width:760px){
+  .header{height:205px;min-height:205px}
+  .header-pano{background-position:center 45%}
+  .header-inner{padding:8px 8px;min-height:205px}
+  .header-title{width:calc(100% - 108px);max-width:calc(100% - 108px);gap:6px;padding:0;background:transparent;align-items:flex-start}
+  .logo{width:58px;height:58px;flex-basis:58px;margin-top:8px;border-radius:50%;padding:3px;border:2px solid #e0b52b;background:rgba(255,255,255,.9)}
+  .header-title>div:last-child{margin-top:8px;padding:6px 8px 8px;border-radius:9px;background:rgba(255,255,255,.76)}
+  .header-title h1{font-size:clamp(16px,4.8vw,22px);line-height:1.06;white-space:normal}
+  .header-title p{font-size:clamp(9px,2.7vw,13px);margin-top:5px;line-height:1.1;white-space:normal}
+  .header-slogan{font-size:clamp(9px,2.4vw,12px);margin-top:5px;padding:0 12px}
+  .header-tools{margin-top:10px;gap:5px}
+  .clock{width:104px;min-width:104px;height:48px;font-size:11px}
+  .theme-btn{width:36px;height:36px;font-size:16px}
+  .header::before{bottom:9px;height:25px}.header::after{height:29px}
+  .nav{padding:8px 8px}
+  .nav-inner{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .search-box{grid-column:1/-1;order:-1;min-width:0}
+  .search-box input{height:48px;font-size:14px}
+  .home-btn,.config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn,.support-btn,.admin-link{height:38px!important;min-width:0!important;width:100%!important;font-size:11px!important;padding:0 4px!important}
+}

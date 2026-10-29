@@ -25,3 +25,38 @@ function bindTabs(){document.querySelectorAll('.side-link').forEach(b=>b.onclick
 function bindToggles(){document.querySelectorAll('.switch').forEach(b=>b.onclick=()=>{const c=$(b.dataset.check);c.checked=!c.checked;b.classList.toggle('on',c.checked);setDirty(true)})}
 function bindDirty(){document.querySelectorAll('input,select').forEach(el=>{el.addEventListener('input',()=>{setDirty(true);if(el.type==='color'){const s=document.querySelector(`[data-color-for="${el.id}"]`);if(s)s.textContent=el.value.toUpperCase()}});el.addEventListener('change',()=>setDirty(true))})}
 $('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});$('logoutBtn').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};$('saveBtn').onclick=save;$('saveBtnBottom').onclick=save;$('previewBtn').onclick=()=>window.open('../','_blank');$('previewBtnBottom').onclick=()=>window.open('../','_blank');$('dashPreview').onclick=()=>window.open('../','_blank');$('systemPreview').onclick=()=>window.open('../','_blank');$('systemReload').onclick=()=>loadConfig();$('systemClear').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};$('probeDieuphoiBtn').onclick=probeDieuphoi;$('syncBtn').onclick=syncDieuphoi;$('logoFile').onchange=()=>previewFile('logoFile','logoPreview');$('bgFile').onchange=()=>previewFile('bgFile','bgPreview');$('footerFile').onchange=()=>previewFile('footerFile','footerPreview');$('logoFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('logoFile').files[0],'logo').catch(e=>alert('Lỗi: '+e.message));$('bgFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('bgFile').files[0],'background').catch(e=>alert('Lỗi: '+e.message));$('footerFile').closest('.image-card').querySelector('[data-upload]').onclick=()=>uploadImage($('footerFile').files[0],'footer').catch(e=>alert('Lỗi: '+e.message));bindTabs();bindToggles();bindDirty();if(token){(async()=>{try{$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig();await loadSyncStatus();openTab(location.hash.slice(1)||'dashboard')}catch(e){sessionStorage.removeItem('tthc_admin_token');token='';$('loginScreen').classList.remove('hidden');$('adminApp').classList.add('hidden')}})()}
+
+/* ===== CẤU HÌNH KÍCH THƯỚC ẢNH ===== */
+(function(){
+  const mediaDefaults={header:{width:100,height:250,mobileHeight:165},footer:{width:100,height:300,mobileHeight:330}};
+  function ensureMediaUI(){
+    if(document.getElementById('mediaSizeHeader'))return;
+    const style=document.createElement('style');
+    style.textContent=`
+      .media-size-panel{margin-top:14px;padding:16px;border:1px solid #e5e9ef;border-radius:14px;background:linear-gradient(135deg,#fff,#f8fafc)}
+      .media-size-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.media-size-head b{font-size:14px;color:#18212f}.media-size-head span{font-size:11px;color:#738096}
+      .media-size-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.media-size-item label{display:block;font-size:11px;font-weight:800;color:#536174;margin-bottom:6px}.media-size-item .media-input{display:flex;align-items:center;gap:6px}.media-size-item input{width:100%;box-sizing:border-box}.media-size-unit{font-size:11px;color:#7b8798;font-weight:800}.media-size-note{margin:10px 0 0;font-size:11px;color:#7b8798;line-height:1.5}
+      @media(max-width:700px){.media-size-grid{grid-template-columns:1fr}.media-size-head{align-items:flex-start;flex-direction:column}}
+    `;
+    document.head.appendChild(style);
+    const makePanel=(kind,title,anchor)=>{
+      const panel=document.createElement('div');panel.className='media-size-panel';panel.id='mediaSize'+(kind==='header'?'Header':'Footer');
+      panel.innerHTML=`<div class="media-size-head"><b>📐 KÍCH THƯỚC HIỂN THỊ ${title}</b><span>Điều chỉnh trực tiếp trên website</span></div><div class="media-size-grid"><div class="media-size-item"><label>Chiều rộng</label><div class="media-input"><input id="${kind}BgWidth" type="number" min="60" max="100" step="1"><span class="media-size-unit">%</span></div></div><div class="media-size-item"><label>Chiều cao máy tính</label><div class="media-input"><input id="${kind}BgHeight" type="number" min="120" max="600" step="1"><span class="media-size-unit">px</span></div></div><div class="media-size-item"><label>Chiều cao điện thoại</label><div class="media-input"><input id="${kind}BgMobileHeight" type="number" min="100" max="450" step="1"><span class="media-size-unit">px</span></div></div></div><p class="media-size-note">Chiều rộng tính theo phần trăm khung trang. Chiều cao áp dụng riêng cho máy tính và điện thoại để ảnh không bị méo hoặc quá thấp.</p>`;
+      anchor.insertAdjacentElement('afterend',panel);
+      [kind+'BgWidth',kind+'BgHeight',kind+'BgMobileHeight'].forEach(id=>$(id).addEventListener('input',()=>setDirty(true)));
+    };
+    const bgCard=$('bgFile')?.closest('.image-card');
+    const ftCard=$('footerFile')?.closest('.image-card');
+    if(bgCard)makePanel('header','BÌA / ẢNH NỀN',bgCard);
+    if(ftCard)makePanel('footer','CHÂN TRANG',ftCard);
+  }
+  function syncMediaControls(){
+    ensureMediaUI();
+    const h=config?.header||{},f=config?.footer||{};
+    set('headerBgWidth',h.backgroundWidth??mediaDefaults.header.width);set('headerBgHeight',h.backgroundHeight??mediaDefaults.header.height);set('headerBgMobileHeight',h.backgroundMobileHeight??mediaDefaults.header.mobileHeight);
+    set('footerBgWidth',f.backgroundWidth??mediaDefaults.footer.width);set('footerBgHeight',f.backgroundHeight??mediaDefaults.footer.height);set('footerBgMobileHeight',f.backgroundMobileHeight??mediaDefaults.footer.mobileHeight);
+  }
+  const oldFillForm=fillForm;fillForm=function(){oldFillForm();syncMediaControls()};
+  const oldCollect=collect;collect=function(){oldCollect();config.header={...(config.header||{}),backgroundWidth:Number(get('headerBgWidth'))||100,backgroundHeight:Number(get('headerBgHeight'))||250,backgroundMobileHeight:Number(get('headerBgMobileHeight'))||165};config.footer={...(config.footer||{}),backgroundWidth:Number(get('footerBgWidth'))||100,backgroundHeight:Number(get('footerBgHeight'))||300,backgroundMobileHeight:Number(get('footerBgMobileHeight'))||330}};
+  ensureMediaUI();
+})();

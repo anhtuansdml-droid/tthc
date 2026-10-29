@@ -1,95 +1,11 @@
 /* ===== BANNER MƯỜNG LAY + THÔNG TIN TÁC GIẢ ===== */
-.footer-banner{
-  position:relative;
-  width:min(1600px,calc(100% - 40px));
-  min-height:300px;
-  margin:34px auto 0;
-  overflow:hidden;
-  border-radius:16px 16px 0 0;
-  background:#102b4a url("https://vninfor.vn/stores/news_dataimages/phuc.le/122023/11/18/dsc-234520231211181333.7339340.jpg?rt=20231211181457") center center/cover no-repeat;
-  box-shadow:0 -3px 18px rgba(0,0,0,.12);
-}
-.footer-banner::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to bottom,rgba(8,32,57,.02) 35%,rgba(7,30,54,.78) 100%);
-}
-.footer-banner::after{
-  content:"";
-  position:absolute;
-  left:-4%;right:-4%;bottom:-52px;
-  height:92px;
-  background:linear-gradient(180deg,#ffd33d 0 17%,#e30613 18% 58%,#b4000a 59% 100%);
-  border-radius:50% 50% 0 0/55% 55% 0 0;
-  transform:rotate(-1.2deg);
-}
-.footer-banner-info{
-  position:absolute;
-  left:50%;
-  bottom:38px;
-  transform:translateX(-50%);
-  z-index:2;
-  width:min(1000px,calc(100% - 50px));
-  display:grid;
-  grid-template-columns:1fr 1px 1fr;
-  gap:28px;
-  align-items:center;
-  color:#fff;
-  text-align:left;
-  text-shadow:0 2px 4px rgba(0,0,0,.65);
-}
-.footer-banner-col{text-align:center}
-.footer-banner-title{font-size:19px;font-weight:900;letter-spacing:.2px}
-.footer-banner-sub{margin-top:7px;font-size:15px;font-weight:700}
-.footer-banner-author{text-align:left;font-size:15px;line-height:1.65}
-.footer-banner-author strong{color:#ffd84a;font-size:17px}
-.footer-banner-divider{width:2px;height:78px;background:rgba(255,255,255,.65)}
-.footer-banner-source{color:#ffd84a;font-weight:900}
-.footer-banner-ribbon{display:none}
-
-.footer{margin-top:0}
-.footer-visit-stats{
-  width:min(1000px,calc(100% - 30px));
-  margin:0 auto;
-  padding:10px 16px 11px;
-  box-sizing:border-box;
-  border-top:1px solid rgba(255,255,255,.18);
-  color:#fff;
-  text-align:center;
-}
-.footer-visit-title{
-  margin-bottom:7px;
-  color:#ffd84a;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.7px;
-}
-.footer-visit-items{
-  display:flex;
-  justify-content:center;
-  align-items:stretch;
-  gap:0;
-  flex-wrap:wrap;
-}
-.footer-visit-items>div{
-  min-width:145px;
-  padding:2px 18px;
-  box-sizing:border-box;
-  border-right:1px solid rgba(255,255,255,.2);
-}
-.footer-visit-items>div:last-child{border-right:0}
-.footer-visit-items span{display:block;color:rgba(255,255,255,.78);font-size:11px;font-weight:700}
-.footer-visit-items strong{display:block;margin-top:2px;color:#ffd84a;font-size:16px;font-weight:900}
-
-@media(max-width:800px){
-  .footer-banner{width:calc(100% - 20px);min-height:330px;margin-top:24px;border-radius:12px 12px 0 0}
-  .footer-banner-info{bottom:48px;width:calc(100% - 30px);grid-template-columns:1fr;gap:8px}
-  .footer-banner-divider{width:100%;height:1px}
-  .footer-banner-author{text-align:center}
-  .footer-banner-title{font-size:16px}
-  .footer-banner-sub,.footer-banner-author{font-size:13px}
-  .footer-visit-stats{width:calc(100% - 20px);padding:10px 6px 12px}
-  .footer-visit-items>div{min-width:50%;padding:4px 8px;border-right:0}
-  .footer-visit-items strong{font-size:14px}
-}
+.footer-banner{position:relative;width:min(var(--admin-footer-width,100%),1600px);min-height:var(--admin-footer-height,300px);height:var(--admin-footer-height,300px);margin:34px auto 0;overflow:hidden;border-radius:16px 16px 0 0;background:#102b4a url("https://media.vietnamplus.vn/images/7255a701687d11cb8c6bbc58a6c80785b8e7bbcf3fc1ed306056f283ae722fa8c13fb99107c34b625601a46bc708dc7d1d175058d9a59d4e21100ddb41c54c45/song-da-7-8792.jpg") center 48%/cover no-repeat;box-shadow:0 -3px 18px rgba(0,0,0,.12)}
+.footer-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,32,57,.02) 35%,rgba(7,30,54,.78) 100%)}
+.footer-banner::after{content:"";position:absolute;left:-4%;right:-4%;bottom:-52px;height:92px;background:linear-gradient(180deg,#ffd33d 0 17%,#e30613 18% 58%,#b4000a 59% 100%);border-radius:50% 50% 0 0/55% 55% 0 0;transform:rotate(-1.2deg)}
+.footer-banner-info{position:absolute;left:50%;bottom:38px;transform:translateX(-50%);z-index:2;width:min(1000px,calc(100% - 50px));display:grid;grid-template-columns:1fr 1px 1fr;gap:28px;align-items:center;color:#fff;text-align:left;text-shadow:0 2px 4px rgba(0,0,0,.65)}
+.footer-banner-col{text-align:center}.footer-banner-title{font-size:19px;font-weight:900;letter-spacing:.2px}.footer-banner-sub{margin-top:7px;font-size:15px;font-weight:700}.footer-banner-author{text-align:left;font-size:15px;line-height:1.65}.footer-banner-author strong{color:#ffd84a;font-size:17px}.footer-banner-divider{width:2px;height:78px;background:rgba(255,255,255,.65)}.footer-banner-source{color:#ffd84a;font-weight:900}.footer-banner-ribbon{display:none}.footer{margin-top:0}
+.footer-visit-stats{width:min(1000px,calc(100% - 30px));margin:0 auto;padding:10px 16px 11px;box-sizing:border-box;border-top:1px solid rgba(255,255,255,.18);color:#fff;text-align:center}.footer-visit-title{margin-bottom:7px;color:#ffd84a;font-size:12px;font-weight:900;letter-spacing:.7px}.footer-visit-items{display:flex;justify-content:center;align-items:stretch;gap:0;flex-wrap:wrap}.footer-visit-items>div{min-width:145px;padding:2px 18px;box-sizing:border-box;border-right:1px solid rgba(255,255,255,.2)}.footer-visit-items>div:last-child{border-right:0}.footer-visit-items span{display:block;color:rgba(255,255,255,.78);font-size:11px;font-weight:700}.footer-visit-items strong{display:block;margin-top:2px;color:#ffd84a;font-size:16px;font-weight:900}
+@media(max-width:800px){.footer-banner{width:min(var(--admin-footer-width,calc(100% - 20px)),100%);height:min(var(--admin-footer-height,330px),var(--admin-footer-mobile-height,330px));min-height:min(var(--admin-footer-height,330px),var(--admin-footer-mobile-height,330px));margin-top:24px;border-radius:12px 12px 0 0}.footer-banner-info{bottom:48px;width:calc(100% - 30px);grid-template-columns:1fr;gap:8px}.footer-banner-divider{width:100%;height:1px}.footer-banner-author{text-align:center}.footer-banner-title{font-size:16px}.footer-banner-sub,.footer-banner-author{font-size:13px}.footer-visit-stats{width:calc(100% - 20px);padding:10px 6px 12px}.footer-visit-items>div{min-width:50%;padding:4px 8px;border-right:0}.footer-visit-items strong{font-size:14px}}
+/* ===== QUẢN TRỊ ẨN TRONG LOGO TRANG BÌA ===== */
+.nav{position:relative;overflow:visible}.admin-link{position:absolute!important;z-index:100!important;margin:0!important;padding:0!important;width:88px!important;height:88px!important;left:max(28px,calc((100% - 1650px)/2 + 28px))!important;top:-170px!important;display:block!important;overflow:hidden!important;opacity:0!important;font-size:0!important;line-height:0!important;color:transparent!important;background:transparent!important;border:0!important;text-decoration:none!important;white-space:nowrap!important;pointer-events:auto!important}
+@media(min-width:761px) and (max-width:1099px){.admin-link{width:72px!important;height:72px!important;left:25px!important;top:-158px!important}}@media(max-width:760px){.admin-link{width:54px!important;height:54px!important;left:17px!important;top:-161px!important}}

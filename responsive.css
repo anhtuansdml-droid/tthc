@@ -1,0 +1,161 @@
+/* ===== RESPONSIVE / ADAPTIVE UI ===== */
+/* Tự thích nghi cho desktop, laptop, tablet và điện thoại. */
+
+html{font-size:16px}
+body{overflow-x:hidden}
+img,svg,video{max-width:100%;height:auto}
+button,a,input,select{touch-action:manipulation}
+
+/* Desktop lớn */
+@media (min-width:1400px){
+  .main,.nav-inner,.header-inner,.statistics{max-width:1700px}
+  .field-grid{grid-template-columns:repeat(7,minmax(0,1fr))}
+}
+
+/* Laptop / desktop nhỏ */
+@media (max-width:1200px){
+  .header-inner{padding:16px 18px;gap:14px}
+  .header-title h1{font-size:27px}
+  .header-title p{font-size:17px}
+  .nav{padding:10px 14px}
+  .nav-inner{flex-wrap:wrap}
+  .search-box{order:10;flex-basis:100%;min-width:0}
+  .field-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+  .field-card{min-height:205px}
+}
+
+/* Tablet ngang / dọc */
+@media (max-width:900px){
+  .header{min-height:145px}
+  .header-inner{min-height:145px;flex-direction:column;align-items:stretch;justify-content:center;padding:12px 14px}
+  .header-title{width:100%;padding:10px 14px;gap:12px}
+  .logo{width:62px;height:62px;flex-basis:62px}
+  .header-title h1{font-size:23px;line-height:1.08}
+  .header-title p{font-size:15px;margin-top:5px}
+  .header-slogan{font-size:12px;letter-spacing:1px}
+  .header-tools{position:absolute;right:12px;top:12px}
+  .clock{font-size:12px;padding:8px 10px}
+  .theme-btn{font-size:17px;padding:7px 9px}
+
+  .nav-inner{gap:8px}
+  .home-btn,.pakn-btn,.config-btn{padding:10px 12px;font-size:14px}
+  .search-box input{height:46px;font-size:16px}
+
+  .statistics{grid-template-columns:repeat(3,minmax(0,1fr));padding:0 14px;margin:14px auto;gap:10px}
+  .stat-card{padding:12px 8px}
+  .stat-number{font-size:27px}
+  .stat-label{font-size:13px}
+  .main{padding:0 14px 30px}
+  .section-title h2{font-size:21px}
+  .field-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+  .field-card{min-height:190px;padding:13px}
+  .field-card:before{width:44px;height:44px;font-size:23px}
+  .field-name{font-size:17px}
+  .field-agency{font-size:12px}
+  .field-card:after{left:13px;right:13px;bottom:11px;font-size:13px}
+}
+
+/* Điện thoại */
+@media (max-width:600px){
+  html{font-size:15px}
+  .header{min-height:125px;border-bottom-width:4px}
+  .header-pano{background-position:center center}
+  .header-inner{min-height:125px;padding:9px 10px}
+  .header-title{padding:8px 10px;border-left-width:4px;border-radius:10px;gap:9px;padding-right:70px}
+  .logo{width:50px;height:50px;flex-basis:50px}
+  .header-title h1{font-size:18px}
+  .header-title p{font-size:13px}
+  .header-slogan{font-size:10px;margin-top:4px}
+  .header-tools{right:9px;top:9px;gap:4px}
+  .clock{display:none}
+  .theme-btn{font-size:15px;padding:6px 8px}
+
+  .nav{position:sticky;top:0;padding:8px 9px}
+  .nav-inner{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .home-btn,.pakn-btn,.config-btn{width:100%;padding:9px 5px;font-size:12px;overflow:hidden;text-overflow:ellipsis}
+  .search-box{grid-column:1/-1;order:initial;width:100%}
+  .search-box input{height:44px;font-size:15px;padding-left:39px}
+  .search-box span{left:12px;font-size:18px}
+
+  .statistics{grid-template-columns:repeat(3,minmax(0,1fr));padding:0 9px;margin:10px auto;gap:6px}
+  .stat-card{padding:9px 4px;border-radius:8px;border-top-width:3px}
+  .stat-number{font-size:22px}
+  .stat-label{font-size:10px;line-height:1.15}
+
+  .main{padding:0 9px 25px}
+  .section-title{margin:14px 0 10px}
+  .section-title h2{font-size:19px}
+
+  /* Lĩnh vực: 2 cột trên điện thoại */
+  .field-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .field-card{min-height:178px;padding:11px;border-radius:9px}
+  .field-card:before{width:39px;height:39px;font-size:20px;border-radius:7px;margin-bottom:8px}
+  .field-name{font-size:15px;line-height:1.2;min-height:0;padding-right:2px}
+  .field-count{top:10px;right:8px;padding:4px 6px;font-size:11px}
+  .field-count:after{content:""}
+  .field-agency{font-size:11px;line-height:1.2;min-height:28px;margin-top:5px;padding-right:2px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .field-card:after{left:10px;right:10px;bottom:9px;height:34px;font-size:12px}
+
+  /* Danh sách TTHC */
+  .procedure-list{gap:8px}
+  .procedure-item{min-height:0;padding:12px;border-radius:9px}
+  .procedure-code{font-size:14px}
+  .procedure-name{font-size:15px;line-height:1.3}
+  .procedure-meta{gap:5px;margin-top:7px}
+  .badge{font-size:11px;padding:4px 6px;max-width:100%}
+
+  /* Modal chi tiết */
+  .modal{padding:8px}
+  .modal-content{width:100%;margin:8px auto;border-radius:10px}
+  .modal-header{padding:13px 14px}
+  .modal-header h2{font-size:17px}
+  .modal-close{font-size:26px}
+  .modal-body{padding:14px}
+  .detail-title{font-size:19px;line-height:1.3;margin-bottom:14px}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-label{padding:8px 10px;border-bottom:0;font-size:13px}
+  .detail-value{padding:8px 10px;font-size:14px}
+  .online-btn{width:100%;text-align:center;padding:11px 12px}
+
+  /* Cấu hình */
+  .config-modal{padding:7px}
+  .config-content{width:100%;height:calc(100vh - 14px);border-radius:10px}
+  .config-header{padding:12px 14px}
+  .config-header h2{font-size:17px}
+  .config-body{padding:12px 13px;gap:10px}
+  .config-top-row{grid-template-columns:1fr;gap:8px}
+  .config-select,.config-search input{height:43px;font-size:14px}
+  .config-field-list{grid-template-columns:1fr;gap:7px}
+  .config-field-item{min-height:55px;padding:9px 10px}
+  .config-footer{padding:10px 13px}
+  .config-cancel,.config-save{padding:10px 14px;font-size:13px}
+
+  .footer{padding:16px 10px;font-size:12px}
+}
+
+/* Điện thoại rất nhỏ */
+@media (max-width:380px){
+  .header-title h1{font-size:16px}
+  .header-title p{font-size:11px}
+  .logo{width:44px;height:44px;flex-basis:44px}
+  .nav-inner{grid-template-columns:1fr 1fr}
+  .config-btn{grid-column:1/-1}
+  .field-grid{grid-template-columns:1fr}
+  .field-card{min-height:160px}
+  .statistics{grid-template-columns:1fr 1fr}
+  .stat-card:first-child{grid-column:1/-1}
+  .stat-number{font-size:24px}
+}
+
+/* Màn hình cảm ứng: vùng bấm tối thiểu, không hover gây khó chịu */
+@media (hover:none) and (pointer:coarse){
+  .field-card:hover,.procedure-item:hover,.home-btn:hover,.pakn-btn:hover,.config-btn:hover{transform:none;box-shadow:inherit}
+  .field-card,.procedure-item,button,.online-btn{cursor:pointer}
+}
+
+/* Hỗ trợ xoay ngang điện thoại */
+@media (max-width:900px) and (orientation:landscape){
+  .field-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .header{min-height:105px}
+  .header-inner{min-height:105px}
+}

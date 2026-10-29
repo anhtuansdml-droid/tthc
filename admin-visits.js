@@ -2,7 +2,7 @@
   const API='/api/visits';
   const styleId='visit-stats-style';
   const panelId='visitStatsPanel';
-  const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const esc=s=>String(s??'').replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
   function inject(){
     if(document.getElementById(panelId)) return;
     const wrap=document.querySelector('.wrap');
@@ -65,9 +65,4 @@
   }
   function tryInject(){inject();setTimeout(injectDieuphoiButton,600)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tryInject);else tryInject();
-})();
-
-(() => {
-  const load=()=>{if(window.__visualEditorLoaded)return;window.__visualEditorLoaded=true;const s=document.createElement('script');s.src='/visual-editor-admin.js?v=20261029-01';s.onload=()=>console.log('Visual editor loaded');s.onerror=()=>console.warn('Không tải được trình thiết kế giao diện');document.head.appendChild(s)};
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load);else setTimeout(load,100);
 })();

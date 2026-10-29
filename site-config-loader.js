@@ -7,6 +7,14 @@
     if(!r.ok)return;
     const c=await r.json(),h=c.header||{},f=c.footer||{},d=c.display||{};
     const q=s=>document.querySelector(s);
+    const root=document.documentElement;
+    const num=(v,fallback)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:fallback};
+    root.style.setProperty('--admin-header-width',num(h.backgroundWidth,100)+'%');
+    root.style.setProperty('--admin-header-height',num(h.backgroundHeight,250)+'px');
+    root.style.setProperty('--admin-header-mobile-height',num(h.backgroundMobileHeight,165)+'px');
+    root.style.setProperty('--admin-footer-width',num(f.backgroundWidth,100)+'%');
+    root.style.setProperty('--admin-footer-height',num(f.backgroundHeight,300)+'px');
+    root.style.setProperty('--admin-footer-mobile-height',num(f.backgroundMobileHeight,330)+'px');
     const logo=q('.logo img'),pano=q('.header-pano'),h1=q('.header-title h1'),sub=q('.header-title p'),slogan=q('.header-slogan');
     if(logo&&h.logo)logo.src=h.logo;
     if(pano&&h.background)pano.style.backgroundImage='linear-gradient(90deg,rgba(255,255,255,.88) 0%,rgba(255,255,255,.68) 18%,rgba(255,255,255,.30) 38%,rgba(255,255,255,.03) 60%,rgba(255,255,255,0) 75%),url("'+h.background.replace(/"/g,'\\"')+'")';
@@ -20,9 +28,6 @@
     if(ftAuthor)ftAuthor.innerHTML='Tác giả: <strong>'+(f.author||'')+'</strong><br>'+(f.unit||'');
     const ft=q('.footer-banner');if(ft&&f.background)ft.style.backgroundImage='linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.12)),url("'+f.background.replace(/"/g,'\\"')+'")';
     const clock=q('#clock'),stats=q('#statsBtn');if(clock)clock.style.display=d.showClock===false?'none':'';if(stats)stats.style.display=d.showStats===false?'none':'';document.documentElement.style.setProperty('--admin-columns',String(d.columns||4));
-    const elements={...(c.elements||{}),...((c.layout&&c.layout.elements)||{})};
-    const selectors={headerLogo:'.header-title .logo img',headerTitle:'.header-title h1',headerSubtitle:'.header-title p',headerSlogan:'.header-slogan',clock:'#clock',homeBtn:'.home-btn',searchBox:'.search-box',configBtn:'#configBtn',guideBtn:'.pakn-btn',statsBtn:'#statsBtn',refreshBtn:'#deepRefreshBtn',supportBtn:'.support-btn',adminBtn:'.admin-link',promo:'.tthc-promo-banner',promoTitle:'.tthc-promo-title',promoSubtitle:'.tthc-promo-subtitle',statsSection:'.statistics',sectionTitle:'.section-title h2',fieldGrid:'#fieldContainer',footer:'.footer-banner',footerTitle:'.footer-banner-title',footerAuthor:'.footer-banner-author',chat:'#tthcChatLauncher'};
-    Object.keys(elements).forEach(id=>{const c=elements[id],el=q(selectors[id]);if(!el||!c)return;el.style.setProperty('transform',`translate(${Number(c.x)||0}px,${Number(c.y)||0}px) scale(${Number(c.scale)||1}) rotate(${Number(c.rotate)||0}deg)`,'important');el.style.position='relative';el.style.display=c.hidden?'none':'';if(Number(c.width)>0)el.style.width=Number(c.width)+'px';if(Number(c.height)>0)el.style.height=Number(c.height)+'px';if(Number(c.fontSize)>0)el.style.fontSize=Number(c.fontSize)+'px';if(c.text&&['headerLogo','footer'].indexOf(id)<0&&!['clock','searchBox'].includes(id))el.textContent=c.text;if(c.image&&id==='headerLogo')el.src=c.image});
   }catch(e){console.warn('Không tải được cấu hình giao diện',e)}
   try{
     if(!document.querySelector('script[data-visit-tracker]')){
@@ -30,3 +35,12 @@
     }
   }catch(e){console.warn('Không khởi tạo được bộ thống kê truy cập',e)}
 })();
+
+/* Hướng dẫn tra cứu: chuyển thẳng tới trang hướng dẫn chung của Cổng DVC Quốc gia. */
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('.pakn-btn');
+  if(!btn)return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  window.open('https://ndc.dichvucong.gov.vn/huong-dan-su-dung/huong-dan-chung','_blank','noopener,noreferrer');
+},true);

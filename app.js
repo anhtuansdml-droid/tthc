@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupConfig();
   await loadData();
   setupSearch();
+  applySiteConfig();
 });
 
 function updateClock() {
@@ -39,7 +40,6 @@ function updateClock() {
   const date = now.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
   const time = now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
   const weekday = now.toLocaleDateString("vi-VN", { weekday: "long" });
-  // Dùng một lớp hiển thị ổn định, không thay toàn bộ giao diện đồng hồ mỗi giây.
   const display = `${weekday.charAt(0).toUpperCase() + weekday.slice(1)}, ${date}\n${time}`;
   if (clock.dataset.clockDisplay !== display) clock.dataset.clockDisplay = display;
 }
@@ -75,7 +75,15 @@ async function loadData() {
       const oldItem = oldByCode.get(code) || {};
       const noOnlineService = isNoOnlineService(item);
       const dvcqgId = noOnlineService ? "" : String(item.dvcqgId || item.dvcqg_id || oldItem.dvcqgId || "").trim();
-      return {...oldItem, ...item, ma:code, dvcqgId, url:buildDvcqgUrl(dvcqgId), noOnlineService};
+      const sourceUrl = String(item.url || oldItem.url || "").trim();
+      return {
+        ...oldItem,
+        ...item,
+        ma: code,
+        dvcqgId,
+        url: sourceUrl || buildDvcqgUrl(dvcqgId),
+        noOnlineService
+      };
     }).filter(item => item.ma);
 
     window.procedures = procedures;
@@ -140,7 +148,7 @@ function procedureHtml(item,index){const noOnlineService=isNoOnlineService(item)
 
 function showDetail(item){
   if(!modal||!modalBody||!item)return;
-  const noOnlineService=isNoOnlineService(item), onlineUrl=noOnlineService?"":buildDvcqgUrl(item.dvcqgId), searchUrl=noOnlineService?"":buildDvcqgSearchUrl(item);
+  const noOnlineService=isNoOnlineService(item), onlineUrl=noOnlineService?"":String(item.url||"").trim() || buildDvcqgUrl(item.dvcqgId), searchUrl=noOnlineService?"":buildDvcqgSearchUrl(item);
   modalBody.innerHTML=`<div class="detail-title">${escapeHtml(item.ten||"")}</div><div class="detail-grid">${detailRow("Mã TTHC",item.ma)}${detailRow("Lĩnh vực",item.linhVuc)}${detailRow("Cơ quan chủ trì",item.coQuanChuTri)}${detailRow("Cơ quan thực hiện",item.coQuanThucHien)}${detailRow("Mã cơ quan",item.maCoQuan)}${detailRow("Mức dịch vụ",noOnlineService?"CHƯA CUNG CẤP DỊCH VỤ CÔNG":item.mucDichVu)}${detailRow("Cấp thực hiện",item.cap)}${detailRow("Loại TTHC",item.loai)}${detailRow("Mức độ",item.mucDo)}${detailRow("Trạng thái",item.trangThai)}${detailRow("Nguồn dữ liệu",item.nguon||"Danh sách TTHC")}${detailRow("Mã thực hiện",item.maThucHien)}</div>${noOnlineService?'<div class="detail-note">CHƯA CUNG CẤP DỊCH VỤ CÔNG</div>':onlineUrl?`<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>`:`<div class="detail-note">Chưa xác định được mã liên kết chi tiết trên Cổng DVCQG.</div>`}${!noOnlineService?`<a class="online-btn" style="margin-top:10px;background:#444" href="${escapeAttribute(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU TRÊN CỔNG DVC QUỐC GIA</a>`:""}`;
   modal.classList.add("show");
 }
@@ -158,3 +166,34 @@ function escapeAttribute(value){return escapeHtml(value);}
 window.procedures=procedures;
 window.updateStatistics=updateStatistics;
 window.renderFields=renderFields;
+
+async function applySiteConfig(){
+  try{
+    const r=await fetch('/api/admin?public=1',{cache:'no-store'});
+    if(!r.ok)return;
+    const c=await r.json();
+    const h=c.header||{},f=c.footer||{},d=c.display||{};
+    const logo=document.querySelector('.header-title .logo img');
+    if(logo&&h.logo)logo.src=h.logo;
+    const promoLogo=document.querySelector('.tthc-promo-logo');
+    if(promoLogo&&h.logo)promoLogo.src=h.logo;
+    const miniLogo=document.querySelector('.tthc-promo-mini-logo');
+    if(miniLogo&&h.logo)miniLogo.src=h.logo;
+    const pano=document.querySelector('.header-pano');
+    if(pano&&h.background)pano.style.backgroundImage=`url("${String(h.background).replace(/"/g,'\\"')}")`;
+    const title=document.querySelector('.header-title h1');if(title&&h.title)title.textContent=h.title;
+    const subtitle=document.querySelector('.header-title p');if(subtitle&&h.subtitle)subtitle.textContent=h.subtitle;
+    const slogan=document.querySelector('.header-slogan');if(slogan&&h.slogan)slogan.textContent=h.slogan;
+    if(title&&h.titleColor)title.style.color=h.titleColor;
+    if(subtitle&&h.subtitleColor)subtitle.style.color=h.subtitleColor;
+    if(slogan&&h.sloganColor)slogan.style.color=h.sloganColor;
+    const footerTitle=document.querySelector('.footer-banner-title');if(footerTitle&&f.title)footerTitle.textContent=f.title;
+    const footerSubs=document.querySelectorAll('.footer-banner-sub');if(footerSubs[0]&&f.subtitle)footerSubs[0].textContent=f.subtitle;
+    const footerSource=document.querySelector('.footer-banner-source');if(footerSource){if(f.sourceText)footerSource.textContent=f.sourceText;if(f.sourceUrl)footerSource.href=f.sourceUrl;}
+    const author=document.querySelector('.footer-banner-author');if(author&&f.author)author.innerHTML=`Tác giả: <strong>${escapeHtml(f.author)}</strong><br>${escapeHtml(f.unit||'')}`;
+    const footer=document.querySelector('.footer-banner');if(footer&&f.background)footer.style.backgroundImage=`url("${String(f.background).replace(/"/g,'\\"')}")`;
+    const stats=document.querySelector('.statistics');if(stats)stats.style.display=d.showStats===false?'none':'';
+    const clock=document.getElementById('clock');if(clock)clock.style.display=d.showClock===false?'none':'';
+    const grid=document.querySelector('.field-grid');if(grid&&Number(d.columns)>=2&&Number(d.columns)<=4)grid.style.gridTemplateColumns=`repeat(${Number(d.columns)},minmax(0,1fr))`;
+  }catch(e){console.warn('Không áp dụng được site config:',e)}
+}

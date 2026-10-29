@@ -1,0 +1,25 @@
+@import url("/background-cards-premium.css?v=20261026-02");
+
+/* ===== HEADER MOBILE TYPOGRAPHY FIX ===== */
+@media (max-width:600px){
+  .header-title h1{font-size:clamp(10.5px,3.1vw,14px)!important;line-height:1!important;white-space:nowrap!important;word-break:keep-all!important;overflow:visible!important;letter-spacing:-.35px!important}
+  .header-title p{font-size:clamp(6.5px,1.9vw,8.5px)!important;line-height:1.05!important;white-space:nowrap!important;overflow:visible!important;letter-spacing:-.15px!important}
+  .header-title>div:last-child{min-width:0!important;overflow:visible!important}
+}
+@media (max-width:380px){
+  .header-title h1{font-size:10px!important;letter-spacing:-.4px!important}
+  .header-title p{font-size:6.2px!important}
+}
+
+/* ===== MOBILE NAV OVERFLOW FIX ===== */
+@media (max-width:600px){
+  .nav-inner{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;width:100%!important;min-width:0!important;box-sizing:border-box!important}
+  .nav-inner > button,.nav-inner > a{min-width:0!important;max-width:100%!important;box-sizing:border-box!important;overflow:hidden!important;white-space:nowrap!important;text-overflow:ellipsis!important}
+  .config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn{width:100%!important;min-width:0!important;padding-left:4px!important;padding-right:4px!important;font-size:11.5px!important;letter-spacing:-.15px!important}
+  .support-btn,.admin-link{grid-column:1/-1!important;width:100%!important;min-width:0!important;max-width:100%!important;justify-content:center!important;padding-left:8px!important;padding-right:8px!important;font-size:12px!important}
+  .support-btn{font-size:11.5px!important}
+}
+@media (max-width:380px){
+  .config-btn,.pakn-btn,.stats-btn,.deep-refresh-btn{font-size:10.5px!important}
+  .support-btn,.admin-link{font-size:11px!important}
+}
