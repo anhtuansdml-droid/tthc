@@ -73,6 +73,33 @@
   .modal.show{animation:proOverlayStrong .35s ease both!important}
   .modal-close:hover{transform:rotate(180deg) scale(1.18)!important}
 }
+
+/* ===== BANNER MOTION: chuyển động liên tục, chậm và sang ===== */
+@media (min-width:761px){
+  .header-pano{
+    animation:bannerPan 18s ease-in-out infinite alternate!important;
+    transform-origin:center center!important;
+    will-change:background-position,transform,filter!important;
+  }
+  .header-pano:after{
+    display:block!important;
+    content:""!important;
+    position:absolute!important;
+    inset:0!important;
+    pointer-events:none!important;
+    background:linear-gradient(110deg,rgba(255,255,255,0) 25%,rgba(255,255,255,.12) 45%,rgba(255,255,255,0) 65%)!important;
+    background-size:220% 100%!important;
+    animation:bannerLightSweep 9s ease-in-out infinite!important;
+    z-index:1!important;
+  }
+}
+@media (max-width:760px){
+  .header-pano{animation:bannerPanMobile 20s ease-in-out infinite alternate!important;will-change:background-position!important}
+}
+@keyframes bannerPan{0%{background-position:47% 50%}50%{background-position:50% 50%}100%{background-position:53% 50%}}
+@keyframes bannerPanMobile{0%{background-position:48% 50%}100%{background-position:52% 50%}}
+@keyframes bannerLightSweep{0%,20%{background-position:-120% 0}65%,100%{background-position:120% 0}}
+
 @keyframes proModalInStrong{0%{opacity:0;transform:translateY(45px) scale(.88) rotateX(5deg);filter:blur(3px)}100%{opacity:1;transform:none;filter:blur(0)}}
 @keyframes proOverlayStrong{0%{opacity:0}100%{opacity:1}}
-@media(prefers-reduced-motion:reduce){.header-pano,.header-title>div:last-child,.logo,.clock,.theme-btn,.field-card,.procedure-item{transition:none!important}.header:hover .header-pano,.header:hover .header-title>div:last-child,.header:hover .header-title h1,.header:hover .header-title p,.header:hover .header-slogan,.logo:hover,.clock:hover,.theme-btn:hover,.nav-inner>button:hover,.nav-inner>a:hover,.field-card:hover,.procedure-item:hover{transform:none!important}}
+@media(prefers-reduced-motion:reduce){.header-pano,.header-title>div:last-child,.logo,.clock,.theme-btn,.field-card,.procedure-item{transition:none!important;animation:none!important}.header-pano:after{animation:none!important}.header:hover .header-pano,.header:hover .header-title>div:last-child,.header:hover .header-title h1,.header:hover .header-title p,.header:hover .header-slogan,.logo:hover,.clock:hover,.theme-btn:hover,.nav-inner>button:hover,.nav-inner>a:hover,.field-card:hover,.procedure-item:hover{transform:none!important}}
