@@ -3,8 +3,8 @@
     "title": "BẢNG NIÊM YẾT THỦ TỤC HÀNH CHÍNH",
     "subtitle": "TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG PHƯỜNG MƯỜNG LAY",
     "slogan": "hành chính phục vụ",
-    "logo": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/3992de5efd1cf499a7a991dffbea049c05c4df9e/uploads/site/1793084294405-4d2124e7-logo-removebg-preview.png",
-    "background": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/3992de5efd1cf499a7a991dffbea049c05c4df9e/uploads/site/1793084987639-5202142a-Le-ho-i-ua-thuye-n-Mu-o-ng-Lay-ru-c-ro-.png",
+    "logo": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/main/uploads/site/1793239350100-75b81576-84f864bb2bf3c2ad9be2-removebg-preview.png",
+    "background": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793237984645-dc81a7c9-Toa-n-ca-nh-le-ho-i-so-ng-nu-o-c-Mu-o-ng-Lay.png",
     "titleColor": "#c5161d",
     "subtitleColor": "#c5161d",
     "sloganColor": "#000000"
@@ -15,8 +15,8 @@
     "sourceText": "Cổng Dịch vụ công Quốc gia",
     "sourceUrl": "https://dichvucong.gov.vn/",
     "author": "Trần Anh Tuấn",
-    "unit": "Trung tâm Phục vụ hành chính công phường Mường Lay",
-    "background": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/3992de5efd1cf499a7a991dffbea049c05c4df9e/uploads/site/1793085028155-680b9500-Le-ho-i-mu-a-nu-o-c-no-i-Mu-o-ng-Lay.png"
+    "unit": "Trung tâm Phục vụ hành chính công phường Mường Lay - 0215.340.000",
+    "background": "https://raw.githubusercontent.com/anhtuansdml-droid/tthc/update-20261023/uploads/site/1793237992794-9a4a12b0-Le-ho-i-ua-thuye-n-Mu-o-ng-Lay-ru-c-ro-.png"
   },
   "display": {
     "columns": 4,
