@@ -1,0 +1,401 @@
+/*
+ * Mường Lay — Trang chủ: thống kê lớn + lưới 5 lĩnh vực.
+ * Dành riêng cho index.html. Không thay đổi dữ liệu hoặc trang quản trị.
+ * Tải SAU các CSS gốc để kiểm soát những quy tắc cũ dùng !important.
+ */
+
+/* 3 thẻ thống kê: chiều ngang rộng, tỷ lệ hài hòa, số dễ đọc. */
+body .statistics {
+  width:100%;
+  max-width:1640px !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:22px !important;
+  padding:0 30px !important;
+  margin:28px auto 34px !important;
+  align-items:stretch;
+}
+body .statistics > .stat-card {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-width:0;
+  min-height:184px !important;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:24px 24px 20px !important;
+  border-radius:22px !important;
+  border:1px solid rgba(255,223,148,.45) !important;
+  border-top:4px solid #f4ce70 !important;
+  background:linear-gradient(140deg,#a9000d 0%,#c9091a 50%,#e21b2b 100%) !important;
+  color:#fff !important;
+  box-shadow:0 13px 30px rgba(131,11,22,.20),0 4px 10px rgba(37,31,28,.08),inset 0 1px 0 rgba(255,255,255,.14) !important;
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+}
+body .statistics > .stat-card:nth-child(2) {
+  background:linear-gradient(140deg,#9e0715 0%,#b90918 53%,#d71a25 100%) !important;
+}
+body .statistics > .stat-card:nth-child(3) {
+  background:linear-gradient(140deg,#ad0617 0%,#c61322 53%,#db2832 100%) !important;
+}
+body .statistics > .stat-card::before {
+  content:"";
+  position:absolute;
+  width:175px;
+  height:175px;
+  right:-65px;
+  top:-85px;
+  border-radius:50%;
+  border:24px solid rgba(255,235,171,.10);
+  pointer-events:none;
+  z-index:-1;
+}
+body .statistics > .stat-card .stat-number {
+  position:relative;
+  display:block;
+  margin:0 0 10px !important;
+  font-size:clamp(46px,3.5vw,62px) !important;
+  line-height:1.05 !important;
+  font-weight:900 !important;
+  letter-spacing:.8px;
+  font-variant-numeric:tabular-nums;
+  color:#ffdf79 !important;
+  text-shadow:0 3px 0 rgba(60,0,5,.12);
+}
+body .statistics > .stat-card .stat-label {
+  position:relative;
+  margin:0 !important;
+  font-size:clamp(17px,1.32vw,22px) !important;
+  line-height:1.3 !important;
+  font-weight:900 !important;
+  letter-spacing:.15px;
+  text-transform:uppercase;
+  text-align:center;
+  color:#fff4d7 !important;
+}
+body .statistics > .stat-card.stat-card-clickable::after {
+  content:"▸  XEM DANH SÁCH" !important;
+  position:relative;
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+  max-width:100%;
+  margin:15px 0 0 !important;
+  padding:7px 17px;
+  border:1px solid rgba(255,229,173,.36);
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  color:#ffe4a1 !important;
+  font-size:13px !important;
+  font-weight:900;
+  letter-spacing:.45px;
+  line-height:1.15;
+}
+@media(hover:hover) and (pointer:fine) {
+  body .statistics > .stat-card:hover {
+    transform:translateY(-6px) !important;
+    filter:brightness(1.04);
+    box-shadow:0 19px 39px rgba(131,11,22,.28),0 6px 15px rgba(37,31,28,.10) !important;
+  }
+}
+body .statistics > .stat-card:focus-visible {
+  outline:3px solid #deb64f !important;
+  outline-offset:4px;
+}
+
+/* Khung nội dung rộng, bảo đảm 5 card đủ chỗ mà không bị bó chữ. */
+body .main {
+  width:100%;
+  max-width:1690px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  padding-left:28px !important;
+  padding-right:28px !important;
+}
+body .main .section-title {
+  margin-top:14px !important;
+  margin-bottom:17px !important;
+  padding:17px 21px !important;
+  border-radius:17px !important;
+  box-shadow:0 6px 19px rgba(34,48,69,.08) !important;
+}
+body .main .section-title h2 {
+  color:#971320 !important;
+  font-size:clamp(23px,1.7vw,28px) !important;
+  letter-spacing:.25px;
+}
+body .main #fieldContainer.field-grid {
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  align-items:stretch;
+  gap:19px !important;
+  padding:2px 1px 22px;
+}
+body .main #fieldContainer > .field-card {
+  min-width:0;
+  min-height:298px !important;
+  padding:20px 18px 77px !important;
+  border:1px solid #d6deea !important;
+  border-top:4px solid #d7aa42 !important;
+  border-radius:19px !important;
+  background:linear-gradient(156deg,#fff 0%,#f7faff 69%,#fff9ed 100%) !important;
+  box-shadow:0 7px 21px rgba(27,46,69,.09),inset 0 1px 0 #fff !important;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease !important;
+}
+body .main #fieldContainer > .field-card:nth-child(5n+2) {
+  background:linear-gradient(156deg,#fff 0%,#f3f8ff 73%,#e9f2ff 100%) !important;
+}
+body .main #fieldContainer > .field-card:nth-child(5n+3) {
+  background:linear-gradient(156deg,#fff 0%,#f9fbff 70%,#fff3e5 100%) !important;
+}
+body .main #fieldContainer > .field-card:nth-child(5n+4) {
+  background:linear-gradient(156deg,#fff 0%,#f7fbff 73%,#eef8f5 100%) !important;
+}
+body .main #fieldContainer > .field-card:nth-child(5n+5) {
+  background:linear-gradient(156deg,#fff 0%,#fdfaff 73%,#f4f0ff 100%) !important;
+}
+body .main #fieldContainer > .field-card::before {
+  width:70px !important;
+  height:70px !important;
+  margin:0 0 18px !important;
+  border-radius:22px !important;
+  background-size:48px 48px !important;
+  border:2px solid #e0b953 !important;
+  box-shadow:0 8px 16px rgba(31,53,77,.13),inset 0 -5px 0 #c61323 !important;
+}
+body .main #fieldContainer > .field-card .field-count {
+  top:21px !important;
+  right:15px !important;
+  min-width:0 !important;
+  max-width:calc(100% - 112px);
+  padding:7px 10px !important;
+  font-size:14px !important;
+  line-height:1.1 !important;
+  white-space:nowrap;
+  border:1px solid #f3d0c9;
+  border-radius:11px !important;
+  color:#ba1725 !important;
+  box-shadow:0 3px 9px rgba(150,28,40,.07);
+}
+body .main #fieldContainer > .field-card .field-name {
+  min-height:56px !important;
+  height:auto !important;
+  padding-right:0 !important;
+  margin:0 0 13px !important;
+  font-size:clamp(17px,1.16vw,20px) !important;
+  line-height:1.27 !important;
+  letter-spacing:0;
+  color:#202b40 !important;
+  overflow-wrap:break-word;
+}
+body .main #fieldContainer > .field-card .field-agency {
+  display:block;
+  min-height:43px !important;
+  margin:0 !important;
+  padding:10px 11px !important;
+  border:1px solid #dfe7f1 !important;
+  border-radius:10px !important;
+  background:rgba(247,249,253,.92) !important;
+  color:#4b5b71 !important;
+  font-size:13px !important;
+  line-height:1.35 !important;
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
+body .main #fieldContainer > .field-card .field-agency::before {
+  color:#b5121b;
+  font-weight:900;
+}
+body .main #fieldContainer > .field-card::after {
+  content:"▰  XEM THỦ TỤC" !important;
+  left:18px !important;
+  right:18px !important;
+  bottom:16px !important;
+  height:45px !important;
+  border-radius:12px !important;
+  font-size:15px !important;
+  letter-spacing:.2px;
+  color:#fff !important;
+  background:linear-gradient(105deg,#bb0e1c,#d71929) !important;
+  box-shadow:0 6px 15px rgba(165,15,27,.18) !important;
+}
+@media(hover:hover) and (pointer:fine) {
+  body .main #fieldContainer > .field-card:hover {
+    transform:translateY(-6px) !important;
+    border-color:#d7ae53 !important;
+    box-shadow:0 18px 35px rgba(25,43,70,.16),0 0 0 1px rgba(214,171,76,.16) !important;
+  }
+}
+body .main #fieldContainer > .field-card:focus-visible {
+  outline:3px solid #c68c28 !important;
+  outline-offset:3px;
+}
+
+/* Khi mở danh sách thủ tục trong một lĩnh vực, không ép 5 cột thủ tục. */
+body .main #fieldContainer > .procedure-list {
+  grid-column:1/-1;
+  min-width:0;
+  width:100%;
+}
+
+/* Giao diện nền tối. */
+body.dark .statistics > .stat-card {
+  border-color:#7f3441 !important;
+}
+body.dark .main #fieldContainer > .field-card,
+body.dark .main #fieldContainer > .field-card:nth-child(n) {
+  background:linear-gradient(155deg,#252e39,#293343) !important;
+  border-color:#465263 !important;
+}
+body.dark .main #fieldContainer > .field-card .field-name {
+  color:#f0f3f8 !important;
+}
+body.dark .main #fieldContainer > .field-card .field-agency {
+  color:#d7e1ee !important;
+  background:#354254 !important;
+  border-color:#4b5a6c !important;
+}
+
+/* Màn hình laptop, tablet, điện thoại: không ép 5 cột khi quá hẹp. */
+@media (min-width:1100px) and (max-width:1399px) {
+  body .main #fieldContainer.field-grid {
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:17px !important;
+  }
+  body .main #fieldContainer > .field-card {
+    min-height:290px !important;
+  }
+  body .main #fieldContainer > .field-card .field-name {
+    font-size:19px !important;
+  }
+}
+@media (min-width:761px) and (max-width:1099px) {
+  body .main #fieldContainer.field-grid {
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:15px !important;
+  }
+  body .statistics {gap:13px !important;padding:0 17px !important;}
+  body .statistics > .stat-card {
+    min-height:158px !important;
+    padding:17px 12px 16px !important;
+  }
+  body .statistics > .stat-card .stat-number {font-size:42px !important;}
+  body .statistics > .stat-card .stat-label {font-size:16px !important;}
+  body .main #fieldContainer > .field-card {min-height:280px !important;}
+}
+@media (min-width:601px) and (max-width:760px) {
+  body .main #fieldContainer.field-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:13px !important;
+  }
+  body .statistics {gap:10px !important;padding:0 14px !important;}
+  body .statistics > .stat-card {
+    min-height:152px !important;
+    padding:14px 10px !important;
+  }
+  body .statistics > .stat-card .stat-number {font-size:38px !important;}
+  body .statistics > .stat-card .stat-label {font-size:14px !important;}
+  body .statistics > .stat-card.stat-card-clickable::after {font-size:10px !important;padding:6px 8px;}
+  body .main #fieldContainer > .field-card {min-height:270px !important;}
+}
+@media (max-width:600px) {
+  /* Giữ 3 thẻ số theo hàng như bố cục mobile gốc, nhưng lớn và dễ bấm hơn. */
+  body .statistics {
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    max-width:none !important;
+    gap:7px !important;
+    padding:0 9px !important;
+    margin:16px auto 20px !important;
+  }
+  body .statistics > .stat-card {
+    min-height:128px !important;
+    border-radius:13px !important;
+    padding:14px 5px 12px !important;
+    border-top-width:3px !important;
+  }
+  body .statistics > .stat-card .stat-number {
+    font-size:clamp(27px,7.5vw,38px) !important;
+    margin-bottom:7px !important;
+  }
+  body .statistics > .stat-card .stat-label {
+    font-size:clamp(10px,2.6vw,12px) !important;
+    line-height:1.2 !important;
+  }
+  body .statistics > .stat-card.stat-card-clickable::after {
+    font-size:9px !important;
+    padding:6px 5px;
+    margin-top:9px !important;
+    letter-spacing:0;
+    white-space:nowrap;
+  }
+  body .main {
+    padding-left:11px !important;
+    padding-right:11px !important;
+  }
+  body .main .section-title {
+    padding:14px 16px !important;
+    margin:10px 0 12px !important;
+  }
+  body .main .section-title h2 {font-size:22px !important;}
+  body .main #fieldContainer.field-grid {
+    grid-template-columns:1fr !important;
+    gap:13px !important;
+  }
+  body .main #fieldContainer > .field-card {
+    min-height:225px !important;
+    padding:17px 16px 67px !important;
+    border-radius:16px !important;
+  }
+  body .main #fieldContainer > .field-card::before {
+    width:58px !important;
+    height:58px !important;
+    background-size:40px 40px !important;
+    border-radius:17px !important;
+    margin-bottom:13px !important;
+  }
+  body .main #fieldContainer > .field-card .field-name {
+    min-height:0 !important;
+    font-size:20px !important;
+    margin-bottom:10px !important;
+    padding-right:70px !important;
+  }
+  body .main #fieldContainer > .field-card .field-count {
+    top:15px !important;
+    right:13px !important;
+    font-size:12px !important;
+  }
+  body .main #fieldContainer > .field-card .field-agency {
+    font-size:13px !important;
+    min-height:38px !important;
+  }
+  body .main #fieldContainer > .field-card::after {
+    left:16px !important;
+    right:16px !important;
+    bottom:12px !important;
+    height:41px !important;
+    font-size:14px !important;
+  }
+}
+@media (max-width:360px) {
+  body .statistics > .stat-card {
+    min-height:119px !important;
+    padding:10px 4px !important;
+  }
+  body .statistics > .stat-card .stat-number {font-size:26px !important;}
+  body .statistics > .stat-card .stat-label {font-size:9px !important;}
+  body .statistics > .stat-card.stat-card-clickable::after {font-size:8px !important;}
+  body .main #fieldContainer > .field-card .field-name {font-size:18px !important;}
+}
+@media (prefers-reduced-motion:reduce) {
+  body .statistics > .stat-card,
+  body .main #fieldContainer > .field-card {
+    transition:none !important;
+  }
+  body .statistics > .stat-card:hover,
+  body .main #fieldContainer > .field-card:hover {
+    transform:none !important;
+  }
+}
