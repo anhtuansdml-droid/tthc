@@ -58,9 +58,10 @@ function isNoOnlineService(item) {
 
 async function loadData() {
   try {
-    const [oldResponse, newResponse] = await Promise.all([
+    const [oldResponse, newResponse, agencyResponse] = await Promise.all([
       fetch("data/tthc.json", { cache: "no-store" }),
-      fetch("data/tthc_430_2026-10-20.json", { cache: "no-store" })
+      fetch("data/tthc_430_2026-10-20.json", { cache: "no-store" }),
+      fetch("data/tthc-agency-reference-20261119.json", { cache: "no-store" }).catch(() => null)
     ]);
     if (!oldResponse.ok) throw new Error(`Không tải được data/tthc.json: HTTP ${oldResponse.status}`);
     if (!newResponse.ok) throw new Error(`Không tải được dữ liệu TTHC: HTTP ${newResponse.status}`);
@@ -68,6 +69,13 @@ async function loadData() {
     const newData = await newResponse.json();
     if (!Array.isArray(oldData) || !Array.isArray(newData)) throw new Error("Dữ liệu TTHC không đúng định dạng mảng JSON");
 
+    // Đối chiếu cơ quan chủ trì theo mã TTHC từ danh mục đã lưu. Không tự gán
+    // một bộ/ngành cho những thủ tục chưa có thông tin nguồn đáng tin cậy.
+    let agencyByCode = {};
+    if (agencyResponse?.ok) {
+      try { agencyByCode = (await agencyResponse.json())?.agencyByCode || {}; }
+      catch (err) { console.warn("Không đọc được bảng tham chiếu cơ quan chủ trì:", err); }
+    }
     const oldByCode = new Map();
     oldData.forEach(item => { if (item && item.ma) oldByCode.set(String(item.ma).trim(), item); });
     procedures = newData.map(item => {
@@ -80,6 +88,7 @@ async function loadData() {
         ...oldItem,
         ...item,
         ma: code,
+        coQuanChuTri: String(item.coQuanChuTri || oldItem.coQuanChuTri || agencyByCode[code] || "").trim(),
         dvcqgId,
         url: sourceUrl || buildDvcqgUrl(dvcqgId),
         noOnlineService
@@ -124,10 +133,26 @@ function renderFields(list=filteredProcedures) {
   getFieldsForDisplay(list).forEach(item=>{const field=item.linhVuc||"Chưa xác định";(groups[field] ||= []).push(item);});
   const fields=Object.entries(groups).sort((a,b)=>a[0].localeCompare(b[0],"vi"));
   if(!fields.length){fieldContainer.innerHTML='<div class="empty-state">Không có lĩnh vực nào đang được cấu hình hiển thị.</div>';return;}
-  fieldContainer.innerHTML=fields.map(([field,items])=>`<div class="field-card" data-field="${escapeHtml(field)}"><div class="field-name">${escapeHtml(field)}</div><div class="field-count">${items.length}</div><div class="field-agency">${escapeHtml(getMainAgency(items))}</div></div>`).join("");
+  fieldContainer.innerHTML=fields.map(([field,items])=>`<div class="field-card" data-field="${escapeHtml(field)}"><div class="field-name">${escapeHtml(field)}</div><div class="field-count">${items.length}</div><div class="field-agency" data-agency-kind="${getMainAgency(items).kind}" title="${escapeAttribute(getMainAgency(items).title)}">${escapeHtml(getMainAgency(items).text)}</div></div>`).join("");
   document.querySelectorAll(".field-card").forEach(card=>card.addEventListener("click",()=>showFieldProcedures(card.dataset.field)));
 }
-function getMainAgency(items){const counter={};items.forEach(item=>{const a=item.coQuanChuTri||"Chưa cập nhật";counter[a]=(counter[a]||0)+1;});const sorted=Object.entries(counter).sort((a,b)=>b[1]-a[1]);return sorted[0]?.[0]||"Chưa cập nhật";}
+function getMainAgency(items) {
+  const official = new Map();
+  for (const item of items) {
+    let agency = String(item.coQuanChuTri || "").trim();
+    if (!agency || /^(?:chưa cập nhật|chưa xác định)$/i.test(agency)) continue;
+    // Hai tên trong danh mục nguồn là cùng Bộ Xây dựng sau sắp xếp bộ máy.
+    if (/^bộ xây dựng\b/i.test(agency)) agency = "Bộ Xây dựng";
+    if (/^bộ công thương$/i.test(agency)) agency = "Bộ Công Thương";
+    official.set(agency, (official.get(agency)||0) + 1);
+  }
+  if (official.size) {
+    const ordered = [...official.entries()].sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],"vi")).map(row=>row[0]);
+    return {kind:"lead",text:ordered.join("; "),title:"Cơ quan chủ trì: "+ordered.join("; ")};
+  }
+  const executing = [...new Set(items.map(item=>String(item.coQuanThucHien||"").trim()).filter(Boolean))];
+  return {kind:"execute",text:executing.join("; ") || "Chưa xác định cơ quan thực hiện",title:"Cơ quan thực hiện theo danh mục: "+(executing.join("; ")||"Chưa có thông tin")};
+}
 function showFieldProcedures(field){
   const items=getFieldsForDisplay(filteredProcedures).filter(item=>(item.linhVuc||"Chưa xác định")===field);
   const title=document.getElementById("contentTitle");
@@ -144,7 +169,7 @@ function showFieldProcedures(field){
     window.scrollTo({top:document.querySelector(".main")?.offsetTop||0,behavior:"smooth"});
   });
 }
-function procedureHtml(item,index){const noOnlineService=isNoOnlineService(item);const s=normalize(item.mucDichVu);const type=s==="toan trinh"?"full":s==="mot phan"?"partial":"none";const label=noOnlineService?"CHƯA CUNG CẤP DỊCH VỤ CÔNG":(item.mucDichVu||"Chưa cập nhật");return `<div class="procedure-item" data-index="${index}"><div class="procedure-code">${escapeHtml(item.ma||"")}</div><div class="procedure-name">${escapeHtml(item.ten||"")}</div><div class="procedure-meta"><span class="badge ${type}">${escapeHtml(label)}</span><span class="badge">${escapeHtml(item.coQuanChuTri||"Chưa cập nhật")}</span></div></div>`;}
+function procedureHtml(item,index){const noOnlineService=isNoOnlineService(item);const s=normalize(item.mucDichVu);const type=s==="toan trinh"?"full":s==="mot phan"?"partial":"none";const label=noOnlineService?"CHƯA CUNG CẤP DỊCH VỤ CÔNG":(item.mucDichVu||"Chưa cập nhật");return `<div class="procedure-item" data-index="${index}"><div class="procedure-code">${escapeHtml(item.ma||"")}</div><div class="procedure-name">${escapeHtml(item.ten||"")}</div><div class="procedure-meta"><span class="badge ${type}">${escapeHtml(label)}</span><span class="badge">${escapeHtml(item.coQuanChuTri||item.coQuanThucHien||"Chưa có thông tin cơ quan")}</span></div></div>`;}
 
 function showDetail(item){
   if(!modal||!modalBody||!item)return;
