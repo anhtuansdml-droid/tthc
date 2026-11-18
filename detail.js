@@ -1,7 +1,7 @@
 /* GIAO DIỆN CHI TIẾT TTHC - đối chiếu danh mục từ Điều phối, liên kết chi tiết DVCQG */
 (function () {
-  const DVCQG_BASE = "https://ndc.dichvucong.gov.vn/thu-tuc-hanh-chinh/";
-  const DVCQG_SEARCH_BASE = "https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
+  const DVCQG_BASE = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/";
+  const DVCQG_SEARCH_BASE = "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
   const DVCQG_PROVINCE_CODE = "11";   // Tỉnh Điện Biên
   const DVCQG_WARD_CODE = "03151";    // Phường Mường Lay
   const DVCQG_COMMUNE = "WARD";
