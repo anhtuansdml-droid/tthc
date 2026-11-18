@@ -23,7 +23,7 @@
     const s = String(item?.mucDichVu || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
     if (s === "toan trinh") return "Toàn trình";
     if (s === "mot phan") return "Một phần";
-    return "Chưa cung cấp DVC";
+    return "Chưa xác định mức dịch vụ công";
   }
   function lines(v) {
     const text = String(v ?? "").trim();
@@ -112,8 +112,12 @@
     window.__dvcCurrentItem = item;
     const noOnline = typeof window.isNoOnlineService === "function" ? window.isNoOnlineService(item) : String(item.mucDo || "").includes("Chưa cung cấp");
     const uuid = String(item.dvcqgId || "").trim();
-    const url = !noOnline ? buildSourceUrl(item) : "";
-    const submitUrl = !noOnline ? buildSubmitUrl(item) : "";
+    const verifiedLink = item.linkStatus === "khop" && !!item.url;
+    const url = verifiedLink ? buildSourceUrl(item) : (!noOnline ? buildSourceUrl(item) : "");
+    const submitUrl = verifiedLink ? buildSourceUrl(item) : (!noOnline ? buildSubmitUrl(item) : "");
+    const isSubmitLink = verifiedLink ? item.linkType === "nop_ho_so" : true;
+    const actionText = isSubmitLink ? "Nộp hồ sơ trực tuyến" : "Tra cứu thủ tục trên Cổng DVCQG";
+    const qrText = isSubmitLink ? "QUÉT ĐỂ NỘP" : "QUÉT TRA CỨU";
     const searchUrl = item.ma ? `${DVCQG_SEARCH_BASE}?keyword=${encodeURIComponent(item.ma)}&searchType=PROVINCE&provinceCode=${DVCQG_PROVINCE_CODE}&wardCode=${DVCQG_WARD_CODE}&commune=${DVCQG_COMMUNE}&showAdvanced=false&isProvince=0&isMinistry=0` : "";
 
     const decision = value(item, ["soQuyetDinh", "quyetDinh", "decision_no", "soQuyetDinhBanHanh"]);
@@ -133,9 +137,9 @@
 
     body.innerHTML = `
       <div class="dvc-detail-shell">
-        <div class="dvc-detail-head"><div class="dvc-head-title"><span>●</span> THÔNG TIN CHI TIẾT THỦ TỤC HÀNH CHÍNH</div><div class="dvc-head-actions">${submitUrl ? `<a class="dvc-submit-btn" href="${esc(submitUrl)}" target="_blank" rel="noopener noreferrer">➤ Nộp hồ sơ trực tuyến</a>` : ""}<button type="button" class="dvc-back-btn" aria-label="Quay lại" title="Quay lại chọn thủ tục khác" onclick="document.getElementById('detailModal')?.classList.remove('show'); window.scrollTo({top: 0, behavior: 'smooth'});">↩ QUAY LẠI</button><button type="button" class="dvc-close-btn" aria-label="Đóng" title="Đóng" onclick="document.getElementById('detailModal')?.classList.remove('show')">×</button></div></div>
+        <div class="dvc-detail-head"><div class="dvc-head-title"><span>●</span> THÔNG TIN CHI TIẾT THỦ TỤC HÀNH CHÍNH</div><div class="dvc-head-actions">${submitUrl ? `<a class="dvc-submit-btn" href="${esc(submitUrl)}" target="_blank" rel="noopener noreferrer">➤ ${esc(actionText)}</a>` : ""}<button type="button" class="dvc-back-btn" aria-label="Quay lại" title="Quay lại chọn thủ tục khác" onclick="document.getElementById('detailModal')?.classList.remove('show'); window.scrollTo({top: 0, behavior: 'smooth'});">↩ QUAY LẠI</button><button type="button" class="dvc-close-btn" aria-label="Đóng" title="Đóng" onclick="document.getElementById('detailModal')?.classList.remove('show')">×</button></div></div>
         <div class="dvc-detail-scroll">
-          <div class="dvc-summary"><div class="dvc-summary-main"><h1>${esc(item.ten || "")}</h1><div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div></div>${submitUrl ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(submitUrl)}" alt="QR nộp hồ sơ trực tuyến"><strong>QUÉT ĐỂ NỘP<br>TRỰC TUYẾN</strong></div>` : ""}</div>
+          <div class="dvc-summary"><div class="dvc-summary-main"><h1>${esc(item.ten || "")}</h1><div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div></div>${submitUrl ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(submitUrl)}" alt="QR nộp hồ sơ trực tuyến"><strong>${esc(qrText)}<br>${isSubmitLink ? "TRỰC TUYẾN" : "TTHC"}</strong></div>` : ""}</div>
           <div class="dvc-info-grid">
             ${info("Mã TTHC:", item.ma)}${info("Số Quyết định:", decision)}${info("Kết quả thực hiện:", result, true)}${info("Cơ quan ban hành:", item.coQuanChuTri)}${info("Cơ quan thực hiện:", agencies, true)}${info("Cấp thực hiện:", item.cap)}${info("Loại thủ tục:", service)}${info("Nguồn/Quy định:", "Cổng Dịch vụ công Quốc gia")}${info("Trạng thái:", item.trangThai)}${info("Thời hạn:", time)}${info("Đối tượng thực hiện:", target, true)}${info("Cơ quan phối hợp:", coordinating, true)}${info("Địa chỉ tiếp nhận:", receive, true)}
           </div>
