@@ -116,11 +116,16 @@ async function verify(){
   const ma=String(item.ma??'').trim(),ten=String(item.ten??'').trim();
   const options=byCode.get(codeKey(ma))||[];
   if(!options.length)return {ma,ten,status:finished?'chua_tim_thay':'chua_xac_minh',detail:'Không có mã tương ứng trong dữ liệu Cổng trả về.'};
-  const match=options.find(x=>norm(fields(x,['name','ten','tenTTHC','procedureName','formalityName','title']))===norm(ten));
+  const exact=options.filter(x=>norm(fields(x,['name','ten','tenTTHC','procedureName','formalityName','title']))===norm(ten));
+  // Cùng một mã có thể có nhiều phiên bản theo địa phương/đối tượng.
+  // Chỉ chọn tự động khi đủ căn cứ nhận diện đúng bản ghi, không gán UUID ngẫu nhiên.
+  const ofMuongLay=exact.filter(x=>fields(x,['departmentCode','agencyCode','maCoQuan'])==='H18.111'
+       ||norm(fields(x,['executingAgencies','executingAgency','coQuanThucHien','departmentName'])).includes('muong lay'));
+  const match=ofMuongLay.length===1?ofMuongLay[0]:(exact.length===1?exact[0]:null);
   const candidate=match||options[0];
   const nationalName=fields(candidate,['name','ten','tenTTHC','procedureName','formalityName','title']);
   const uuid=fields(candidate,['formalityId','formality_id','formalityUuid','formalityUUID','uuid','id']);
-  const status=!nationalName?'khop_ma':match?'khop':'khac_ten';
+  const status=exact.length>1&&!match?'chua_xac_minh':(!nationalName?'khop_ma':match?'khop':'khac_ten');
   const preferred=fields(candidate,['submitUrl','onlineSubmissionUrl','applyUrl','registrationUrl','filingUrl','onlineServiceUrl']);
   let url='',linkType='';
   if(status==='khop'){
