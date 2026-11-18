@@ -108,7 +108,7 @@
     const body = document.getElementById("modalBody");
     if (!modal || !body || !baseItem) return;
 
-    const item = { ...baseItem, ...(detailIndex.get(String(baseItem.ma || "").trim()) || {}) };
+    const item = { ...(detailIndex.get(String(baseItem.ma || "").trim()) || {}), ...baseItem };
     window.__dvcCurrentItem = item;
     const noOnline = typeof window.isNoOnlineService === "function" ? window.isNoOnlineService(item) : String(item.mucDo || "").includes("Chưa cung cấp");
     const uuid = String(item.dvcqgId || "").trim();
