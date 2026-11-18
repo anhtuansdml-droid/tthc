@@ -1,0 +1,38 @@
+/* Nút HỖ TRỢ Mường Lay — hiệu ứng nhấp nháy nhẹ, không ảnh hưởng chức năng gọi điện. */
+@keyframes muongLaySupportPulse {
+  0%, 100% {
+    background-color: #bd0d1d;
+    box-shadow: 0 3px 9px rgba(146, 11, 24, .22), 0 0 0 0 rgba(225, 31, 47, .42);
+    filter: brightness(1);
+  }
+  48% {
+    background-color: #ed2034;
+    box-shadow: 0 6px 18px rgba(189, 20, 36, .35), 0 0 0 7px rgba(225, 31, 47, 0);
+    filter: brightness(1.10);
+  }
+}
+body .nav .support-btn {
+  background-color: #bd0d1d;
+  animation: muongLaySupportPulse 2.4s ease-in-out infinite !important;
+  will-change: box-shadow, background-color;
+  position: relative;
+  z-index: 1;
+  text-decoration: none;
+}
+body .nav .support-btn:hover,
+body .nav .support-btn:focus-visible {
+  animation-play-state: paused !important;
+  background-color: #b81223;
+  box-shadow: 0 7px 20px rgba(169, 15, 30, .28) !important;
+  filter: brightness(1.06);
+}
+body .nav .support-btn:focus-visible {
+  outline: 3px solid #f7c653;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  body .nav .support-btn {
+    animation: none !important;
+    will-change: auto;
+  }
+}
