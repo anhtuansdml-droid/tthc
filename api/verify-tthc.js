@@ -95,7 +95,8 @@ async function verify(){
   pages++;
   if(!Array.isArray(rows))throw new Error('Cấu trúc phản hồi Cổng DVCQG không hợp lệ.');
   remote.push(...rows);
-  const next=cursor(body);
+  // API có thể trả lastId hoặc chỉ trả id của bản ghi cuối làm con trỏ.
+  const next=cursor(body)||fields(rows[rows.length-1],['id','formalityId','_id']);
   if(rows.length<100||body?.hasMore===false||body?.data?.hasMore===false){finished=true;break}
   if(!next||next===lastId||seenCursors.has(next))break;
   seenCursors.add(next);
