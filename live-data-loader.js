@@ -43,6 +43,23 @@
 
   async function loadLiveData(force = false) {
     if (!force && livePromise) return livePromise;
+    // Danh mục Excel do quản trị viên phê duyệt luôn có ưu tiên cao nhất.
+    // Không để dữ liệu trình duyệt/Điều phối cũ ghi đè danh mục chung của website.
+    try {
+      const response = await originalFetch('/api/sync?action=data&_t=' + Date.now(), {cache:'no-store'});
+      if (response.ok) {
+        const body = await response.json();
+        if (Array.isArray(body.procedures) && body.procedures.length >= 20) {
+          liveData = body.procedures;
+          window.tthcLiveData = liveData;
+          window.tthcMaster = liveData;
+          window.tthcSyncMeta = {ok:true,source:'Danh mục Excel được quản trị viên cập nhật',total:liveData.length,rows:liveData};
+          return liveData;
+        }
+      }
+    } catch (error) {
+      console.warn('Chưa tải được danh mục quản trị, sử dụng nguồn dữ liệu dự phòng:', error?.message);
+    }
     if (!force) {
       const local = getLocalSheetData();
       if (local) {
