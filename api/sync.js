@@ -1,4 +1,3 @@
-import { put, list } from '@vercel/blob';
 import crypto from 'node:crypto';
 
 const DVC_API='https://dichvucong.gov.vn/api/v1/submitting/formality/list-all-public-formality-by-citizen';
@@ -13,7 +12,30 @@ const EXPECTED_TOTAL=428;
 function json(res,status,body){return res.status(status).json(body)}
 function norm(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
 function tokenValid(req){const auth=req.headers.authorization||'';const supplied=auth.startsWith('Bearer ')?auth.slice(7):'';if(process.env.CRON_SECRET&&supplied===process.env.CRON_SECRET)return true;if(!supplied)return false;const p=supplied.split('.');if(p.length!==3||p[0]!=='admin')return false;const exp=Number(p[1]);if(!Number.isFinite(exp)||exp<Date.now())return false;const payload=`${p[0]}.${p[1]}`;const expected=crypto.createHmac('sha256',process.env.ADMIN_PASSWORD||'').update(payload).digest('base64url');const a=Buffer.from(p[2]),b=Buffer.from(expected);return a.length===b.length&&crypto.timingSafeEqual(a,b)}
-async function getBlob(path){const found=await list({prefix:path,limit:20});const exact=(found.blobs||[]).find(x=>x.pathname===path&&x.url);if(!exact)return null;const r=await fetch(exact.url+'?v='+Date.now(),{cache:'no-store'});if(!r.ok)return null;return await r.json()}
+function githubSettings(){
+ const token=String(process.env.GITHUB_TOKEN||'').trim();
+ if(!token)throw new Error('Chưa cấu hình GITHUB_TOKEN trên Vercel.');
+ return {token,repo:String(process.env.GITHUB_REPO||'anhtuansdml-droid/tthc').trim(),branch:'main'};
+}
+async function readSnapshot(){
+ const {token,repo,branch}=githubSettings();
+ const url='https://api.github.com/repos/'+repo+'/contents/'+LIVE_PATH+'?ref='+encodeURIComponent(branch);
+ const r=await fetch(url,{cache:'no-store',headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'TTHC-Muong-Lay-Sync'}});
+ if(r.status===404)return null;
+ if(!r.ok)throw new Error('Không đọc được bộ danh mục lưu trên GitHub (HTTP '+r.status+').');
+ const item=await r.json();
+ const data=JSON.parse(Buffer.from(String(item.content||'').replace(/\s/g,''),'base64').toString('utf8'));
+ if(Array.isArray(data))return {procedures:data,meta:{ok:true,total:data.length,mode:'legacy'}};
+ if(!data||!Array.isArray(data.procedures))throw new Error('Bản danh mục GitHub bị lỗi cấu trúc, không tự ghi đè.');
+ return data;
+}
+async function getBlob(path){
+ const snapshot=await readSnapshot();
+ if(!snapshot)return null;
+ if(path===LIVE_PATH)return snapshot.procedures;
+ if(path===META_PATH)return snapshot.meta||null;
+ return null;
+}
 async function getJson(url,timeout=15000){const c=new AbortController();const t=setTimeout(()=>c.abort(),timeout);try{const r=await fetch(url,{cache:'no-store',redirect:'follow',signal:c.signal,headers:{'user-agent':'TTHC-Muong-Lay/1.0'}});if(!r.ok)throw new Error(`HTTP ${r.status}`);return await r.json()}finally{clearTimeout(t)}}
 async function getText(url,timeout=15000){const c=new AbortController();const t=setTimeout(()=>c.abort(),timeout);try{const r=await fetch(url,{cache:'no-store',redirect:'follow',signal:c.signal,headers:{'user-agent':'TTHC-Muong-Lay/1.0'}});if(!r.ok)throw new Error(`HTTP ${r.status}`);return await r.text()}finally{clearTimeout(t)}}
 function parseCSV(text){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const ch=text[i],next=text[i+1];if(quoted){if(ch==='"'&&next==='"'){cell+='"';i++;continue}if(ch==='"'){quoted=false;continue}cell+=ch;continue}if(ch==='"'){quoted=true;continue}if(ch===','){row.push(cell);cell='';continue}if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell='';continue}if(ch==='\r')continue;cell+=ch}if(cell!==''||row.length){row.push(cell);rows.push(row)}if(!rows.length)return[];const headers=rows[0].map(x=>String(x||'').replace(/^\uFEFF/, '').trim());return rows.slice(1).filter(r=>r.some(x=>String(x||'').trim()!=='')).map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]??'');return o})}
@@ -27,9 +49,48 @@ async function dvcPage(lastId=''){const c=new AbortController();const t=setTimeo
 function extractRows(payload){if(Array.isArray(payload))return payload;for(const k of ['items','data','rows','procedures','results'])if(Array.isArray(payload?.[k]))return payload[k];if(Array.isArray(payload?.data?.items))return payload.data.items;return[]}
 async function syncFromDVC(oldData){const rows=[];let lastId='';for(let i=0;i<5;i++){const p=await dvcPage(lastId);const r=extractRows(p);if(!r.length)break;rows.push(...r);const next=String(p?.lastId||p?.data?.lastId||r[r.length-1]?.id||r[r.length-1]?.formalityId||'');if(!next||next===lastId||r.length<100)break;lastId=next}const oldByCode=new Map(oldData.map(x=>[x.ma,x]));let data=rows.map(r=>mapRow(r,oldByCode.get(String(first(r,['code','ma','maThuTuc','formalityCode','procedureCode'])).trim())||{})).filter(x=>x.ma&&x.ten).filter(x=>{const a=norm(x.coQuanThucHien);return x.maCoQuan==='H18.111'||a.includes('mường lay')||a.includes('muong lay')}).filter(x=>!norm(x.coQuanThucHien).includes('ban chqs')&&!norm(x.coQuanThucHien).includes('ban chi huy quan su'));const unique=new Map(data.map(x=>[x.ma,x]));data=[...unique.values()];data=preserveCurrentSet(data,oldData);if(data.length!==EXPECTED_TOTAL)throw new Error(`DVCQG trả ${data.length} TTHC, chưa khớp ${EXPECTED_TOTAL}.`);return data}
 function stats(data,extra={}){return {ok:true,syncedAt:new Date().toISOString(),total:data.length,full:data.filter(x=>norm(x.mucDichVu)==='toan trinh').length,partial:data.filter(x=>norm(x.mucDichVu)==='mot phan').length,noOnline:data.filter(x=>norm(`${x.mucDichVu} ${x.mucDo}`).includes('chua cung cap')).length,...extra}}
-async function saveLive(data,meta){await put(LIVE_PATH,JSON.stringify(data,null,2)+'\n',{access:'public',addRandomSuffix:false,allowOverwrite:true,contentType:'application/json; charset=utf-8',cacheControlMaxAge:0});await put(META_PATH,JSON.stringify(meta,null,2)+'\n',{access:'public',addRandomSuffix:false,allowOverwrite:true,contentType:'application/json; charset=utf-8',cacheControlMaxAge:0})}
-function normalizeImportedRows(rows){if(!Array.isArray(rows))throw new Error('Danh mục phải là một mảng dữ liệu.');const data=[...new Map(rows.map(r=>mapRow(r,{})).filter(x=>x.ma&&x.ten).map(x=>[x.ma,x])).values()];if(data.length<20)throw new Error(`Danh mục chỉ có ${data.length} TTHC.`);return data}
-async function importCatalog(rows,sourceName='Danh mục do quản trị viên tải lên'){const oldData=await getBlob(LIVE_PATH)||[];const data=normalizeImportedRows(rows);const oldCodes=new Set(oldData.map(x=>x.ma));const newCodes=new Set(data.map(x=>x.ma));const meta=stats(data,{mode:'manual-import',source:sourceName,added:data.filter(x=>!oldCodes.has(x.ma)).length,removed:oldData.filter(x=>!newCodes.has(x.ma)).length,changed:data.filter(x=>oldCodes.has(x.ma)).length});await saveLive(data,meta);return meta}
-async function syncNow(){const oldData=await getBlob(LIVE_PATH);if(!Array.isArray(oldData)||oldData.length!==EXPECTED_TOTAL)throw new Error('Không tìm thấy dữ liệu hiện tại 428 TTHC để làm bản đối chiếu an toàn.');let data,mode='dieuphoi-sheet',source=DIEUPHOI_CSV,warning='';try{const r=await syncFromDieuphoi(oldData);data=r.data}catch(e){console.error('DIEUPHOI_SYNC_FAILED',e);try{data=await syncFromDVC(oldData);mode='dvcqg-fallback';source=DVC_API;warning='Nguồn Điều phối tạm thời không phản hồi đúng 428 TTHC; đã giữ danh mục 428 và làm mới dữ liệu từ DVCQG.'}catch(e2){console.error('DVC_FALLBACK_FAILED',e2);data=oldData;mode='safe-cache';source='data/tthc-live.json';warning='Nguồn đồng bộ tạm thời lỗi; giữ nguyên dữ liệu 428 hiện tại, không làm mất dữ liệu.'}}const oldMap=new Map(oldData.map(x=>[x.ma,x]));const meta=stats(data,{mode,source,warning,added:data.filter(x=>!oldMap.has(x.ma)).length,removed:oldData.filter(x=>!data.some(y=>y.ma===x.ma)).length,changed:data.filter(x=>oldMap.has(x.ma)).length});await saveLive(data,meta);return meta}
+async function saveLive(data,meta){
+ const {token,repo,branch}=githubSettings();
+ const url='https://api.github.com/repos/'+repo+'/contents/'+LIVE_PATH;
+ const headers={Authorization:'Bearer '+token,Accept:'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'TTHC-Muong-Lay-Sync'};
+ const current=await fetch(url+'?ref='+encodeURIComponent(branch),{cache:'no-store',headers});
+ let sha=null;
+ if(current.ok)sha=(await current.json()).sha;
+ else if(current.status!==404)throw new Error('Không thể kiểm tra phiên bản danh mục cũ (HTTP '+current.status+').');
+ const snapshot={version:2,meta,procedures:data};
+ const payload={message:'Cap nhat danh muc TTHC Muong Lay - '+data.length+' thu tuc',branch,content:Buffer.from(JSON.stringify(snapshot,null,2)+'\n','utf8').toString('base64')};
+ if(sha)payload.sha=sha;
+ const r=await fetch(url,{method:'PUT',headers,body:JSON.stringify(payload)});
+ const result=await r.json().catch(()=>({}));
+ if(!r.ok)throw new Error('Không lưu được danh mục vào GitHub: '+(result.message||'HTTP '+r.status));
+ return result.commit?.sha||'';
+}
+function normalizeImportedRows(rows){
+ if(!Array.isArray(rows)||rows.length>5000)throw new Error('File không có mảng TTHC hợp lệ hoặc vượt 5.000 dòng.');
+ const found=new Map();
+ for(let i=0;i<rows.length;i++){
+  const row=mapRow(rows[i],{});
+  if(!row.ma||!row.ten)throw new Error('Dòng '+(i+1)+' thiếu mã hoặc tên TTHC. Không thay thế dữ liệu cũ.');
+  if(found.has(row.ma))throw new Error('Mã TTHC bị trùng trong file: '+row.ma+'. Hãy sửa trước khi tải.');
+  found.set(row.ma,row);
+ }
+ if(found.size<20)throw new Error('Danh mục có '+found.size+' thủ tục; cần ít nhất 20 thủ tục để thay toàn bộ.');
+ return [...found.values()];
+}
+async function importCatalog(rows,sourceName='Danh mục do quản trị viên tải lên',confirmReplace=false){
+ const oldData=await getBlob(LIVE_PATH)||[];
+ const data=normalizeImportedRows(rows);
+ const oldMap=new Map(oldData.map(x=>[x.ma,x]));
+ const newCodes=new Set(data.map(x=>x.ma));
+ const removed=oldData.filter(x=>!newCodes.has(x.ma));
+ if(oldData.length>=20&&removed.length/oldData.length>0.25&&!confirmReplace)throw new Error('File sẽ loại '+removed.length+'/'+oldData.length+' TTHC cũ (>25%). Cần xác nhận đặc biệt để tránh mất danh mục.');
+ const keys=['ten','linhVuc','coQuanThucHien','cap','mucDo','mucDichVu','trangThai'];
+ const changed=data.filter(x=>oldMap.has(x.ma)&&keys.some(k=>String(x[k]??'')!==String(oldMap.get(x.ma)[k]??''))).length;
+ const catalogHash=crypto.createHash('sha256').update(JSON.stringify(data.map(x=>[x.ma,x.ten]))).digest('hex');
+ const meta=stats(data,{mode:'manual-import',source:String(sourceName).slice(0,200),added:data.filter(x=>!oldMap.has(x.ma)).length,removed:removed.length,changed,catalogHash,verified:false,verification:'Chưa đối chiếu Cổng DVCQG'});
+ const commit=await saveLive(data,meta);
+ return {...meta,commit};
+}
+async function syncNow(){const currentMeta=await getBlob(META_PATH);if(currentMeta?.mode==='manual-import')return {...currentMeta,warning:'Danh mục Excel do quản trị viên cập nhật đang được bảo vệ; đồng bộ tự động không ghi đè. Sử dụng đối chiếu DVCQG để rà soát.'};const oldData=await getBlob(LIVE_PATH);if(!Array.isArray(oldData)||oldData.length!==EXPECTED_TOTAL)throw new Error('Không tìm thấy dữ liệu hiện tại 428 TTHC để làm bản đối chiếu an toàn.');let data,mode='dieuphoi-sheet',source=DIEUPHOI_CSV,warning='';try{const r=await syncFromDieuphoi(oldData);data=r.data}catch(e){console.error('DIEUPHOI_SYNC_FAILED',e);try{data=await syncFromDVC(oldData);mode='dvcqg-fallback';source=DVC_API;warning='Nguồn Điều phối tạm thời không phản hồi đúng 428 TTHC; đã giữ danh mục 428 và làm mới dữ liệu từ DVCQG.'}catch(e2){console.error('DVC_FALLBACK_FAILED',e2);data=oldData;mode='safe-cache';source='data/tthc-live.json';warning='Nguồn đồng bộ tạm thời lỗi; giữ nguyên dữ liệu 428 hiện tại, không làm mất dữ liệu.'}}const oldMap=new Map(oldData.map(x=>[x.ma,x]));const meta=stats(data,{mode,source,warning,added:data.filter(x=>!oldMap.has(x.ma)).length,removed:oldData.filter(x=>!data.some(y=>y.ma===x.ma)).length,changed:data.filter(x=>oldMap.has(x.ma)).length});await saveLive(data,meta);return meta}
 async function syncDieuphoi(){return syncNow()}
-export default async function handler(req,res){try{const action=req.query?.action||'';if(req.method==='GET'&&action==='data'){const live=await getBlob(LIVE_PATH);if(live&&Array.isArray(live))return json(res,200,{procedures:live});const r=await getJson(STATIC_DATA);return json(res,200,{procedures:r})}if(req.method==='GET'&&action==='status'){const meta=await getBlob(META_PATH);return json(res,200,meta||{ok:true,syncedAt:null,total:0})}if(req.method!=='POST'||!tokenValid(req))return json(res,401,{ok:false,message:'Không có quyền đồng bộ.'});if(action==='import')return json(res,200,await importCatalog(req.body?.procedures,req.body?.sourceName));if(action==='dieuphoi')return json(res,200,await syncDieuphoi());return json(res,200,await syncNow())}catch(e){console.error('SYNC_ERROR',e);return json(res,500,{ok:false,message:e?.message||String(e)})}}
+export default async function handler(req,res){try{const action=req.query?.action||'';if(req.method==='GET'&&action==='data'){const live=await getBlob(LIVE_PATH);if(live&&Array.isArray(live))return json(res,200,{ok:true,procedures:live});return json(res,404,{ok:false,message:'Chưa nhập danh mục quản trị; sử dụng nguồn công khai mặc định.'})}if(req.method==='GET'&&action==='status'){const meta=await getBlob(META_PATH);return json(res,200,meta||{ok:true,syncedAt:null,total:0})}if(req.method!=='POST'||!tokenValid(req))return json(res,401,{ok:false,message:'Không có quyền đồng bộ.'});if(action==='import')return json(res,200,await importCatalog(req.body?.procedures,req.body?.sourceName,req.body?.confirmReplace===true));if(action==='dieuphoi')return json(res,200,await syncDieuphoi());return json(res,200,await syncNow())}catch(e){console.error('SYNC_ERROR',e);return json(res,500,{ok:false,message:e?.message||String(e)})}}
