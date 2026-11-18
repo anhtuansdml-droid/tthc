@@ -40,7 +40,7 @@ async function githubWrite(path,obj,expectedSha=null){
  const r=await fetch('https://api.github.com/repos/'+s.repo+'/contents/'+path,{method:'PUT',headers:headers(s.token),body:JSON.stringify(p)});
  if(!r.ok){const x=await r.json().catch(()=>({}));throw new Error('Không lưu được kết quả đối chiếu: '+(x.message||r.status))}
 }
-function norm(s){return String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ')}
+function norm(s){return String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/đ/g,'d').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ')}
 function codeKey(v){return String(v??'').trim().toLowerCase().replace(/\s+/g,'')}
 function fields(item,keys){for(const key of keys){const v=item?.[key];if(v!==undefined&&v!==null&&String(v).trim())return String(v).trim()}return ''}
 function records(payload){
