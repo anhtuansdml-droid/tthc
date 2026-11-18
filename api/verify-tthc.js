@@ -66,7 +66,7 @@ function cursor(payload){
 }
 async function page(lastId){
  const controller=new AbortController();
- const timer=setTimeout(()=>controller.abort(),8500);
+ const timer=setTimeout(()=>controller.abort(),7000);
  try{
   const r=await fetch(DVC_API,{method:'POST',cache:'no-store',signal:controller.signal,headers:{'Content-Type':'application/json',Accept:'application/json','User-Agent':'TTHC-Muong-Lay/1.0'},body:JSON.stringify({limit:100,lastId,q:'',categoryId:'',departmentCode:'H18.111'})});
   if(!r.ok)throw new Error('Cổng DVCQG phản hồi HTTP '+r.status+'.');
@@ -89,7 +89,7 @@ async function verify(){
  const remote=[];
  let lastId='',finished=false,pages=0;
  const seenCursors=new Set();
- for(let i=0;i<12;i++){
+ for(let i=0;i<7;i++){
   const body=await page(lastId);
   const rows=records(body);
   pages++;
@@ -126,10 +126,14 @@ async function verify(){
    const proposal=preferred||officialURL(candidate);
    try{
     const target=new URL(proposal);
-    if(target.protocol==='https:'&&(target.hostname==='dichvucong.gov.vn'||target.hostname.endsWith('.dichvucong.gov.vn'))){
+    const officialHost=target.hostname==='dichvucong.gov.vn'||target.hostname.endsWith('.dichvucong.gov.vn');
+    const formalityId=target.searchParams.get('formalityId')||target.searchParams.get('formalityCaseId');
+    const specificPath=/\/(?:thu-tuc-hanh-chinh|nop-ho-so|thuc-hien-dich-vu|submit|apply)\/[0-9a-z-]{15,}/i.test(target.pathname);
+    const submissionPath=/\/(?:nop-ho-so|thuc-hien-dich-vu|submit|apply)(?:\/|$)/i.test(target.pathname);
+    // Không tạo QR cho trang chủ hoặc trang tìm kiếm chung thiếu định danh TTHC.
+    if(target.protocol==='https:'&&officialHost&&(formalityId||specificPath||(preferred&&submissionPath))){
      url=target.toString();
-     // "URL tra cứu" khác với URL đưa trực tiếp vào màn hình nộp hồ sơ.
-     linkType=preferred&&!/tim-kiem|tra-cuu/i.test(target.pathname)?'nop_ho_so':'tra_cuu';
+     linkType=preferred&&submissionPath?'nop_ho_so':'tra_cuu';
     }
    }catch(_){}
   }
