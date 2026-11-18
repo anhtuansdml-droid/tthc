@@ -154,6 +154,7 @@ function renderVerification(report){
   ': '+(c.khop||0)+' khớp mã và tên; '+(c.khop_ma||0)+' khớp mã (chưa có tên đối chiếu); '+
   (c.khac_ten||0)+' khác tên; '+(c.chua_tim_thay||0)+' chưa tìm thấy; '+
   (c.chua_xac_minh||0)+' chưa xác minh. Đã xử lý '+report.total+' thủ tục.'+
+  ' Link đối chiếu đúng TTHC: '+(report.linked||0)+'. Link nộp hồ sơ trực tiếp: '+(report.submitLinks||0)+'. Link tra cứu: '+Math.max(0,(report.linked||0)-(report.submitLinks||0))+'.'+
   (report.warning?' ⚠ '+report.warning:'');
  const issues=report.results.filter(x=>x.status!=='khop'&&x.status!=='khop_ma');
  if(!issues.length){details.textContent='✓ Không phát hiện sai khác trong các thủ tục đã đối chiếu.';return}
@@ -185,9 +186,9 @@ async function verifyCatalog(){
 }
 function downloadVerificationCSV(){
  if(!verifyResult?.results?.length){alert('Chưa có báo cáo để tải.');return}
- const heads=['Mã TTHC','Tên Excel','Kết quả','Tên DVCQG','UUID DVCQG','URL DVCQG'];
- const esc=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
- const lines=[heads,...verifyResult.results.map(x=>[x.ma,x.ten,x.status,x.tenDVCQG,x.dvcqgId,x.url])].map(r=>r.map(esc).join(','));
+ const heads=['Mã TTHC','Tên Excel','Kết quả','Tên DVCQG','UUID DVCQG','Loại liên kết','URL DVCQG','Link QR'];
+ const esc=v=>{let s=String(v??'');if(/^[=+@\\-\\t\\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
+ const lines=[heads,...verifyResult.results.map(x=>[x.ma,x.ten,x.status,x.tenDVCQG,x.dvcqgId,x.linkType,x.url,x.url?'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(x.url):''])].map(r=>r.map(esc).join(','));
  const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
  const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='Doi_chieu_TTHC_DVCQG_'+new Date().toISOString().slice(0,10)+'.csv';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);
 }
