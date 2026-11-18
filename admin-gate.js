@@ -131,11 +131,31 @@
     navInner.insertBefore(button, refresh || null);
   }
 
-  async function gateStatsClick(e) {
-    if (allowNextStats) { allowNextStats = false; return; }
-    e.preventDefault(); e.stopImmediatePropagation();
-    const ok = await openGate('Xem thống kê');
-    if (ok) { allowNextStats = true; document.getElementById('statsBtn')?.click(); }
+  function showStatisticsMaintenance() {
+    if(document.getElementById('statsMaintenanceDialog'))return;
+    const overlay=document.createElement('div');
+    overlay.id='statsMaintenanceDialog';
+    overlay.setAttribute('role','dialog');
+    overlay.setAttribute('aria-modal','true');
+    overlay.setAttribute('aria-label','Thông báo chức năng thống kê');
+    Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'100600',display:'flex',alignItems:'center',justifyContent:'center',padding:'18px',background:'rgba(14,23,39,.62)',backdropFilter:'blur(4px)'});
+    const card=document.createElement('div');
+    Object.assign(card.style,{width:'min(440px,100%)',padding:'30px 25px',background:'#fff',color:'#243146',textAlign:'center',borderRadius:'18px',boxShadow:'0 20px 60px rgba(0,0,0,.28)',border:'1px solid #e5eaf1',fontFamily:'Arial,sans-serif'});
+    const icon=document.createElement('div');icon.textContent='📊';Object.assign(icon.style,{fontSize:'42px',marginBottom:'12px'});
+    const heading=document.createElement('h2');heading.textContent='THỐNG KÊ ĐANG CẬP NHẬT';Object.assign(heading.style,{fontSize:'21px',color:'#b5121b',margin:'0 0 12px',lineHeight:'1.35'});
+    const message=document.createElement('p');message.textContent='Chức năng thống kê đang được hoàn thiện. Vui lòng quay lại sau.';Object.assign(message.style,{fontSize:'15px',lineHeight:'1.6',margin:'0 0 22px'});
+    const close=document.createElement('button');close.type='button';close.textContent='ĐÃ HIỂU';Object.assign(close.style,{background:'#b5121b',color:'#fff',border:'0',borderRadius:'10px',padding:'12px 27px',fontSize:'14px',fontWeight:'800',cursor:'pointer'});
+    const dismiss=()=>overlay.remove();
+    close.onclick=dismiss;overlay.addEventListener('click',e=>{if(e.target===overlay)dismiss()});
+    const keydown=e=>{if(e.key==='Escape'){document.removeEventListener('keydown',keydown);dismiss()}};
+    document.addEventListener('keydown',keydown);
+    card.append(icon,heading,message,close);overlay.append(card);document.body.appendChild(overlay);close.focus();
+  }
+
+  function gateStatsClick(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    showStatisticsMaintenance();
   }
 
   async function gateStatsSyncClick(e) {
