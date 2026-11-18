@@ -1,7 +1,7 @@
-const DATA_SOURCE_URL = "https://ndc.dichvucong.gov.vn/";
+const DATA_SOURCE_URL = "https://dichvucong.gov.vn/";
 const DATA_SOURCE_NAME = "Cổng Dịch vụ công Quốc gia";
-const DVCQG_BASE_URL = "https://ndc.dichvucong.gov.vn/thu-tuc-hanh-chinh/";
-const DVCQG_SEARCH_URL = "https://ndc.dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
+const DVCQG_BASE_URL = "https://dichvucong.gov.vn/thu-tuc-hanh-chinh/";
+const DVCQG_SEARCH_URL = "https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh";
 const CONFIG_STORAGE_KEY = "tthc_muong_lay_visible_fields_v1";
 
 let procedures = [];
@@ -149,7 +149,7 @@ function procedureHtml(item,index){const noOnlineService=isNoOnlineService(item)
 function showDetail(item){
   if(!modal||!modalBody||!item)return;
   const noOnlineService=isNoOnlineService(item), onlineUrl=noOnlineService?"":String(item.url||"").trim() || buildDvcqgUrl(item.dvcqgId), searchUrl=noOnlineService?"":buildDvcqgSearchUrl(item);
-  modalBody.innerHTML=`<div class="detail-title">${escapeHtml(item.ten||"")}</div><div class="detail-grid">${detailRow("Mã TTHC",item.ma)}${detailRow("Lĩnh vực",item.linhVuc)}${detailRow("Cơ quan chủ trì",item.coQuanChuTri)}${detailRow("Cơ quan thực hiện",item.coQuanThucHien)}${detailRow("Mã cơ quan",item.maCoQuan)}${detailRow("Mức dịch vụ",noOnlineService?"CHƯA CUNG CẤP DỊCH VỤ CÔNG":item.mucDichVu)}${detailRow("Cấp thực hiện",item.cap)}${detailRow("Loại TTHC",item.loai)}${detailRow("Mức độ",item.mucDo)}${detailRow("Trạng thái",item.trangThai)}${detailRow("Nguồn dữ liệu",item.nguon||"Danh sách TTHC")}${detailRow("Mã thực hiện",item.maThucHien)}</div>${noOnlineService?'<div class="detail-note">CHƯA CUNG CẤP DỊCH VỤ CÔNG</div>':onlineUrl?`<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN</a>`:`<div class="detail-note">Chưa xác định được mã liên kết chi tiết trên Cổng DVCQG.</div>`}${!noOnlineService?`<a class="online-btn" style="margin-top:10px;background:#444" href="${escapeAttribute(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU TRÊN CỔNG DVC QUỐC GIA</a>`:""}`;
+  modalBody.innerHTML=`<div class="detail-title">${escapeHtml(item.ten||"")}</div><div class="detail-grid">${detailRow("Mã TTHC",item.ma)}${detailRow("Lĩnh vực",item.linhVuc)}${detailRow("Cơ quan chủ trì",item.coQuanChuTri)}${detailRow("Cơ quan thực hiện",item.coQuanThucHien)}${detailRow("Mã cơ quan",item.maCoQuan)}${detailRow("Mức dịch vụ",noOnlineService?"CHƯA CUNG CẤP DỊCH VỤ CÔNG":item.mucDichVu)}${detailRow("Cấp thực hiện",item.cap)}${detailRow("Loại TTHC",item.loai)}${detailRow("Mức độ",item.mucDo)}${detailRow("Trạng thái",item.trangThai)}${detailRow("Nguồn dữ liệu",item.nguon||"Danh sách TTHC")}${detailRow("Mã thực hiện",item.maThucHien)}</div>${noOnlineService?'<div class="detail-note">CHƯA CUNG CẤP DỊCH VỤ CÔNG</div>':onlineUrl?`<a class="online-btn" href="${escapeAttribute(onlineUrl)}" target="_blank" rel="noopener noreferrer">${item.linkStatus==="khop"&&item.linkType==="tra_cuu"?"TRA CỨU THỦ TỤC TRÊN CỔNG DVCQG":"CHỌN DỊCH VỤ CÔNG TRỰC TUYẾN"}</a>`:`<div class="detail-note">Chưa xác định được mã liên kết chi tiết trên Cổng DVCQG.</div>`}${!noOnlineService?`<a class="online-btn" style="margin-top:10px;background:#444" href="${escapeAttribute(searchUrl)}" target="_blank" rel="noopener noreferrer">TRA CỨU TRÊN CỔNG DVC QUỐC GIA</a>`:""}`;
   modal.classList.add("show");
 }
 function detailRow(label,value){return `<div class="detail-label">${escapeHtml(label)}</div><div class="detail-value">${escapeHtml(value||"Chưa cập nhật")}</div>`;}
