@@ -112,13 +112,14 @@
     window.__dvcCurrentItem = item;
     const noOnline = typeof window.isNoOnlineService === "function" ? window.isNoOnlineService(item) : String(item.mucDo || "").includes("Chưa cung cấp");
     const uuid = String(item.dvcqgId || "").trim();
-    const verifiedLink = item.linkStatus === "khop" && !!item.url;
-    const url = verifiedLink ? buildSourceUrl(item) : (!noOnline ? buildSourceUrl(item) : "");
-    const submitUrl = verifiedLink ? buildSourceUrl(item) : (!noOnline ? buildSubmitUrl(item) : "");
-    const isSubmitLink = verifiedLink ? item.linkType === "nop_ho_so" : true;
+    const verifiedSubmit = item.linkStatus === "khop" && item.linkType === "nop_ho_so" && !!item.url;
+    const searchUrl = item.dvcqgSearchUrl || (item.ma ? `${DVCQG_SEARCH_BASE}?keyword=${encodeURIComponent(item.ma)}&searchType=PROVINCE&provinceCode=${DVCQG_PROVINCE_CODE}&wardCode=${DVCQG_WARD_CODE}&commune=${DVCQG_COMMUNE}&showAdvanced=false&isProvince=0&isMinistry=0` : "");
+    const portalUrl = String(item.dvcqgDetailUrl || "").trim();
+    const url = verifiedSubmit ? buildSourceUrl(item) : (portalUrl || searchUrl || (!noOnline ? buildSourceUrl(item) : ""));
+    const submitUrl = noOnline ? "" : (url || buildSubmitUrl(item));
+    const isSubmitLink = verifiedSubmit;
     const actionText = isSubmitLink ? "Nộp hồ sơ trực tuyến" : "Tra cứu thủ tục trên Cổng DVCQG";
     const qrText = isSubmitLink ? "QUÉT ĐỂ NỘP" : "QUÉT TRA CỨU";
-    const searchUrl = item.ma ? `${DVCQG_SEARCH_BASE}?keyword=${encodeURIComponent(item.ma)}&searchType=PROVINCE&provinceCode=${DVCQG_PROVINCE_CODE}&wardCode=${DVCQG_WARD_CODE}&commune=${DVCQG_COMMUNE}&showAdvanced=false&isProvince=0&isMinistry=0` : "";
 
     const decision = value(item, ["soQuyetDinh", "quyetDinh", "decision_no", "soQuyetDinhBanHanh"]);
     const result = value(item, ["ketQua", "results", "sanPham"]);
@@ -141,7 +142,7 @@
         <div class="dvc-detail-scroll">
           <div class="dvc-summary"><div class="dvc-summary-main"><h1>${esc(item.ten || "")}</h1><div class="dvc-field-line"><b>Lĩnh vực:</b><span>${esc(item.linhVuc || "Chưa cập nhật")}</span></div></div>${submitUrl ? `<div class="dvc-qr"><img src="${QR_BASE + encodeURIComponent(submitUrl)}" alt="QR nộp hồ sơ trực tuyến"><strong>${esc(qrText)}<br>${isSubmitLink ? "TRỰC TUYẾN" : "TTHC"}</strong></div>` : ""}</div>
           <div class="dvc-info-grid">
-            ${info("Mã TTHC:", item.ma)}${info("Số Quyết định:", decision)}${info("Kết quả thực hiện:", result, true)}${info("Cơ quan ban hành:", item.coQuanChuTri)}${info("Cơ quan thực hiện:", agencies, true)}${info("Cấp thực hiện:", item.cap)}${info("Loại thủ tục:", service)}${info("Nguồn/Quy định:", "Cổng Dịch vụ công Quốc gia")}${info("Trạng thái:", item.trangThai)}${info("Thời hạn:", time)}${info("Đối tượng thực hiện:", target, true)}${info("Cơ quan phối hợp:", coordinating, true)}${info("Địa chỉ tiếp nhận:", receive, true)}
+            ${info("Mã TTHC:", item.ma)}${info("Số Quyết định:", decision)}${info("Kết quả thực hiện:", result, true)}${info("Cơ quan ban hành:", item.coQuanChuTri)}${info("Cơ quan thực hiện:", agencies, true)}${info("Cấp thực hiện:", item.cap)}${info("Loại thủ tục:", service)}${info("Đối chiếu mã/tên trên Cổng:", item.dvcqgCheckLabel || "Chưa có dữ liệu tham chiếu", true)}${item.dvcqgName && item.dvcqgCheckStatus === "name_mismatch" ? info("Tên trong nguồn tham chiếu:", item.dvcqgName, true) : ""}${info("Nguồn/Quy định:", "Cổng Dịch vụ công Quốc gia")}${info("Trạng thái:", item.trangThai)}${info("Thời hạn:", time)}${info("Đối tượng thực hiện:", target, true)}${info("Cơ quan phối hợp:", coordinating, true)}${info("Địa chỉ tiếp nhận:", receive, true)}
           </div>
           <div class="dvc-tabs"><button class="dvc-tab active" data-tab="method">☷ Cách thức & Trình tự</button><button class="dvc-tab" data-tab="dossier">▰ Thành phần hồ sơ</button><button class="dvc-tab" data-tab="condition">● Yêu cầu & Điều kiện</button><button class="dvc-tab" data-tab="legal">⚖ Căn cứ pháp lý</button></div>
           <div class="dvc-tab-content active" id="dvc-tab-method"><h2>1. CÁCH THỨC THỰC HIỆN</h2>${tableMethods(methods)}<h2>2. TRÌNH TỰ THỰC HIỆN</h2>${lines(steps)}</div>

@@ -50,10 +50,20 @@
       if (response.ok) {
         const body = await response.json();
         if (Array.isArray(body.procedures) && body.procedures.length >= 20) {
-          liveData = body.procedures;
+          let reviewData = null;
+          try {
+            const reviewResponse = await originalFetch('/data/tthc-dvcqg-review-20261119.json?_=' + Date.now(), {cache:'no-store'});
+            if (reviewResponse.ok) reviewData = await reviewResponse.json();
+          } catch (_) {}
+          const reviewByCode = new Map((reviewData?.results || []).map(row => [String(row.ma || '').trim(), row]));
+          liveData = body.procedures.map(item => {
+            const review = reviewByCode.get(String(item.ma || '').trim());
+            if (!review) return item;
+            return {...item, dvcqgId:item.dvcqgId || review.dvcqgId || '', dvcqgDetailUrl:review.url || '', dvcqgSearchUrl:review.searchUrl || '', dvcqgCheckStatus:review.status, dvcqgCheckLabel:review.label, dvcqgName:review.tenDVCQG || ''};
+          });
           window.tthcLiveData = liveData;
           window.tthcMaster = liveData;
-          window.tthcSyncMeta = {ok:true,source:'Danh mục Excel được quản trị viên cập nhật',total:liveData.length,rows:liveData};
+          window.tthcSyncMeta = {ok:true,source:'Danh mục Excel được quản trị viên cập nhật',total:liveData.length,rows:liveData,portalReview:reviewData?.meta||null};
           return liveData;
         }
       }
