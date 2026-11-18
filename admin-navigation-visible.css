@@ -1,0 +1,109 @@
+/* Hiển thị nút QUẢN TRỊ rõ ràng trên mọi kích thước màn hình.
+   Chỉnh riêng điều hướng, không thay đổi chức năng đăng nhập hoặc dữ liệu TTHC. */
+body .nav .nav-inner {
+  width:100% !important;
+  max-width:1690px !important;
+  overflow:visible !important;
+  align-items:center !important;
+}
+body .nav .nav-inner > .admin-link {
+  display:inline-flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  position:relative !important;
+  z-index:1;
+  min-width:0 !important;
+  min-height:44px !important;
+  width:100% !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:9px 12px !important;
+  border:1px solid #123f8f !important;
+  border-radius:10px !important;
+  background:linear-gradient(135deg,#1458ae,#264ac3) !important;
+  color:#fff !important;
+  box-shadow:0 4px 12px rgba(27,67,153,.25) !important;
+  font:800 13px/1.2 Arial,sans-serif !important;
+  text-align:center;
+  text-decoration:none !important;
+  text-overflow:clip !important;
+  white-space:nowrap !important;
+  overflow:visible !important;
+  cursor:pointer;
+}
+body .nav .nav-inner > .admin-link:hover,
+body .nav .nav-inner > .admin-link:focus-visible {
+  background:linear-gradient(135deg,#0e438c,#193a9f) !important;
+  color:#fff !important;
+  transform:translateY(-2px);
+  box-shadow:0 7px 17px rgba(27,67,153,.33) !important;
+}
+body .nav .nav-inner > .admin-link:focus-visible {
+  outline:3px solid #f2c859 !important;
+  outline-offset:3px;
+}
+@media(min-width:1400px) {
+  body .nav .nav-inner {
+    display:grid !important;
+    grid-template-columns:120px 115px minmax(220px,1fr) 115px 160px 105px 130px 95px 178px !important;
+    gap:8px !important;
+  }
+  body .nav .nav-inner > * {
+    min-width:0 !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+  body .nav .nav-inner > .search-box {width:100% !important;order:0 !important;grid-column:auto !important}
+  body .nav .nav-inner > .support-btn {min-width:0 !important;width:100% !important;font-size:11px !important}
+  body .nav .nav-inner > #updateTthcBtn,
+  body .nav .nav-inner > .config-btn,
+  body .nav .nav-inner > .pakn-btn,
+  body .nav .nav-inner > .stats-btn,
+  body .nav .nav-inner > .deep-refresh-btn {width:100% !important;min-width:0 !important;max-width:100% !important;font-size:11px !important;padding:0 6px !important}
+}
+@media(min-width:761px) and (max-width:1399px) {
+  body .nav .nav-inner {
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:9px !important;
+  }
+  body .nav .nav-inner > * {min-width:0 !important;max-width:100% !important;box-sizing:border-box !important}
+  body .nav .nav-inner > .search-box {grid-column:1/-1 !important;order:-1 !important;width:100% !important}
+  body .nav .nav-inner > .admin-link {grid-column:auto !important;min-height:42px !important}
+  body .nav .nav-inner > .support-btn {width:100% !important}
+  body .nav .nav-inner > #updateTthcBtn,
+  body .nav .nav-inner > .config-btn,
+  body .nav .nav-inner > .pakn-btn,
+  body .nav .nav-inner > .stats-btn,
+  body .nav .nav-inner > .deep-refresh-btn {min-width:0 !important;width:100% !important;max-width:100% !important}
+}
+@media(max-width:760px) {
+  body .nav .nav-inner {
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+  }
+  body .nav .nav-inner > * {min-width:0 !important;max-width:100% !important}
+  body .nav .nav-inner > .home-btn,
+  body .nav .nav-inner > .admin-link,
+  body .nav .nav-inner > .search-box,
+  body .nav .nav-inner > .support-btn {
+    grid-column:1/-1 !important;
+    width:100% !important;
+  }
+  body .nav .nav-inner > .search-box {order:0 !important}
+  body .nav .nav-inner > .admin-link {min-height:46px !important;font-size:14px !important;padding:12px !important}
+  body .nav .nav-inner > #updateTthcBtn,
+  body .nav .nav-inner > .config-btn,
+  body .nav .nav-inner > .pakn-btn,
+  body .nav .nav-inner > .stats-btn,
+  body .nav .nav-inner > .deep-refresh-btn {
+    min-width:0 !important;width:100% !important;max-width:100% !important;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  body .nav .nav-inner > .admin-link {transition:none !important;transform:none !important}
+}
