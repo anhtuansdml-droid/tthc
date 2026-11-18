@@ -31,9 +31,10 @@ async function githubRead(path){
  const v=await r.json();
  return {data:JSON.parse(Buffer.from(String(v.content||'').replace(/\s/g,''),'base64').toString('utf8')),sha:v.sha};
 }
-async function githubWrite(path,obj){
+async function githubWrite(path,obj,expectedSha=null){
  const s=settings();
  const old=await githubRead(path);
+ if(expectedSha!==null&&old.sha!==expectedSha)throw new Error('Danh mục đã thay đổi trong lúc đối chiếu. Không ghi đè bộ dữ liệu mới; hãy kiểm tra lại.');
  const p={branch:s.branch,message:'Luu bao cao doi chieu TTHC voi Cong DVCQG',content:Buffer.from(JSON.stringify(obj,null,2)+'\n','utf8').toString('base64')};
  if(old.sha)p.sha=old.sha;
  const r=await fetch('https://api.github.com/repos/'+s.repo+'/contents/'+path,{method:'PUT',headers:headers(s.token),body:JSON.stringify(p)});
@@ -81,7 +82,8 @@ function officialURL(item){
  return /^[0-9a-f-]{30,40}$/i.test(fid)?'https://dichvucong.gov.vn/tim-kiem-thu-tuc-hanh-chinh?formalityId='+encodeURIComponent(fid):'';
 }
 async function verify(){
- const snapshot=(await githubRead(CATALOG)).data;
+ const catalogFile=await githubRead(CATALOG);
+ const snapshot=catalogFile.data;
  if(!snapshot||!Array.isArray(snapshot.procedures)||!snapshot.procedures.length)throw new Error('Chưa có danh mục Excel được lưu. Hãy nhập file trước khi đối chiếu.');
  const local=snapshot.procedures;
  const remote=[];
@@ -118,11 +120,47 @@ async function verify(){
   const nationalName=fields(candidate,['name','ten','tenTTHC','procedureName','formalityName','title']);
   const uuid=fields(candidate,['formalityId','formality_id','formalityUuid','formalityUUID','uuid','id']);
   const status=!nationalName?'khop_ma':match?'khop':'khac_ten';
-  return {ma,ten,status,tenDVCQG:nationalName,dvcqgId:uuid,url:officialURL(candidate)};
+  const preferred=fields(candidate,['submitUrl','onlineSubmissionUrl','applyUrl','registrationUrl','filingUrl','onlineServiceUrl']);
+  let url='',linkType='';
+  if(status==='khop'){
+   const proposal=preferred||officialURL(candidate);
+   try{
+    const target=new URL(proposal);
+    if(target.protocol==='https:'&&(target.hostname==='dichvucong.gov.vn'||target.hostname.endsWith('.dichvucong.gov.vn'))){
+     url=target.toString();
+     // "URL tra cứu" khác với URL đưa trực tiếp vào màn hình nộp hồ sơ.
+     linkType=preferred&&!/tim-kiem|tra-cuu/i.test(target.pathname)?'nop_ho_so':'tra_cuu';
+    }
+   }catch(_){}
+  }
+  return {ma,ten,status,tenDVCQG:nationalName,dvcqgId:status==='khop'?uuid:'',url,linkType};
  });
  const counts={khop:0,khop_ma:0,khac_ten:0,chua_tim_thay:0,chua_xac_minh:0};
  for(const row of results)counts[row.status]++;
- const report={ok:true,verifiedAt:new Date().toISOString(),catalogHash:snapshot.meta?.catalogHash||'',total:local.length,remoteRows:remote.length,pages,complete:finished,source:DVC_API,counts,warning:finished?'':'Chưa xác nhận đã nhận đủ trang dữ liệu từ Cổng; các mã chưa tìm thấy được đánh dấu CHƯA XÁC MINH, không coi là đã bãi bỏ.',results};
+ const verifiedAt=new Date().toISOString();
+ const linked=results.filter(x=>x.status==='khop'&&x.url).length;
+ const submitLinks=results.filter(x=>x.status==='khop'&&x.url&&x.linkType==='nop_ho_so').length;
+ const report={ok:true,verifiedAt,catalogHash:snapshot.meta?.catalogHash||'',total:local.length,
+   remoteRows:remote.length,pages,complete:finished,source:DVC_API,counts,linked,submitLinks,
+   warning:finished?'':'Cổng DVCQG chưa xác nhận đã trả hết các trang. Thủ tục chưa tìm thấy chỉ được đánh dấu chưa xác minh; không suy luận thủ tục đã bãi bỏ.',
+   results};
+ // Cập nhật URL & UUID từng thủ tục vào dữ liệu DÙNG CHUNG, không chỉ lưu báo cáo.
+ // Mỗi URL chỉ được gắn khi khớp chính xác cả mã và tên trên Cổng.
+ const matchByCode=new Map(results.map(x=>[x.ma,x]));
+ const updated=snapshot.procedures.map(item=>{
+   const match=matchByCode.get(item.ma);
+   const approved=match?.status==='khop'&&!!match.url;
+   return {...item,
+     url:approved?match.url:'',
+     dvcqgId:approved?match.dvcqgId:'',
+     urlNopHoSo:approved&&match.linkType==='nop_ho_so'?match.url:'',
+     linkStatus:approved?'khop':(match?.status||'chua_xac_minh'),
+     linkType:approved?match.linkType:'',
+     linkCheckedAt:verifiedAt};
+ });
+ const updatedCatalog={...snapshot,procedures:updated,
+  meta:{...(snapshot.meta||{}),verified:true,verifiedAt,linked,submitLinks,verification:'Đối chiếu theo mã và tên trên Cổng DVCQG'}};
+ await githubWrite(CATALOG,updatedCatalog,catalogFile.sha);
  await githubWrite(REPORT,report);
  return report;
 }
