@@ -89,26 +89,35 @@
     if (ok) setTimeout(() => box.remove(), 3500);
   }
 
+
+  function openExcelUploader(){
+    if(document.getElementById('tthcExcelQuickOverlay'))return;
+    const overlay=document.createElement('div');
+    overlay.id='tthcExcelQuickOverlay';
+    overlay.setAttribute('role','dialog');
+    overlay.setAttribute('aria-modal','true');
+    overlay.setAttribute('aria-label','Cập nhật Excel và kiểm tra liên kết DVC quốc gia');
+    Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'100500',background:'rgba(12,22,36,.74)',backdropFilter:'blur(5px)',display:'flex',justifyContent:'center',alignItems:'center',padding:'12px'});
+    const shell=document.createElement('div');
+    Object.assign(shell.style,{position:'relative',width:'min(980px,100%)',height:'min(92vh,1000px)',background:'#fff',borderRadius:'18px',overflow:'hidden',boxShadow:'0 24px 80px rgba(0,0,0,.32)'});
+    const frame=document.createElement('iframe');
+    frame.title='Nhập danh mục TTHC bằng Excel';
+    frame.src='/quan-tri.html?quickImport=1';
+    Object.assign(frame.style,{border:'0',width:'100%',height:'100%',display:'block',background:'#fff'});
+    const close=document.createElement('button');
+    close.type='button';close.textContent='×';close.title='Đóng cập nhật Excel';
+    Object.assign(close.style,{position:'absolute',top:'9px',right:'12px',zIndex:'2',width:'38px',height:'38px',border:'0',borderRadius:'10px',background:'#ffe9e9',color:'#9b0b1b',fontSize:'29px',cursor:'pointer'});
+    close.onclick=()=>{overlay.remove();};
+    shell.appendChild(frame);shell.appendChild(close);overlay.appendChild(shell);
+    overlay.addEventListener('click',event=>{if(event.target===overlay)overlay.remove()});
+    document.body.appendChild(overlay);
+    close.focus();
+  }
+
   async function updateNow(button) {
-    const ok = await openGate('Cập nhật TTHC');
-    if (!ok) return;
-    const token = sessionStorage.getItem(TOKEN_KEY) || '';
-    button.disabled = true; button.textContent = '⟳ ĐANG CẬP NHẬT...';
-    showStatus('Đang lấy bộ thủ tục mới từ Google Sheets...');
-    try {
-      const response = await fetch(`${SHEET_API}?_t=${Date.now()}`, {cache:'no-store',headers:{Authorization:'Bearer '+token}});
-      const body = await response.json();
-      if (!response.ok || !body.ok || !Array.isArray(body.rows) || !body.rows.length) throw new Error(body.message || 'Nguồn dữ liệu không trả về danh sách TTHC.');
-      const full = Number(body.full || 0), partial = Number(body.partial || 0), total = Number(body.total || body.rows.length);
-      localStorage.setItem('tthc_sheet_data', JSON.stringify({source:SHEET_URL,total,full,partial,fetchedAt:body.fetchedAt||new Date().toISOString(),rows:body.rows}));
-      localStorage.setItem('tthc_last_sync', JSON.stringify({source:SHEET_URL,total,full,partial,fetchedAt:body.fetchedAt||new Date().toISOString()}));
-      showStatus(`Đã cập nhật ${total} TTHC từ bộ dữ liệu mới (${full} toàn trình, ${partial} một phần). Trang sẽ tải lại...`);
-      setTimeout(() => { const u = new URL(window.location.href); u.searchParams.set('_tthc_sync', Date.now().toString()); window.location.replace(u.toString()); }, 900);
-    } catch (error) {
-      console.error('Cập nhật TTHC thất bại:', error);
-      showStatus('Cập nhật thất bại: ' + (error?.message || error), false);
-      button.disabled = false; button.textContent = '⟳ CẬP NHẬT TTHC';
-    }
+    const ok=await openGate('Tải file Excel cập nhật TTHC');
+    if(!ok)return;
+    openExcelUploader();
   }
 
   function ensureUpdateButton() {
