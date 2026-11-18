@@ -40,6 +40,7 @@ async function githubWrite(path,obj){
  if(!r.ok){const x=await r.json().catch(()=>({}));throw new Error('Không lưu được kết quả đối chiếu: '+(x.message||r.status))}
 }
 function norm(s){return String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ')}
+function codeKey(v){return String(v??'').trim().toLowerCase().replace(/\s+/g,'')}
 function fields(item,keys){for(const key of keys){const v=item?.[key];if(v!==undefined&&v!==null&&String(v).trim())return String(v).trim()}return ''}
 function records(payload){
  if(Array.isArray(payload))return payload;
@@ -103,14 +104,14 @@ async function verify(){
  for(const item of remote){
   const code=fields(item,['code','ma','maTTHC','maThuTuc','formalityCode','procedureCode','formality_code','codeFormality']);
   if(!code)continue;
-  const k=norm(code).replace(/\s/g,'');
+  const k=codeKey(code);
   if(!byCode.has(k))byCode.set(k,[]);
   byCode.get(k).push(item);
  }
  if(!byCode.size)throw new Error('Phản hồi Cổng DVCQG không có mã TTHC để đối chiếu; không ghi nhận kết quả.');
  const results=local.map(item=>{
   const ma=String(item.ma??'').trim(),ten=String(item.ten??'').trim();
-  const options=byCode.get(norm(ma).replace(/\s/g,''))||[];
+  const options=byCode.get(codeKey(ma))||[];
   if(!options.length)return {ma,ten,status:finished?'chua_tim_thay':'chua_xac_minh',detail:'Không có mã tương ứng trong dữ liệu Cổng trả về.'};
   const match=options.find(x=>norm(fields(x,['name','ten','tenTTHC','procedureName','formalityName','title']))===norm(ten));
   const candidate=match||options[0];
