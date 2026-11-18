@@ -2,8 +2,8 @@ const API='/api/admin';
 const SYNC='/api/sync';
 let config=null,token=sessionStorage.getItem('tthc_admin_token')||'',catalogRows=[];
 const $=id=>document.getElementById(id);const set=(id,v)=>{if($(id))$(id).value=v??''};const get=id=>$(id)?.value||'';
-async function api(url,options={}){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),120000);try{const r=await fetch(url,{...options,credentials:'same-origin',cache:'no-store',signal:controller.signal,headers:{'Content-Type':'application/json',...(options.headers||{})},body:options.body===undefined?undefined:JSON.stringify(options.body)});let data={};try{data=await r.json()}catch{}if(!r.ok)throw new Error(data.message||('Lỗi máy chủ '+r.status));return data}catch(e){if(e.name==='AbortError')throw new Error('Máy chủ phản hồi quá lâu. Vui lòng thử lại.');throw e}finally{clearTimeout(timer)}}
-async function login(){try{const data=await api(API+'?action=login',{method:'POST',body:{username:get('loginUser').trim(),password:get('loginPass')}});token=data.token;sessionStorage.setItem('tthc_admin_token',token);$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig();await loadSyncStatus()}catch(e){$('loginMsg').textContent=e.message||'Không kết nối được máy chủ'}}
+async function api(url,options={}){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),url.includes('/api/verify-tthc')?75000:30000);try{const r=await fetch(url,{...options,credentials:'same-origin',cache:'no-store',signal:controller.signal,headers:{'Content-Type':'application/json',...(options.headers||{})},body:options.body===undefined?undefined:JSON.stringify(options.body)});let data={};try{data=await r.json()}catch{}if(!r.ok)throw new Error(data.message||('Lỗi máy chủ '+r.status));return data}catch(e){if(e.name==='AbortError')throw new Error('Máy chủ phản hồi quá lâu. Vui lòng thử lại.');throw e}finally{clearTimeout(timer)}}
+async function login(){try{const data=await api(API+'?action=login',{method:'POST',body:{username:get('loginUser').trim(),password:get('loginPass')}});token=data.token;sessionStorage.setItem('tthc_admin_token',token);$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig();await loadSyncStatus();await loadVerifyStatus()}catch(e){$('loginMsg').textContent=e.message||'Không kết nối được máy chủ'}}
 async function loadConfig(){config=await api(API);fillForm()}
 function fillForm(){const h=config.header||{},f=config.footer||{},d=config.display||{};set('title',h.title);set('subtitle',h.subtitle);set('slogan',h.slogan);set('titleColor',h.titleColor||'#c5161d');set('subtitleColor',h.subtitleColor||'#c5161d');set('sloganColor',h.sloganColor||'#c5161d');set('footerTitle',f.title);set('footerSubtitle',f.subtitle);set('sourceText',f.sourceText);set('sourceUrl',f.sourceUrl);set('author',f.author);set('unit',f.unit);set('columns',String(d.columns||4));$('showClock').checked=d.showClock!==false;$('showStats').checked=d.showStats!==false;set('logoUrl',h.logo);set('bgUrl',h.background);set('footerUrl',f.background);setPreview('logoPreview',h.logo);setPreview('bgPreview',h.background);setPreview('footerPreview',f.background)}
 function setPreview(id,url){const img=$(id);if(img){img.src=url||'';img.style.display=url?'block':'none'}}
@@ -16,22 +16,208 @@ async function uploadImage(fileId,urlId,previewId,statusId){const file=$(fileId)
 function bindImageUpload(fileId,urlId,previewId,statusId){const btn=$(`uploadBtn-${fileId}`);if(btn)btn.onclick=()=>uploadImage(fileId,urlId,previewId,statusId)}
 async function loadSyncStatus(){try{const m=await api(SYNC+'?action=status');$('syncTime').textContent=m.syncedAt?new Date(m.syncedAt).toLocaleString('vi-VN'):'Chưa có';$('syncTotal').textContent=m.total??'—';$('syncFull').textContent=m.full??'—';$('syncPartial').textContent=m.partial??'—';$('syncMessage').textContent=m.warning?'⚠ '+m.warning:(m.syncedAt?'✓ Dữ liệu đã được đồng bộ.':'Chưa thực hiện đồng bộ.')}catch(e){$('syncMessage').textContent='Không đọc được trạng thái đồng bộ.'}}
 async function syncNow(){const btn=$('syncBtn');try{btn.disabled=true;btn.textContent='⏳ ĐANG ĐỒNG BỘ...';$('syncMessage').textContent='Đang kết nối Cổng Dịch vụ công Quốc gia...';const m=await api(SYNC,{method:'POST',headers:{Authorization:'Bearer '+token}});$('syncTime').textContent=new Date(m.syncedAt).toLocaleString('vi-VN');$('syncTotal').textContent=m.total;$('syncFull').textContent=m.full;$('syncPartial').textContent=m.partial;$('syncMessage').textContent=`✓ Đồng bộ xong. Thêm ${m.added||0}, sửa ${m.changed||0}, bỏ ${m.removed||0}.`;if(m.warning)$('syncMessage').textContent='⚠ '+m.warning;alert(`Đã đồng bộ TTHC.\nTổng: ${m.total}\nThêm: ${m.added||0}\nThay đổi: ${m.changed||0}\nBãi bỏ: ${m.removed||0}`)}catch(e){$('syncMessage').textContent='Lỗi: '+e.message;alert('Lỗi đồng bộ: '+e.message)}finally{btn.disabled=false;btn.textContent='🔄 ĐỒNG BỘ NGAY'}}
-function loadSheetJS(){return new Promise(async(resolve,reject)=>{if(window.XLSX)return resolve();let error;for(const url of ['https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js','https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js','https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js']){try{await new Promise((ok,no)=>{const s=document.createElement('script');s.src=url;s.async=true;s.onload=()=>window.XLSX?ok():no(new Error('Không khởi tạo được Excel'));s.onerror=()=>no(new Error('Không tải được thư viện'));document.head.appendChild(s)});return resolve()}catch(e){error=e}}reject(new Error('Không tải được thư viện Excel từ các nguồn dự phòng. '+(error?.message||'')))})}
-function normKey(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'').trim()}
-const HEADER={ma:['mã tthc','ma tthc','mã thủ tục hành chính','mã thủ tục','code','ma','mathutuc'],ten:['tên tthc','ten tthc','tên thủ tục hành chính','tên thủ tục','procedurename','name','ten'],linhVuc:['lĩnh vực','linh vuc','categoryname','category'],coQuanChuTri:['cơ quan chủ trì','co quan chu tri','cơ quan ban hành','cơ quan công bố','departmentpromulgate'],coQuanThucHien:['tên cqth','tencqth','cơ quan thực hiện','co quan thuc hien','executingagencies','đơn vị thực hiện'],maCoQuan:['mã cqth','macqth','mã cơ quan','ma co quan','mã đơn vị','departmentcode'],cap:['cấp thực hiện','cap thuc hien','level','executionlevel'],loai:['loại thủ tục','loai thu tuc','proceduretype','type'],mucDo:['mức độ','muc do','servicetype'],mucDichVu:['tendvc','tên dvc','mức độ dịch vụ công','muc dich vu','dịch vụ công','servicelevel','onlinelevel'],maDVC:['madvc','mã dvc','mã dịch vụ công'],tenDVC:['tendvc','tên dvc','tên dịch vụ công'],maThucHien:['mã thực hiện','ma thuc hien','executioncode'],dvcqgId:['uuid','dvcqg id','dvcqgid','formalityuuid'],url:['citizen url','citizenurl','url','link','dvcqg url'],trangThai:['trạng thái','trang thai','status']};
-function normalizeRow(r){const keys=Object.keys(r||{}),find=aliases=>{const wanted=aliases.map(normKey),k=keys.find(x=>wanted.includes(normKey(x)));return k!==undefined?r[k]:''},row={};for(const k of Object.keys(HEADER))row[k]=find(HEADER[k]);return row}
-function decodeText(buffer){const b=new Uint8Array(buffer);if(b[0]===255&&b[1]===254)return new TextDecoder('utf-16le').decode(b.subarray(2));if(b[0]===254&&b[1]===255)return new TextDecoder('utf-16be').decode(b.subarray(2));if(b[0]===239&&b[1]===187&&b[2]===191)return new TextDecoder('utf-8').decode(b.subarray(3));let odd=0,even=0;for(let i=0;i<Math.min(b.length,400);i++)if(!b[i])i%2?odd++:even++;return new TextDecoder(odd>4?'utf-16le':even>4?'utf-16be':'utf-8').decode(b)}
-function parseDelimited(text){text=String(text||'').replace(/^\uFEFF/,'');const first=text.split(/\r?\n/,1)[0]||'';let delimiter=',',best=-1;for(const d of [',',';','\t']){let q=false,n=0;for(let i=0;i<first.length;i++){if(first[i]==='"'&&first[i+1]==='"'){i++;continue}if(first[i]==='"')q=!q;else if(first[i]===d&&!q)n++}if(n>best){best=n;delimiter=d}}const rows=[];let row=[],cell='',q=false;for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(q){if(c==='"'&&n==='"'){cell+='"';i++;continue}if(c==='"'){q=false;continue}cell+=c;continue}if(c==='"'){q=true;continue}if(c===delimiter){row.push(cell);cell='';continue}if(c==='\n'){row.push(cell.replace(/\r$/,''));if(row.some(x=>String(x).trim()))rows.push(row);row=[];cell='';continue}cell+=c}if(cell||row.length){row.push(cell.replace(/\r$/,''));if(row.some(x=>String(x).trim()))rows.push(row)}if(!rows.length)return[];const headers=rows[0].map(x=>String(x||'').trim());return rows.slice(1).map(v=>Object.fromEntries(headers.map((h,i)=>[h,v[i]??''])))}
-function sheetRows(ws){const matrix=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:true,blankrows:false});let at=-1;for(let i=0;i<Math.min(matrix.length,20);i++){const h=matrix[i].map(normKey);if(h.some(x=>HEADER.ma.map(normKey).includes(x))&&h.some(x=>HEADER.ten.map(normKey).includes(x))){at=i;break}}if(at<0)return[];const headers=matrix[at].map(x=>String(x||'').trim());return matrix.slice(at+1).filter(r=>r.some(v=>String(v??'').trim())).map(r=>Object.fromEntries(headers.map((h,i)=>[h,r[i]??''])))}
-async function readCatalogFile(file){const ext=file.name.toLowerCase().split('.').pop();if(ext==='json'){const x=JSON.parse(await file.text()),list=Array.isArray(x)?x:(x.procedures||x.data||x.rows||[]);if(!Array.isArray(list))throw new Error('JSON không chứa danh sách dạng mảng.');return list.map(normalizeRow)}if(ext==='csv'||ext==='txt'){const x=parseDelimited(decodeText(await file.arrayBuffer()));if(!x.length)throw new Error('Tệp không có dòng dữ liệu.');return x.map(normalizeRow)}await loadSheetJS();const wb=XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:false,raw:true});for(const name of wb.SheetNames){const rows=sheetRows(wb.Sheets[name]);if(rows.length)return rows.map(normalizeRow)}throw new Error('Không tìm thấy trang tính có cả cột Mã TTHC và Tên thủ tục.')}
-function analyzeRows(rows){const data=rows.filter(r=>Object.values(r).some(v=>String(v??'').trim())).map(r=>({...normalizeRow(r),_numericCode:typeof normalizeRow(r).ma==='number'})),seen=new Set(),dupes=[];for(const r of data){const c=String(r.ma??'').trim().toLocaleUpperCase('vi-VN');if(c&&seen.has(c))dupes.push(c);else if(c)seen.add(c)}return {rows:data,sourceTotal:data.length,validTotal:data.filter(r=>String(r.ma??'').trim()&&String(r.ten??'').trim()).length,missing:data.filter(r=>!String(r.ma??'').trim()||!String(r.ten??'').trim()).length,duplicates:[...new Set(dupes)],numericCodes:data.filter(r=>r._numericCode).length}}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-let catalogPreview=null,verifiedReview=null;
-function renderPreview(){const box=$('importPreview'),a=catalogPreview;if(!a){box.classList.add('hidden');return}box.classList.remove('hidden');let h='<b>Đã đọc '+a.sourceTotal+' dòng • '+a.validTotal+' dòng đủ mã và tên</b><br>Thiếu dữ liệu: '+a.missing+' • Mã trùng: '+a.duplicates.length+' • Mã dạng số cần lưu ý: '+a.numericCodes+'<br>';if(a.expected&&a.expected!==a.sourceTotal)h+='<span style="color:#955d00">⚠ Tổng dòng khác danh mục hiện tại ('+a.expected+').</span><br>';if(a.portal){h+='<hr><b>Kết quả Cổng DVCQG:</b> Khớp mã và tên '+a.portal.matched+' • Tên khác '+a.portal.nameChanged+' • Chưa tìm thấy '+a.portal.notFound;const bad=a.portal.results.filter(x=>x.status!=='Đã tìm thấy, khớp mã và tên').slice(0,12);if(bad.length)h+='<div style="max-height:220px;overflow:auto"><table style="width:100%;font-size:12px"><tr><th>Mã / Tên trong Excel</th><th>Kết quả Cổng</th></tr>'+bad.map(x=>'<tr><td>'+esc(x.ma)+' · '+esc(x.ten)+(x.portalName?'<br>Trên Cổng: '+esc(x.portalName):'')+'</td><td>'+esc(x.status)+'</td></tr>').join('')+'</table></div>'}box.innerHTML=h}
-async function previewCatalog(){const file=$('catalogFile').files[0];if(!file){alert('Hãy chọn file trước.');return}try{verifiedReview=null;$('importMessage').textContent='Đang đọc cấu trúc tệp...';catalogPreview=analyzeRows(await readCatalogFile(file));catalogPreview.expected=Number($('syncTotal').textContent)||null;catalogRows=catalogPreview.rows;renderPreview();$('importBtn').textContent='🔎 ĐỐI CHIẾU TRÊN CỔNG DVCQG';$('importMessage').textContent=catalogPreview.missing||catalogPreview.duplicates.length?'⚠ Sửa dòng thiếu dữ liệu hoặc mã trùng trước khi tiếp tục.':'✓ Tệp đọc được; sẵn sàng đối chiếu từng thủ tục.'}catch(e){$('importMessage').textContent='Lỗi đọc file: '+e.message}}
-async function importCatalog(){const file=$('catalogFile').files[0];if(!file){alert('Hãy chọn file trước.');return}if(!catalogPreview)await previewCatalog();if(!catalogPreview)return;const a=catalogPreview;if(a.missing||a.duplicates.length){$('importMessage').textContent='Đã dừng: sửa dòng thiếu mã/tên và mã trùng trong Excel rồi tải lại.';return}const btn=$('importBtn');try{btn.disabled=true;if(!a.portal){btn.textContent='⏳ ĐANG ĐỐI CHIẾU TỪNG MÃ...';$('importMessage').textContent='Đang lấy danh sách từ Cổng DVCQG. Danh mục hiện tại chưa bị thay đổi.';const v=await api(SYNC+'?action=verify-import',{method:'POST',headers:{Authorization:'Bearer '+token},timeoutMs:120000,body:{procedures:catalogRows.map(({_numericCode,...r})=>r),sourceName:file.name}});a.portal=v;verifiedReview=v;renderPreview();btn.textContent='✅ XÁC NHẬN CẬP NHẬT';$('importMessage').textContent='Đã rà soát tất cả '+v.uploadedTotal+' thủ tục. Hãy xem các dòng lệch trước khi xác nhận.';return}if(!verifiedReview||a.portal.reviewId!==verifiedReview.reviewId)throw new Error('Phiên rà soát hết hạn. Hãy đối chiếu lại tệp.');const diff=a.expected&&a.expected!==a.sourceTotal?'\nSố dòng Excel ('+a.sourceTotal+') khác danh mục hiện tại ('+a.expected+').':'';const bad=a.portal.nameChanged+a.portal.notFound;const warning=bad?'\nTên khác: '+a.portal.nameChanged+'; chưa tìm thấy trên Cổng: '+a.portal.notFound+'. Các dòng này sẽ được lưu để rà soát thủ công.':'';if(!confirm('Khớp cả mã và tên trên Cổng: '+a.portal.matched+'/'+a.portal.uploadedTotal+'.'+warning+diff+'\n\nXác nhận ghi danh mục mới lên website?'))return;btn.textContent='⏳ ĐANG CẬP NHẬT...';const m=await api(SYNC+'?action=commit-import',{method:'POST',headers:{Authorization:'Bearer '+token},body:{reviewId:verifiedReview.reviewId}});$('importMessage').textContent='✓ Đã cập nhật '+m.total+' thủ tục. Khớp '+m.portalMatched+'; tên khác '+m.portalNameChanged+'; chưa thấy '+m.portalNotFound+'.';$('syncTime').textContent=new Date(m.syncedAt).toLocaleString('vi-VN');$('syncTotal').textContent=m.total;$('syncFull').textContent=m.full;$('syncPartial').textContent=m.partial;verifiedReview=null;btn.textContent='✅ ĐÃ CẬP NHẬT';alert('Hoàn tất. Những dòng chưa khớp được gắn trạng thái rà soát trên dữ liệu.')}catch(e){$('importMessage').textContent='Lỗi: '+e.message+' Danh mục hiện tại được giữ nguyên nếu đối chiếu chưa hoàn tất.';btn.textContent=a.portal?'🔎 ĐỐI CHIẾU LẠI':'🔎 ĐỐI CHIẾU TRÊN CỔNG DVCQG';alert('Không cập nhật được: '+e.message)}finally{btn.disabled=false}}
-$('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});$('logoutBtn').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};$('saveBtn').onclick=save;$('syncBtn').onclick=syncNow;$('previewBtn').onclick=()=>window.open('/','_blank');$('importPreviewBtn').onclick=previewCatalog;$('importBtn').onclick=importCatalog;$('catalogFile').onchange=()=>{catalogRows=[];catalogPreview=null;verifiedReview=null;$('importPreview').classList.add('hidden');$('importMessage').textContent='';$('importBtn').textContent='🔎 ĐỐI CHIẾU TRÊN CỔNG DVCQG'};['logoUrl','bgUrl','footerUrl'].forEach(id=>document.addEventListener('input',e=>{if(e.target?.id===id){const map={logoUrl:'logoPreview',bgUrl:'bgPreview',footerUrl:'footerPreview'};previewUrl(id,map[id])}}));bindImageUpload('logoFile','logoUrl','logoPreview','logoStatus');bindImageUpload('bgFile','bgUrl','bgPreview','bgStatus');bindImageUpload('footerFile','footerUrl','footerPreview','footerStatus');
-if(token){(async()=>{try{$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig();await loadSyncStatus()}catch(e){sessionStorage.removeItem('tthc_admin_token');token='';$('loginScreen').classList.remove('hidden');$('adminApp').classList.add('hidden')}})()}
-$('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});$('logoutBtn').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};$('saveBtn').onclick=save;$('syncBtn').onclick=syncNow;$('previewBtn').onclick=()=>window.open('/','_blank');$('importPreviewBtn').onclick=previewCatalog;$('importBtn').onclick=importCatalog;$('catalogFile').onchange=()=>{catalogRows=[];$('importPreview').classList.add('hidden');$('importMessage').textContent=''};bindImageUpload('logoFile','logoUrl','logoPreview','logoStatus');bindImageUpload('bgFile','bgUrl','bgPreview','bgStatus');bindImageUpload('footerFile','footerUrl','footerPreview','footerStatus');
-if(token){(async()=>{try{$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig();await loadSyncStatus()}catch(e){sessionStorage.removeItem('tthc_admin_token');token='';$('loginScreen').classList.remove('hidden');$('adminApp').classList.add('hidden')}})()}
 
+function loadSheetJS(){
+ if(window.XLSX)return Promise.resolve();
+ const urls=['https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'];
+ return new Promise((resolve,reject)=>{
+  let i=0;function attempt(){
+   if(i>=urls.length)return reject(new Error('Không tải được thư viện đọc Excel. Kiểm tra kết nối mạng hoặc chuyển sang CSV.'));
+   const script=document.createElement('script');script.src=urls[i++];script.onload=()=>window.XLSX?resolve():attempt();script.onerror=attempt;document.head.appendChild(script);
+  }attempt();
+ });
+}
+function normKey(value){
+ return String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase().replace(/[^a-z0-9]+/g,'').trim();
+}
+function normalizeRow(obj){
+ const names=Object.keys(obj||{});
+ const field=aliases=>{const opts=new Set(aliases.map(normKey));const found=names.find(key=>opts.has(normKey(key)));return found===undefined?'':String(obj[found]??'').trim()};
+ return {
+  ma:field(['Mã TTHC','Mã số TTHC','MaTTHC','Mã thủ tục hành chính','Mã thủ tục','code','ma','MaThuTuc','procedureCode']),
+  ten:field(['Tên TTHC','TenTTHC','Tên thủ tục hành chính','Tên thủ tục','procedureName','name','ten']),
+  linhVuc:field(['Lĩnh vực','LinhVuc','categoryName','category']),
+  coQuanChuTri:field(['Cơ quan chủ trì','Cơ quan ban hành','CoQuanChuTri','departmentPromulgate']),
+  coQuanThucHien:field(['Cơ quan thực hiện','Tên CQTH','TenCQTH','Đơn vị thực hiện','CoQuanThucHien','executingAgencies']),
+  maCoQuan:field(['Mã cơ quan','Mã CQTH','MaCQTH','departmentCode']),
+  cap:field(['Cấp thực hiện','CapThucHien','executionLevel','level']),
+  loai:field(['Loại thủ tục','LoaiTTHC','procedureType','type']),
+  mucDo:field(['Mức độ','MucDo','serviceType']),
+  mucDichVu:field(['Mức độ dịch vụ công','Dịch vụ công','MucDichVu','DVC','serviceLevel','onlineLevel']),
+  maThucHien:field(['Mã thực hiện','MaThucHien','executionCode']),
+  dvcqgId:field(['UUID','DVCQG ID','DVCQGId','formalityUuid']),
+  trangThai:field(['Trạng thái','TrangThai','status']),
+  url:field(['Đường dẫn DVCQG','Link DVCQG','CitizenURL','url','Link'])
+ };
+}
+function isHeaderRow(values){
+ const keys=new Set(values.map(normKey));
+ const code=['Mã TTHC','Mã số TTHC','MaTTHC','Mã thủ tục hành chính','Mã thủ tục','code','ma','MaThuTuc'].some(v=>keys.has(normKey(v)));
+ const title=['Tên TTHC','TenTTHC','Tên thủ tục hành chính','Tên thủ tục','procedureName','name','ten'].some(v=>keys.has(normKey(v)));
+ return code&&title;
+}
+function rowsFromGrid(grid){
+ let headerAt=-1;
+ for(let i=0;i<Math.min(35,grid.length);i++){if(isHeaderRow(grid[i]||[])){headerAt=i;break}}
+ if(headerAt<0)return [];
+ const headers=grid[headerAt].map(x=>String(x??'').trim());
+ return grid.slice(headerAt+1).filter(row=>Array.isArray(row)&&row.some(v=>String(v??'').trim())).map(row=>{
+  const obj={};headers.forEach((key,i)=>{if(key)obj[key]=row[i]??''});return normalizeRow(obj);
+ });
+}
+function csvToRows(raw){
+ const text=String(raw).replace(/^\uFEFF/,'');
+ const first=text.split(/\r?\n/,1)[0]||'';
+ const delimiter=(first.match(/;/g)||[]).length>(first.match(/,/g)||[]).length?';':',';
+ const grid=[],row=[];let cell='',quoted=false;
+ for(let i=0;i<text.length;i++){
+  const c=text[i];
+  if(c==='"'&&quoted&&text[i+1]==='"'){cell+='"';i++;continue}
+  if(c==='"'){quoted=!quoted;continue}
+  if(!quoted&&c===delimiter){row.push(cell);cell='';continue}
+  if(!quoted&&(c==='\r'||c==='\n')){
+   if(c==='\r'&&text[i+1]==='\n')i++;
+   row.push(cell);grid.push(row.splice(0));cell='';continue;
+  }cell+=c;
+ }
+ if(cell||row.length){row.push(cell);grid.push(row)}
+ return rowsFromGrid(grid);
+}
+async function readCatalogFile(file){
+ if(file.size>15*1024*1024)throw new Error('File vượt 15 MB. Hãy loại các sheet/ảnh không cần thiết.');
+ const extension=(file.name.split('.').pop()||'').toLowerCase();
+ if(extension==='json'){
+  const obj=JSON.parse(await file.text());
+  const rows=Array.isArray(obj)?obj:obj.procedures||obj.rows||(Array.isArray(obj.data)?obj.data:obj.data?.procedures);
+  if(!Array.isArray(rows))throw new Error('JSON không có mảng procedures/rows/data.');
+  return rows.map(normalizeRow);
+ }
+ if(extension==='csv')return csvToRows(await file.text());
+ if(extension!=='xls'&&extension!=='xlsx')throw new Error('Chỉ hỗ trợ .xls, .xlsx, .csv hoặc .json.');
+ await loadSheetJS();
+ let workbook;
+ try{workbook=XLSX.read(await file.arrayBuffer(),{type:'array',cellText:true,cellDates:false})}
+ catch(e){throw new Error('File Excel không mở được. Có thể tệp bị hỏng hoặc bị đặt sai đuôi.')}
+ const all=[];
+ for(const sheetName of workbook.SheetNames){
+  const grid=XLSX.utils.sheet_to_json(workbook.Sheets[sheetName],{header:1,defval:'',raw:false,blankrows:false});
+  all.push(...rowsFromGrid(grid));
+ }
+ if(!all.length)throw new Error('Không tìm thấy dòng tiêu đề có cả MÃ TTHC và TÊN TTHC trên các sheet.');
+ return all;
+}
+function analyzeRows(rows){
+ const valid=[],errors=[],codes=new Set();
+ rows.forEach((r,index)=>{
+  const ma=String(r.ma??'').trim(),ten=String(r.ten??'').trim();
+  if(!ma&&!ten)return;
+  if(!ma||!ten){errors.push('Dòng dữ liệu '+(index+1)+': thiếu '+(!ma?'mã':'tên')+' thủ tục.');return}
+  if(codes.has(ma)){errors.push('Mã trùng: '+ma+' (dòng '+(index+1)+').');return}
+  codes.add(ma);valid.push({...r,ma,ten});
+ });
+ if(valid.length<20)errors.push('Bộ danh mục chỉ có '+valid.length+' thủ tục hợp lệ (cần tối thiểu 20).');
+ if(valid.length>5000)errors.push('Bộ danh mục vượt quá giới hạn 5.000 thủ tục.');
+ return {valid,errors};
+}
+function showImportPreview(rows){
+ const check=analyzeRows(rows);
+ catalogRows=check.errors.length?[]:check.valid;
+ const box=$('importPreview');box.classList.remove('hidden');box.replaceChildren();
+ function line(value){const p=document.createElement('div');p.textContent=value;box.appendChild(p)}
+ line('Tổng số thủ tục đọc được: '+check.valid.length);
+ line('Mã mẫu: '+check.valid.slice(0,6).map(x=>x.ma).join(', '));
+ if(check.errors.length){
+  line('PHÁT HIỆN '+check.errors.length+' LỖI - CHƯA CHO PHÉP CẬP NHẬT');
+  check.errors.slice(0,20).forEach(x=>line('⚠ '+x));
+  if(check.errors.length>20)line('... và '+(check.errors.length-20)+' lỗi khác.');
+ }else line('✓ Mã duy nhất, có tên và đủ số dòng. Có thể tải lên.');
+ return check;
+}
+async function previewCatalog(){
+ const file=$('catalogFile').files?.[0];
+ if(!file){alert('Hãy chọn file danh mục TTHC.');return}
+ try{
+  $('importMessage').textContent='Đang phân tích các sheet và kiểm tra mã TTHC...';
+  const rows=await readCatalogFile(file),check=showImportPreview(rows);
+  $('importMessage').textContent=check.errors.length?'⚠ File có lỗi, chưa cập nhật danh mục.':'✓ Đã kiểm tra file. Sẵn sàng cập nhật '+check.valid.length+' thủ tục.';
+ }catch(e){catalogRows=[];$('importMessage').textContent='Lỗi đọc file: '+e.message}
+}
+let verifyResult=null;
+function renderVerification(report){
+ const box=$('verifyMessage'),details=$('verifyIssues');
+ if(!box||!details)return;
+ details.replaceChildren();
+ if(!report||!report.results){box.textContent='Chưa có báo cáo đối chiếu danh mục vừa cập nhật.';return}
+ verifyResult=report;
+ const c=report.counts||{};
+ box.textContent='Kết quả '+new Date(report.verifiedAt).toLocaleString('vi-VN')+
+  ': '+(c.khop||0)+' khớp mã và tên; '+(c.khop_ma||0)+' khớp mã (chưa có tên đối chiếu); '+
+  (c.khac_ten||0)+' khác tên; '+(c.chua_tim_thay||0)+' chưa tìm thấy; '+
+  (c.chua_xac_minh||0)+' chưa xác minh. Đã xử lý '+report.total+' thủ tục.'+
+  (report.warning?' ⚠ '+report.warning:'');
+ const issues=report.results.filter(x=>x.status!=='khop'&&x.status!=='khop_ma');
+ if(!issues.length){details.textContent='✓ Không phát hiện sai khác trong các thủ tục đã đối chiếu.';return}
+ const table=document.createElement('table');table.className='verify-table';
+ const header=document.createElement('tr');['Mã TTHC','Tên trong Excel','Trạng thái','Tên trên Cổng DVCQG'].forEach(s=>{const th=document.createElement('th');th.textContent=s;header.appendChild(th)});table.appendChild(header);
+ issues.slice(0,40).forEach(x=>{
+  const tr=document.createElement('tr');
+  [x.ma,x.ten,x.status,x.tenDVCQG||'—'].forEach(s=>{const td=document.createElement('td');td.textContent=s;tr.appendChild(td)});
+  table.appendChild(tr);
+ });details.appendChild(table);
+ if(issues.length>40){const p=document.createElement('p');p.textContent='Hiển thị 40/'+issues.length+' trường hợp cần xem xét. Tải CSV để xem toàn bộ.';details.appendChild(p)}
+}
+async function loadVerifyStatus(){
+ try{const r=await api('/api/verify-tthc');if(r.verified)renderVerification(r);else if($('verifyMessage'))$('verifyMessage').textContent=r.message||'Chưa có báo cáo.'}
+ catch(e){if($('verifyMessage'))$('verifyMessage').textContent='Không đọc được báo cáo đối chiếu: '+e.message}
+}
+async function verifyCatalog(){
+ const btn=$('verifyBtn');if(btn)btn.disabled=true;
+ const status=$('verifyMessage');if(status)status.textContent='⏳ Đang tự động đối chiếu danh mục mới với Cổng DVCQG. Không đóng tab khi kiểm tra...';
+ try{
+  const report=await api('/api/verify-tthc',{method:'POST',headers:{Authorization:'Bearer '+token}});
+  renderVerification(report);
+  if(status&&report.complete)status.textContent+=' ✓ Đã nhận hết các trang dữ liệu do Cổng trả về.';
+  return report;
+ }catch(e){
+  if(status)status.textContent='⚠ Chưa thể đối chiếu tự động: '+e.message+' Danh mục Excel vừa nhập vẫn được giữ nguyên. Có thể bấm KIỂM TRA LẠI.';
+  return null;
+ }finally{if(btn)btn.disabled=false}
+}
+function downloadVerificationCSV(){
+ if(!verifyResult?.results?.length){alert('Chưa có báo cáo để tải.');return}
+ const heads=['Mã TTHC','Tên Excel','Kết quả','Tên DVCQG','UUID DVCQG','URL DVCQG'];
+ const esc=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+ const lines=[heads,...verifyResult.results.map(x=>[x.ma,x.ten,x.status,x.tenDVCQG,x.dvcqgId,x.url])].map(r=>r.map(esc).join(','));
+ const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+ const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='Doi_chieu_TTHC_DVCQG_'+new Date().toISOString().slice(0,10)+'.csv';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);
+}
+async function importCatalog(){
+ const file=$('catalogFile').files?.[0];
+ if(!file){alert('Hãy chọn file Excel TTHC mới.');return}
+ const btn=$('importBtn');
+ try{
+  if(!catalogRows.length){const rows=await readCatalogFile(file);const result=showImportPreview(rows);if(result.errors.length)throw new Error('File có '+result.errors.length+' lỗi. Hãy kiểm tra lại trước khi cập nhật.')}
+  if(!confirm('Thay thế danh mục đang dùng bằng '+catalogRows.length+' TTHC từ file '+file.name+'?\n\nHệ thống sẽ lưu lịch sử trên GitHub và tự đối chiếu toàn bộ mã với Cổng DVCQG.'))return;
+  btn.disabled=true;btn.textContent='⏳ ĐANG CẬP NHẬT...';
+  $('importMessage').textContent='Đang lưu toàn bộ danh mục lên kho website...';
+  const body={procedures:catalogRows,sourceName:'Quản trị viên tải lên: '+file.name};
+  let result;
+  try{result=await api(SYNC+'?action=import',{method:'POST',headers:{Authorization:'Bearer '+token},body})}
+  catch(e){
+   if(String(e.message).includes('>25%')&&confirm('File loại hơn 25% thủ tục cũ. Bạn chắc chắn muốn THAY TOÀN BỘ danh mục?')){
+    body.confirmReplace=true;
+    result=await api(SYNC+'?action=import',{method:'POST',headers:{Authorization:'Bearer '+token},body});
+   }else throw e;
+  }
+  $('importMessage').textContent='✓ Đã lưu '+result.total+' thủ tục. Thêm '+result.added+', sửa '+result.changed+', bỏ '+result.removed+'. Đang đối chiếu DVCQG...';
+  $('syncTotal').textContent=result.total;$('syncFull').textContent=result.full;$('syncPartial').textContent=result.partial;
+  $('syncTime').textContent=new Date(result.syncedAt).toLocaleString('vi-VN');
+  catalogRows=[];verifyResult=null;
+  await verifyCatalog();
+ }catch(e){
+  $('importMessage').textContent='Lỗi cập nhật: '+e.message;
+ }finally{btn.disabled=false;btn.textContent='📥 ĐẨY DANH MỤC MỚI'}
+}
+
+$('loginBtn').onclick=login;$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()});$('logoutBtn').onclick=()=>{sessionStorage.removeItem('tthc_admin_token');location.reload()};$('saveBtn').onclick=save;$('syncBtn').onclick=syncNow;$('previewBtn').onclick=()=>window.open('/','_blank');$('importPreviewBtn').onclick=previewCatalog;$('importBtn').onclick=importCatalog;if($('verifyBtn'))$('verifyBtn').onclick=verifyCatalog;if($('verifyExportBtn'))$('verifyExportBtn').onclick=downloadVerificationCSV;$('catalogFile').onchange=()=>{catalogRows=[];$('importPreview').classList.add('hidden');$('importMessage').textContent=''};bindImageUpload('logoFile','logoUrl','logoPreview','logoStatus');bindImageUpload('bgFile','bgUrl','bgPreview','bgStatus');bindImageUpload('footerFile','footerUrl','footerPreview','footerStatus');
+if(token){(async()=>{try{$('loginScreen').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadConfig();await loadSyncStatus()}catch(e){sessionStorage.removeItem('tthc_admin_token');token='';$('loginScreen').classList.remove('hidden');$('adminApp').classList.add('hidden')}})()}
