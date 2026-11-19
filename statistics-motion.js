@@ -7,6 +7,7 @@
   const counters = [...section.querySelectorAll('.stat-number')].map(element => ({
     element, target: null, started: false
   }));
+  let sectionVisible = false;
 
   function readTarget(element) {
     const digits = String(element.textContent || '').replace(/[^0-9]/g, '');
@@ -41,8 +42,9 @@
 
   const visibility = new IntersectionObserver(entries => {
     if (entries.some(entry => entry.isIntersecting)) {
+      sectionVisible = true;
       counters.forEach(run);
-      visibility.disconnect();
+      if (counters.every(counter => counter.started)) visibility.disconnect();
     }
   }, { threshold: 0.2 });
   visibility.observe(section);
@@ -53,7 +55,10 @@
       const next = readTarget(counter.element);
       if (next !== null && next > 0) {
         counter.target = next;
-        if (reduceMotion) run(counter);
+        if (reduceMotion || sectionVisible) {
+          run(counter);
+          if (counters.every(item => item.started)) visibility.disconnect();
+        }
       }
     }
   });
