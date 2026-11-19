@@ -167,3 +167,27 @@ body { font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; }
  .main #fieldContainer>.field-card{min-height:205px!important}
 }
 @media(prefers-reduced-motion:reduce){.nav-inner>button,.nav-inner>a,.main #fieldContainer>.field-card{transition:none!important}}
+
+
+/* Khối thống kê nhẹ, rõ và dễ quét như cổng dịch vụ hiện đại */
+body .statistics>.stat-card {
+  background:linear-gradient(145deg,#fff 0%,#fbfdff 100%)!important;
+  border:1px solid #e0e7ef!important;
+  border-top:4px solid #b5121b!important;
+  box-shadow:0 8px 22px rgba(25,44,69,.07)!important;
+}
+body .statistics>.stat-card:nth-child(2){border-top-color:#2763a4!important}
+body .statistics>.stat-card:nth-child(3){border-top-color:#14805b!important}
+body .statistics>.stat-card .stat-number{color:#18304f!important}
+body .statistics>.stat-card .stat-label{color:#53657c!important}
+body .statistics>.stat-card.stat-card-clickable::after {
+  background:#fef2f2!important;color:#a90e18!important;
+  border:1px solid #f5d4d5!important;border-radius:999px!important;
+  box-shadow:none!important;
+}
+body .statistics>.stat-card:nth-child(2).stat-card-clickable::after {
+  background:#edf5ff!important;color:#205b9c!important;border-color:#d8e8fb!important;
+}
+body .statistics>.stat-card:nth-child(3).stat-card-clickable::after {
+  background:#eaf7f0!important;color:#16734f!important;border-color:#d2ecdd!important;
+}
