@@ -15,7 +15,7 @@ html,body{background:#f3f6fa!important;color:var(--portal-ink);font-family:Inter
 .header-title p{font-family:Inter,system-ui,sans-serif!important;font-size:25px!important;line-height:1.15!important;color:#c91d2b!important;font-weight:850!important}
 .header-slogan{display:none!important}
 .nav{position:relative!important;top:auto!important;z-index:10;padding:0 22px!important;background:#fff!important;border:0!important;box-shadow:none!important}
-.nav-inner{max-width:1380px!important;min-height:66px;display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:8px!important;align-items:center!important;margin:auto!important}
+.nav-inner{max-width:1380px!important;min-height:66px;display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))!important;gap:8px!important;align-items:center!important;margin:auto!important}
 .nav-inner>.home-btn,.nav-inner>.admin-link,.nav-inner>.config-btn,.nav-inner>.pakn-btn,.nav-inner>.stats-btn,.nav-inner>.deep-refresh-btn,.nav-inner>.update-tthc-btn,.nav-inner>.support-btn{min-height:42px!important;padding:8px 10px!important;border:0!important;border-radius:10px!important;background:transparent!important;color:#26354a!important;box-shadow:none!important;font-size:13px!important;font-weight:750!important;text-decoration:none!important;white-space:normal!important}
 .nav-inner>.home-btn:hover,.nav-inner>.admin-link:hover,.nav-inner>.config-btn:hover,.nav-inner>.pakn-btn:hover,.nav-inner>.stats-btn:hover,.nav-inner>.deep-refresh-btn:hover{background:#f5f7fa!important;color:var(--portal-red)!important;transform:none!important}
 .nav-inner>.update-tthc-btn{background:var(--portal-red)!important;color:#fff!important;border-radius:999px!important;box-shadow:0 4px 10px #c91d2b25!important}
