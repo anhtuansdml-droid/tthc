@@ -85,3 +85,5 @@ body .nav .nav-inner>.home-btn,body .nav .nav-inner>.admin-link,body .nav .nav-i
 @media(max-width:1000px){.ml-service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ml-service-card{min-height:165px}}
 @media(max-width:700px){body .header .header-inner{height:76px!important;min-height:76px!important;max-height:76px!important;padding:7px 13px!important}.ml-section-heading{display:block}.ml-section-heading span{display:block;margin-top:6px}.ml-services,.ml-levels{padding:25px 13px}.ml-service-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ml-service-card{min-height:145px;padding:12px 8px}.ml-service-icon{width:54px;height:54px;font-size:29px;border-radius:15px}.ml-service-card strong{font-size:14px}.ml-service-card small{font-size:12px}.ml-level-grid{grid-template-columns:1fr;gap:10px}.ml-level-card{min-height:155px;padding:18px 20px}}
 @media(prefers-reduced-motion:reduce){.ml-service-card{transition:none}.ml-service-card:hover{transform:none}}
+
+@media(max-width:700px){body .nav .nav-inner{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important}body .nav .nav-inner>.home-btn{grid-column:1/-1!important}}
