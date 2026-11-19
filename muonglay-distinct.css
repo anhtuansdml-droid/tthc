@@ -180,3 +180,9 @@ body .main .section-title h2,.ml-section-heading h2{color:#a61e2a!important}
  body .nav .nav-inner>*{flex:0 0 auto!important;width:max-content!important;max-width:190px!important;min-width:0!important;white-space:nowrap!important}
  body .nav .nav-inner>.update-tthc-btn{max-width:175px!important}
 }
+
+@media(min-width:901px){
+ body .nav .nav-inner{display:grid!important;grid-template-columns:repeat(8,max-content)!important;justify-content:center!important;align-items:center!important;gap:8px!important;overflow:visible!important}
+ body .nav .nav-inner>.admin-link{width:max-content!important;max-width:170px!important}
+ body .nav .nav-inner>button[id*="update" i],body .nav .nav-inner>a[id*="update" i],body .nav .nav-inner>button[class*="update" i],body .nav .nav-inner>a[class*="update" i],body .nav .nav-inner>.deep-refresh-btn{flex:none!important;width:max-content!important;min-width:0!important;max-width:180px!important;padding:8px 12px!important}
+}
