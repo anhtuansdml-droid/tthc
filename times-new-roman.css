@@ -1,0 +1,2 @@
+/* Thống nhất Times New Roman trên toàn trang, gồm biểu mẫu và nút. */
+html,body,*,*::before,*::after,button,input,select,textarea{font-family:"Times New Roman",Times,serif!important}
