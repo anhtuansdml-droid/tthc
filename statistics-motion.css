@@ -86,3 +86,26 @@ html body .statistics > .stat-card:focus-visible .stat-label {
   opacity: 1 !important;
   filter: none !important;
 }
+
+
+/* Fix the pale hover override on the two linked counters in reference-portal.css. */
+html body .statistics > .stat-card:nth-child(2):hover,
+html body .statistics > .stat-card:nth-child(3):hover,
+html body .statistics > .stat-card:nth-child(2):focus-visible,
+html body .statistics > .stat-card:nth-child(3):focus-visible {
+  background: linear-gradient(112deg,#b8101c 0%,#c91523 48%,#b70f1b 100%) !important;
+  background-color: #bd1520 !important;
+  background-image: linear-gradient(112deg,#b8101c 0%,#c91523 48%,#b70f1b 100%) !important;
+  color: #fff !important;
+}
+html body .statistics > .stat-card:nth-child(2):hover .stat-number,
+html body .statistics > .stat-card:nth-child(2):hover .stat-label,
+html body .statistics > .stat-card:nth-child(3):hover .stat-number,
+html body .statistics > .stat-card:nth-child(3):hover .stat-label,
+html body .statistics > .stat-card:nth-child(2):focus-visible .stat-number,
+html body .statistics > .stat-card:nth-child(2):focus-visible .stat-label,
+html body .statistics > .stat-card:nth-child(3):focus-visible .stat-number,
+html body .statistics > .stat-card:nth-child(3):focus-visible .stat-label {
+  color: #fff !important;
+  opacity: 1 !important;
+}
