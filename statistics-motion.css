@@ -1,0 +1,53 @@
+/* Count-up treatment for the three public summary figures */
+.statistics{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:linear-gradient(112deg,#b8101c 0%,#c91523 48%,#b70f1b 100%);
+}
+.statistics::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:-45% auto -45% -28%;
+  width:24%;
+  transform:skewX(-22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+  animation:mlStatsSweep 6.5s ease-in-out 1.2s infinite;
+  pointer-events:none;
+}
+.statistics .stat-card{
+  position:relative;
+  transition:transform .28s ease,filter .28s ease;
+}
+.statistics .stat-card:hover{
+  transform:translateY(-3px);
+  filter:drop-shadow(0 8px 16px rgba(93,0,8,.2));
+}
+.statistics .stat-number{
+  display:inline-block;
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 5px 20px rgba(86,0,8,.22);
+  will-change:contents;
+}
+.statistics .stat-number.is-counting{
+  animation:mlStatsArrive .72s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes mlStatsSweep{
+  0%,18%{left:-28%;opacity:0}
+  28%{opacity:1}
+  52%,100%{left:115%;opacity:0}
+}
+@keyframes mlStatsArrive{
+  0%{transform:translateY(10px) scale(.94);filter:brightness(1.35);opacity:.45}
+  70%{transform:translateY(-2px) scale(1.025);filter:brightness(1.12);opacity:1}
+  100%{transform:translateY(0) scale(1);filter:brightness(1);opacity:1}
+}
+@media(max-width:700px){
+  .statistics .stat-card:hover{transform:none;filter:none}
+  .statistics::before{animation-duration:8s}
+}
+@media(prefers-reduced-motion:reduce){
+  .statistics::before{animation:none}
+  .statistics .stat-card,.statistics .stat-number.is-counting{animation:none;transition:none}
+}
