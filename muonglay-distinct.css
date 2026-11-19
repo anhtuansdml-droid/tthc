@@ -174,3 +174,9 @@ body .main .section-title h2,.ml-section-heading h2{color:#a61e2a!important}
 @media(min-width:701px) and (max-width:1050px){
  body .nav .nav-inner{flex-wrap:wrap!important;overflow-x:visible!important}
 }
+
+@media(min-width:901px){
+ body .nav .nav-inner{display:flex!important;flex-wrap:nowrap!important;justify-content:center!important;gap:7px!important;overflow:visible!important}
+ body .nav .nav-inner>*{flex:0 0 auto!important;width:max-content!important;max-width:190px!important;min-width:0!important;white-space:nowrap!important}
+ body .nav .nav-inner>.update-tthc-btn{max-width:175px!important}
+}
