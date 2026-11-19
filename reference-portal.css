@@ -61,7 +61,7 @@ html body .header .header-title>div:last-child{display:block!important;width:aut
 html body .header .header-title h1{font:800 13px/1.2 Inter,system-ui,sans-serif!important;letter-spacing:.25px!important;color:#d33538!important;white-space:normal!important;text-shadow:none!important;-webkit-text-stroke:0 transparent!important}
 html body .header .header-title p{font:850 25px/1.15 Inter,system-ui,sans-serif!important;color:#c91d2b!important;margin:0!important;white-space:normal!important;text-shadow:none!important;-webkit-text-stroke:0 transparent!important}
 html body .header .header-slogan{display:none!important}
-body .nav .nav-inner{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;min-height:60px!important;max-width:1380px!important;gap:8px!important;padding:5px 0!important}
+body .nav .nav-inner{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))!important;min-height:60px!important;max-width:1380px!important;gap:8px!important;padding:5px 0!important}
 body .nav .nav-inner>.home-btn,body .nav .nav-inner>.admin-link,body .nav .nav-inner>.config-btn,body .nav .nav-inner>.pakn-btn,body .nav .nav-inner>.stats-btn,body .nav .nav-inner>.deep-refresh-btn,body .nav .nav-inner>.update-tthc-btn,body .nav .nav-inner>.support-btn{min-height:42px!important;height:auto!important;border-radius:10px!important;padding:8px 9px!important;font-size:12px!important}
 .ml-services,.ml-levels{max-width:1380px;margin:0 auto;padding:34px 22px}
 .ml-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 17px}
