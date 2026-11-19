@@ -118,3 +118,5 @@ body .nav .nav-inner>.home-btn,body .nav .nav-inner>.admin-link,body .nav .nav-i
 .ml-workdays{margin:2px 0;color:#536176;font-size:14px}
 @media(max-width:900px){.ml-info-panels{grid-template-columns:repeat(2,minmax(0,1fr))}.ml-hours-panel{grid-column:1/-1;min-height:0}.ml-hours-panel .ml-info-content{padding-bottom:12px}}
 @media(max-width:600px){.ml-info-panels{grid-template-columns:1fr;gap:12px;margin:22px auto;padding:0 14px}.ml-info-panel{min-height:0}.ml-info-panel>header{min-height:54px;padding:10px 13px}.ml-info-content{padding:10px 13px 0}.ml-panel-footer{margin-left:-13px;margin-right:-13px}.ml-hours-panel{grid-column:auto}.ml-hours-row{grid-template-columns:90px 1fr}.ml-info-panel>header h2{font-size:14px}}
+
+.ml-open-status.is-closed{background:#f3f5f8;color:#617084}.ml-open-status.is-closed>span{background:#9aa5b3}
