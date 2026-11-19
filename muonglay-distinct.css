@@ -306,3 +306,23 @@ body .statistics>.stat-card:nth-child(3){background:radial-gradient(circle at 88
    linear-gradient(120deg,#a91625 0%,#c92332 65%,#ad1827 100%)!important;
    background-size:100% 100%!important}
 }
+
+/* Widen the landscape photo and align hero copy closer to the left edge. */
+@media(min-width:901px){
+ .ml-hero-copy{width:57%!important;box-sizing:border-box!important;margin-left:0!important;padding-left:clamp(30px,3vw,44px)!important;padding-right:26px!important}
+ .ml-hero .header-pano{width:42%!important;right:20px!important}
+ .ml-hero-kicker{width:max-content!important;max-width:none!important;white-space:nowrap!important;font-size:11.5px!important;letter-spacing:.35px!important;padding-left:10px!important;padding-right:10px!important}
+}
+@media(min-width:1200px){
+ .ml-hero .header-pano{width:44%!important}
+ .ml-hero-copy{width:55%!important;padding-left:clamp(30px,3vw,44px)!important}
+}
+@media(min-width:701px) and (max-width:900px){
+ .ml-hero .header-pano{width:38%!important}
+ .ml-hero-copy{width:60%!important;box-sizing:border-box!important;padding-left:28px!important;padding-right:20px!important}
+ .ml-hero-kicker{max-width:100%!important;white-space:normal!important;letter-spacing:.25px!important}
+}
+@media(max-width:700px){
+ .ml-hero-copy{width:100%!important;box-sizing:border-box!important;padding-left:17px!important;padding-right:17px!important}
+ .ml-hero-kicker{max-width:100%!important;white-space:normal!important;letter-spacing:.35px!important}
+}
