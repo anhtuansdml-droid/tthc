@@ -244,3 +244,19 @@ body .statistics>.stat-card .stat-number{font-size:clamp(39px,3.3vw,49px)!import
 @media(prefers-reduced-motion:reduce){
  .ml-hero,.ml-hero::before,.ml-hero::after,.ml-hero .header-pano,.ml-hero .header-pano::before,.ml-hero .header-pano::after,body .nav .nav-inner>*,body .statistics>.stat-card,.ml-service-card,.ml-service-icon,.ml-level-card{animation:none!important;transition:none!important;transform:none!important}
 }
+
+/* Prevent hero copy from overflowing the crimson panel at any viewport width. */
+.ml-hero{height:auto!important;min-height:500px!important}
+.ml-hero-copy{height:auto!important;min-height:500px!important;box-sizing:border-box!important;padding-top:44px!important;padding-bottom:44px!important;justify-content:center!important}
+.ml-hero-copy h2{max-width:100%!important;overflow-wrap:anywhere!important}
+.ml-hero-copy>p{max-width:100%!important}
+@media(max-width:900px){
+ .ml-hero{min-height:520px!important}
+ .ml-hero-copy{min-height:520px!important;box-sizing:border-box!important;padding-top:38px!important;padding-bottom:38px!important}
+}
+@media(max-width:700px){
+ .ml-hero{min-height:560px!important}
+ .ml-hero-copy{min-height:560px!important;padding:30px 17px 104px!important;box-sizing:border-box!important}
+ .ml-hero-copy h2{max-width:100%!important}
+ .ml-quick{max-width:100%!important}
+}
