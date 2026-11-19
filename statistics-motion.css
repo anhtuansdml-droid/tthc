@@ -51,3 +51,20 @@
   .statistics::before{animation:none}
   .statistics .stat-card,.statistics .stat-number.is-counting{animation:none;transition:none}
 }
+
+/* Keep the red summary cards readable while hovered or keyboard-focused. */
+.statistics > .stat-card:hover,
+.statistics > .stat-card:focus-visible {
+  background: linear-gradient(112deg,#b8101c 0%,#c91523 48%,#b70f1b 100%) !important;
+  background-color: #bd1520 !important;
+  background-image: linear-gradient(112deg,#b8101c 0%,#c91523 48%,#b70f1b 100%) !important;
+  color: #fff !important;
+  filter: drop-shadow(0 8px 16px rgba(93,0,8,.2));
+}
+.statistics > .stat-card:hover .stat-number,
+.statistics > .stat-card:hover .stat-label,
+.statistics > .stat-card:focus-visible .stat-number,
+.statistics > .stat-card:focus-visible .stat-label {
+  color: #fff !important;
+  opacity: 1 !important;
+}
