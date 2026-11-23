@@ -629,3 +629,76 @@ html body .header .header-title p::after{
  .header-pano::before{opacity:.28!important}
  .ml-hero-copy{animation-duration:.55s!important}
 }
+
+/* Stronger, clearly visible magical accents while keeping text calm */
+.header-pano{
+  filter:saturate(1.18) contrast(1.045)!important;
+}
+.header-pano::before{
+  opacity:.78!important;
+  background:linear-gradient(112deg,transparent 20%,rgba(255,255,255,.10) 34%,rgba(255,250,225,.65) 43%,rgba(255,255,255,.42) 48%,rgba(255,222,145,.30) 52%,transparent 66%)!important;
+  background-size:260% 100%!important;
+  animation:mlHeroLightSweep 8.5s ease-in-out infinite!important;
+  filter:blur(.3px) drop-shadow(0 0 9px rgba(255,236,181,.48))!important;
+}
+.header-pano::after{
+  opacity:.82!important;
+  background:
+    radial-gradient(circle at 72% 24%,rgba(255,250,222,.82) 0 1.5px,transparent 4px),
+    radial-gradient(circle at 91% 67%,rgba(255,255,255,.75) 0 1.7px,transparent 5px),
+    radial-gradient(circle at 82% 42%,rgba(255,223,150,.58) 0 1px,transparent 3.5px),
+    linear-gradient(90deg,rgba(255,255,255,.10),transparent 25%,transparent 75%,rgba(255,255,255,.13))!important;
+  animation:mlHeroGlow 4.5s ease-in-out infinite alternate!important;
+}
+.ml-hero-copy{text-shadow:0 1px 8px rgba(89,8,18,.08)!important}
+.ml-service-card{
+  box-shadow:0 9px 24px rgba(75,31,36,.085),inset 0 1px 0 #fff,0 0 0 1px rgba(213,173,80,.08)!important;
+}
+.ml-service-card::after{
+  opacity:.72!important;font-size:17px!important;
+  animation:mlStarTwinkle 2.7s ease-in-out infinite!important;
+}
+.ml-service-card:nth-child(2n)::after{animation-delay:.8s!important}
+.ml-service-card:hover,.ml-service-card:focus-visible{
+  box-shadow:0 18px 34px rgba(103,25,35,.16),0 0 0 4px rgba(193,31,47,.085),0 0 26px rgba(213,173,80,.2)!important;
+}
+.ml-info-panel{
+  box-shadow:0 10px 28px rgba(68,28,32,.075),inset 0 1px #fff,0 0 0 1px rgba(213,173,80,.055)!important;
+}
+.ml-info-panel:hover{box-shadow:0 18px 36px rgba(68,28,32,.14),0 0 22px rgba(213,173,80,.17)!important}
+.ml-info-panel>header::after{
+  height:3px!important;opacity:1!important;
+  filter:drop-shadow(0 0 5px rgba(222,178,76,.55))!important;
+  animation-duration:5s!important;
+}
+.field-card{
+  box-shadow:0 9px 25px rgba(38,55,79,.09),inset 0 1px #fff,0 0 0 1px rgba(213,173,80,.10)!important;
+}
+.field-card:hover{
+  border-color:rgba(193,31,47,.35)!important;
+  box-shadow:0 19px 40px rgba(38,55,79,.16),0 0 0 4px rgba(193,31,47,.075),0 0 28px rgba(193,31,47,.13)!important;
+}
+.field-card:hover::before{animation-duration:.9s!important}
+.field-card:hover::after{
+  box-shadow:0 0 0 3px rgba(255,255,255,.15),0 10px 24px rgba(181,29,42,.34),0 0 20px rgba(214,42,59,.25)!important;
+}
+.stat-card:hover{
+  box-shadow:0 18px 36px rgba(110,22,34,.16),0 0 28px rgba(213,173,80,.2)!important;
+}
+@keyframes mlStarTwinkle{
+  0%,100%{opacity:.5;transform:scale(.8) rotate(-12deg);text-shadow:0 0 5px rgba(220,178,84,.25)}
+  50%{opacity:1;transform:scale(1.22) rotate(14deg);text-shadow:0 0 15px rgba(240,194,75,.8)}
+}
+@keyframes mlHeroLightSweep{
+  0%,12%{background-position:170% 50%;opacity:0}
+  28%{opacity:.78}
+  58%,100%{background-position:-100% 50%;opacity:0}
+}
+@media(max-width:700px){
+ .header-pano::before{opacity:.55!important;animation-duration:10s!important}
+ .header-pano::after{opacity:.68!important}
+ .ml-service-card::after{font-size:15px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .ml-service-card::after{animation:none!important;opacity:.82!important}
+}
