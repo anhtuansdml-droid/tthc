@@ -178,7 +178,50 @@ function showDetail(item){
   modal.classList.add("show");
 }
 function detailRow(label,value){return `<div class="detail-label">${escapeHtml(label)}</div><div class="detail-value">${escapeHtml(value||"Chưa cập nhật")}</div>`;}
-function setupSearch(){if(!searchInput)return;searchInput.addEventListener("input",()=>{const keyword=normalize(searchInput.value);if(!keyword){filteredProcedures=[...procedures];updateStatistics();renderFields();const t=document.getElementById("contentTitle");if(t)t.textContent="DANH SÁCH LĨNH VỰC";return;}filteredProcedures=procedures.filter(item=>normalize(`${item.ma||""} ${item.ten||""} ${item.linhVuc||""} ${item.coQuanChuTri||""}`).includes(keyword));updateStatistics();renderFields(filteredProcedures);const t=document.getElementById("contentTitle");if(t)t.textContent=`KẾT QUẢ TÌM KIẾM — ${filteredProcedures.length} thủ tục`;});}
+function setupSearch(){
+  if(!searchInput)return;
+  const panel=document.getElementById("searchSuggestions");
+  let shownResults=[];
+  const hideSuggestions=()=>{if(panel)panel.hidden=true;searchInput.setAttribute("aria-expanded","false");};
+  const showSuggestions=(items,keyword)=>{
+    if(!panel)return;
+    shownResults=items.slice(0,8);
+    if(!items.length){
+      panel.innerHTML='<div class="search-suggestions-empty">Không tìm thấy thủ tục phù hợp.</div>';
+    }else{
+      panel.innerHTML=shownResults.map((item,index)=>'<button type="button" class="search-suggestion" role="option" aria-selected="false" data-suggestion-index="'+index+'"><span class="search-suggestion-code">'+escapeHtml(item.ma||"Mã chưa cập nhật")+'</span><span class="search-suggestion-main"><strong>'+escapeHtml(item.ten||"Chưa có tên thủ tục")+'</strong><small>'+escapeHtml(item.linhVuc||item.coQuanChuTri||"Thủ tục hành chính")+'</small></span><span class="search-suggestion-arrow" aria-hidden="true">↗</span></button>').join("")+
+        (items.length>shownResults.length?'<div class="search-suggestions-footer">Đang hiển thị '+shownResults.length+' trong '+items.length+' kết quả phù hợp</div>':'');
+    }
+    panel.hidden=false;
+    searchInput.setAttribute("aria-expanded","true");
+    searchInput.setAttribute("aria-activedescendant","");
+    panel.querySelectorAll(".search-suggestion").forEach(button=>button.addEventListener("click",()=>{
+      const selected=shownResults[Number(button.dataset.suggestionIndex)];
+      hideSuggestions();
+      if(selected)showDetail(selected);
+    }));
+  };
+  searchInput.addEventListener("input",()=>{
+    const keyword=normalize(searchInput.value);
+    if(!keyword){
+      hideSuggestions();
+      filteredProcedures=[...procedures];updateStatistics();renderFields();
+      const title=document.getElementById("contentTitle");if(title)title.textContent="DANH SÁCH LĨNH VỰC";
+      return;
+    }
+    filteredProcedures=procedures.filter(item=>normalize(`${item.ma||""} ${item.ten||""} ${item.linhVuc||""} ${item.coQuanChuTri||""} ${item.coQuanThucHien||""}`).includes(keyword));
+    showSuggestions(filteredProcedures,keyword);
+    updateStatistics();renderFields(filteredProcedures);
+    const title=document.getElementById("contentTitle");if(title)title.textContent=`KẾT QUẢ TÌM KIẾM — ${filteredProcedures.length} thủ tục`;
+  });
+  searchInput.addEventListener("keydown",event=>{
+    if(event.key==="ArrowDown"&&!panel?.hidden){event.preventDefault();panel.querySelector(".search-suggestion")?.focus();}
+    if(event.key==="Escape")hideSuggestions();
+  });
+  document.addEventListener("click",event=>{
+    if(!event.target.closest(".ml-hero-search"))hideSuggestions();
+  });
+}
 function setupModal(){const close=document.getElementById("modalClose");if(close)close.addEventListener("click",()=>modal?.classList.remove("show"));if(modal)modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("show")});document.addEventListener("keydown",e=>{if(e.key==="Escape")modal?.classList.remove("show")});}
 function setupTheme(){const button=document.getElementById("themeBtn"),saved=localStorage.getItem("tthc_theme");if(saved==="dark")document.body.classList.add("dark");if(button)button.addEventListener("click",()=>{document.body.classList.toggle("dark");localStorage.setItem("tthc_theme",document.body.classList.contains("dark")?"dark":"light")});}
 function loadVisibleFields(){const saved=localStorage.getItem(CONFIG_STORAGE_KEY),all=getFieldNames(procedures);if(!saved){visibleFields=new Set(all);return;}try{const parsed=JSON.parse(saved);visibleFields=new Set(all.filter(f=>parsed.includes(f)));if(!visibleFields.size)visibleFields=new Set(all);}catch{visibleFields=new Set(all);}}
