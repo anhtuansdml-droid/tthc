@@ -883,3 +883,20 @@ body.ml-link-open{overflow:hidden!important}
 }
 .search-suggestion,.search-suggestions *{filter:none!important}
 .search-suggestions{animation:none!important}
+
+/* Keep live suggestions above the banner edge and following sections */
+.ml-hero{
+  overflow:visible!important;
+  position:relative!important;
+  z-index:80!important;
+}
+.ml-hero::before{border-radius:inherit!important}
+.ml-hero-search{position:relative!important;z-index:160!important}
+.search-suggestions{
+  z-index:999!important;
+  max-height:min(52vh,460px)!important;
+  overflow-y:auto!important;
+}
+@media(max-width:700px){
+ .search-suggestions{max-height:min(48vh,390px)!important}
+}
