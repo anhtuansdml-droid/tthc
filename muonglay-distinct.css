@@ -723,3 +723,7 @@ html body .header .header-title p::after{
 @media(prefers-reduced-motion:reduce){
  .header-pano{animation:none!important;transform:none!important;will-change:auto!important}
 }
+
+/* Center the tenth service tile in the final desktop row. */
+@media(min-width:1051px){.ml-service-card:last-child:nth-child(3n + 1){grid-column:2!important}}
+@media(max-width:380px){.ml-service-card:last-child{grid-column:auto!important}}
