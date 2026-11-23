@@ -858,3 +858,28 @@ body.ml-link-open{overflow:hidden!important}
  .search-suggestions{animation:none!important}
  .search-suggestion{transition:none!important}
 }
+
+/* Remove the washed-out overlay from the hero and search dropdown */
+.ml-hero{
+  filter:none!important;opacity:1!important;
+  animation:none!important;
+  background:#b9192a!important;
+}
+.ml-hero::before{
+  opacity:1!important;filter:none!important;animation:none!important;
+  background:
+    radial-gradient(circle at 12% 16%,rgba(255,222,153,.12),transparent 27%),
+    linear-gradient(120deg,#a91625 0%,#c92332 65%,#ad1827 100%)!important;
+  background-size:100% 100%!important;
+}
+.ml-hero::after{display:none!important;filter:none!important;animation:none!important}
+.ml-hero-copy,.ml-hero-copy *{filter:none!important;opacity:1!important}
+.ml-hero-copy{animation:none!important}
+.header-pano{filter:none!important;opacity:1!important}
+.header-pano::before,.header-pano::after{display:none!important;filter:none!important;animation:none!important}
+.search-suggestions{
+  background:#fffdfc!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  filter:none!important;opacity:1!important;
+}
+.search-suggestion,.search-suggestions *{filter:none!important}
+.search-suggestions{animation:none!important}
