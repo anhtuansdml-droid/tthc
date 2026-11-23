@@ -702,3 +702,24 @@ html body .header .header-title p::after{
 @media(prefers-reduced-motion:reduce){
  .ml-service-card::after{animation:none!important;opacity:.82!important}
 }
+
+/* Visible Ken Burns motion for the hero photograph */
+.header-pano{
+  transform-origin:center center!important;
+  animation:mlHeroPhotoMotion 12s cubic-bezier(.45,0,.55,1) infinite alternate!important;
+  will-change:transform,background-position,filter!important;
+}
+@keyframes mlHeroPhotoMotion{
+  0%{transform:scale(1) translate3d(0,0,0);background-position:48% 52%;filter:saturate(1.08) contrast(1.02)}
+  100%{transform:scale(1.065) translate3d(-1.2%,.8%,0);background-position:55% 44%;filter:saturate(1.2) contrast(1.055)}
+}
+@media(max-width:700px){
+ .header-pano{animation-duration:16s!important}
+ @keyframes mlHeroPhotoMotion{
+  0%{transform:scale(1) translate3d(0,0,0);background-position:48% 52%;filter:saturate(1.08) contrast(1.02)}
+  100%{transform:scale(1.035) translate3d(-.5%,.3%,0);background-position:54% 46%;filter:saturate(1.16) contrast(1.04)}
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .header-pano{animation:none!important;transform:none!important;will-change:auto!important}
+}
