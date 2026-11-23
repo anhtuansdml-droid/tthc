@@ -939,3 +939,39 @@ body.ml-link-open{overflow:hidden!important}
   .header-pano{width:116px!important;height:80px!important;right:12px!important;bottom:12px!important}
   .ml-service-grid,.ml-info-panels,.field-grid{grid-template-columns:1fr!important}
 }
+
+/* Correct mobile collisions and make the banner photo readable */
+@media(max-width:700px){
+  .header .header-inner{min-height:96px!important;padding:12px 14px!important;align-items:center!important}
+  .header .header-title{max-width:calc(100vw - 105px)!important;min-width:0!important}
+  .header .header-title h1{font-size:9px!important;letter-spacing:.45px!important;line-height:1.25!important}
+  .header .header-title p{font-size:clamp(15px,4.6vw,20px)!important;line-height:1.08!important;overflow-wrap:anywhere!important}
+  .nav-inner{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .nav-inner>*{min-width:0!important;min-height:42px!important;padding:8px 7px!important;font-size:11px!important;line-height:1.2!important}
+  .nav-inner .home-btn,.nav-inner .admin-link,.nav-inner .support-btn{grid-column:1/-1!important}
+  .ml-hero{min-height:600px!important}
+  .ml-hero-copy{min-height:600px!important;padding:30px 16px 148px!important}
+  .ml-hero-kicker{font-size:10px!important;padding:8px 10px!important;line-height:1.35!important}
+  .ml-hero-copy h2{font-size:clamp(29px,7.3vw,37px)!important;line-height:1.08!important;letter-spacing:-.2px!important}
+  .ml-hero-copy>p{font-size:14px!important;line-height:1.45!important}
+  .ml-hero-search .search-box{height:54px!important}
+  .ml-hero-search input{font-size:14px!important}
+  .ml-quick{max-width:100%!important;gap:7px!important}
+  .ml-quick button{min-height:36px!important;padding:7px 10px!important;font-size:12px!important}
+  .header-pano{
+    width:148px!important;height:100px!important;max-width:44%!important;
+    right:14px!important;bottom:14px!important;top:auto!important;left:auto!important;
+    opacity:.9!important;border-width:2px!important;border-radius:14px!important;
+    box-shadow:0 7px 18px rgba(50,8,15,.28)!important;
+  }
+  body:has(#searchInput:focus) #tthcChatLauncher{display:none!important}
+  #tthcChatLauncher{max-width:148px!important;padding:9px 12px!important;font-size:12px!important}
+  .statistics{gap:8px!important}
+  .statistics>.stat-card{min-height:82px!important;padding:12px 14px!important}
+}
+@media(max-width:390px){
+  .ml-hero{min-height:620px!important}
+  .ml-hero-copy{min-height:620px!important;padding:27px 14px 142px!important}
+  .header-pano{width:130px!important;height:88px!important;right:12px!important;bottom:12px!important}
+  .nav-inner>*{font-size:10px!important}
+}
