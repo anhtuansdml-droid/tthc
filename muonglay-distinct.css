@@ -543,3 +543,89 @@ html body .header .header-title p::after{
 @media(prefers-reduced-motion:reduce){
  .ml-service-card,.field-card,.ml-info-panel,.ml-notice-link,.ml-hours-row,.field-card::after{animation:none!important;transition:none!important}
 }
+
+/* Soft luminous motion for the Mường Lay hero image and interactive cards */
+.ml-hero{isolation:isolate!important}
+.header-pano{
+  overflow:hidden!important;
+  filter:saturate(1.08) contrast(1.025)!important;
+  animation:mlHeroImageDrift 22s ease-in-out infinite alternate!important;
+  will-change:background-position,filter!important;
+}
+.header-pano::before,.header-pano::after{
+  content:""!important;position:absolute!important;inset:0!important;pointer-events:none!important;
+}
+.header-pano::before{
+  z-index:1!important;opacity:.48!important;
+  background:linear-gradient(112deg,transparent 24%,rgba(255,255,255,.24) 42%,rgba(255,231,179,.28) 46%,rgba(255,255,255,.08) 50%,transparent 66%)!important;
+  background-size:230% 100%!important;background-position:160% 50%!important;
+  mix-blend-mode:screen!important;animation:mlHeroLightSweep 13s ease-in-out infinite!important;
+}
+.header-pano::after{
+  z-index:2!important;
+  background:radial-gradient(circle at 72% 24%,rgba(255,245,213,.28) 0 1px,transparent 3px),
+             radial-gradient(circle at 91% 67%,rgba(255,255,255,.25) 0 1.5px,transparent 4px),
+             linear-gradient(90deg,rgba(255,255,255,.06),transparent 25%,transparent 75%,rgba(255,255,255,.08))!important;
+  background-size:100% 100%,100% 100%,100% 100%!important;
+  opacity:.6!important;animation:mlHeroGlow 7s ease-in-out infinite alternate!important;
+}
+.ml-hero-copy{animation:mlHeroCopyRise .85s cubic-bezier(.2,.75,.25,1) both!important}
+.ml-hero-kicker{filter:drop-shadow(0 2px 8px rgba(255,230,170,.22))!important}
+.ml-hero-search .search-box{transition:transform .25s,box-shadow .25s!important}
+.ml-hero-search .search-box:focus-within{transform:translateY(-2px)!important;box-shadow:0 0 0 4px rgba(255,224,157,.22),0 12px 28px rgba(80,12,20,.2)!important}
+.ml-quick button{transition:transform .22s,background .22s,box-shadow .22s!important}
+.ml-quick button:hover{transform:translateY(-3px)!important;box-shadow:0 6px 18px rgba(255,226,164,.2)!important}
+
+/* Fine glints on service tiles, activated gently on hover or keyboard focus */
+.ml-service-card{--ml-card-glow:rgba(189,30,45,.16)!important}
+.ml-service-card::after{
+  content:"✦"!important;position:absolute!important;top:14px!important;right:16px!important;
+  color:#c9a14b!important;font-size:15px!important;line-height:1!important;
+  opacity:.38!important;transform:scale(.8) rotate(-12deg)!important;
+  text-shadow:0 0 8px rgba(220,178,84,.25)!important;
+  transition:transform .3s ease,opacity .3s ease,text-shadow .3s ease!important;
+}
+.ml-service-card:hover::after,.ml-service-card:focus-visible::after{
+  opacity:1!important;transform:scale(1.28) rotate(12deg)!important;
+  text-shadow:0 0 14px rgba(221,174,69,.72)!important;
+}
+.ml-service-card:hover .ml-service-icon{box-shadow:0 0 0 4px rgba(197,31,48,.045),0 8px 20px var(--ml-card-glow)!important}
+.ml-info-panel>header{position:relative!important;overflow:hidden!important}
+.ml-info-panel>header::after{
+  content:""!important;position:absolute!important;left:0!important;top:0!important;width:100%!important;height:2px!important;
+  background:linear-gradient(90deg,#c61e2e,#e3bd65,#c61e2e)!important;background-size:200% 100%!important;
+  opacity:.72!important;animation:mlAccentFlow 8s linear infinite!important;
+}
+.ml-popular-number{transition:transform .25s,box-shadow .25s!important}
+.ml-popular-list>button:hover .ml-popular-number{transform:rotate(-8deg) scale(1.1)!important;box-shadow:0 0 0 4px rgba(217,174,65,.12),0 5px 14px rgba(186,142,42,.22)!important}
+
+/* A slow ambient glow gives the directory grid more depth without reducing legibility */
+.field-card{--ml-field-glow:rgba(193,31,47,.18)!important}
+.field-card .field-count{transition:transform .25s,box-shadow .25s!important}
+.field-card:hover .field-count{transform:translateY(-2px)!important;box-shadow:0 6px 16px rgba(181,29,42,.13)!important}
+.field-card:hover .field-agency{border-color:rgba(66,105,164,.25)!important;background:rgba(255,255,255,.96)!important}
+.field-card:hover::before{
+  opacity:1!important;
+  background:radial-gradient(ellipse at 100% 0,rgba(193,31,47,.10),transparent 52%),linear-gradient(125deg,transparent 35%,rgba(255,255,255,.5) 48%,transparent 61%)!important;
+  background-size:100% 100%,220% 100%!important;background-position:center,180% 0!important;
+  animation:mlFieldGleam 1.25s ease-out both!important;
+}
+.field-card:hover{box-shadow:0 17px 38px rgba(38,55,79,.14),0 0 20px var(--ml-field-glow)!important}
+.stat-card{transition:transform .28s,box-shadow .28s!important}
+.stat-card:hover{transform:translateY(-4px)!important;box-shadow:0 16px 32px rgba(110,22,34,.12),0 0 22px rgba(213,173,80,.12)!important}
+
+@keyframes mlHeroImageDrift{0%{background-position:50% 50%;filter:saturate(1.04) contrast(1.02)}100%{background-position:54% 46%;filter:saturate(1.12) contrast(1.04)}}
+@keyframes mlHeroLightSweep{0%,22%{background-position:160% 50%;opacity:0}38%{opacity:.48}66%,100%{background-position:-90% 50%;opacity:0}}
+@keyframes mlHeroGlow{from{opacity:.35}to{opacity:.72}}
+@keyframes mlHeroCopyRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mlAccentFlow{from{background-position:100% 0}to{background-position:-100% 0}}
+@keyframes mlFieldGleam{from{background-position:center,180% 0}to{background-position:center,-40% 0}}
+@media(prefers-reduced-motion:reduce){
+ .header-pano,.header-pano::before,.header-pano::after,.ml-hero-copy,.ml-info-panel>header::after{animation:none!important;will-change:auto!important}
+ .ml-service-card::after{transition:none!important}
+}
+@media(max-width:700px){
+ .header-pano{animation-duration:28s!important}
+ .header-pano::before{opacity:.28!important}
+ .ml-hero-copy{animation-duration:.55s!important}
+}
